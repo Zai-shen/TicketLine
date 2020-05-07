@@ -38,10 +38,8 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             UsernamePasswordAuthenticationToken authToken = getAuthToken(request);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         } catch (IllegalArgumentException | JwtException e) {
-            LOGGER.debug("Invalid authorization attempt: {}", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Invalid authorization header or token");
-            return;
+            // No authentication header is set. Pass through anyways since we control access on the controller level
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
         chain.doFilter(request, response);
     }

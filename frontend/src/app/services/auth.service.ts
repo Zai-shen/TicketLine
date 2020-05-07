@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 import {Globals} from '../global/globals';
+import {UserService} from '../../generated';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AuthService {
 
   private authBaseUri: string = this.globals.backendUri + '/authentication';
 
-  constructor(private httpClient: HttpClient, private globals: Globals) {
+  constructor(private httpClient: HttpClient, private globals: Globals, private userService: UserService) {
   }
 
   /**
@@ -21,7 +22,7 @@ export class AuthService {
    * @param authRequest User data
    */
   loginUser(authRequest: AuthRequest): Observable<string> {
-    return this.httpClient.post(this.authBaseUri, authRequest, {responseType: 'text'})
+    return this.userService.login(authRequest, 'body', false, {httpHeaderAccept: 'text/plain'})
       .pipe(
         tap((authResponse: string) => this.setToken(authResponse))
       );

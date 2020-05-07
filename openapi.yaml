@@ -1,0 +1,1444 @@
+openapi: 3.0.1
+info:
+  title: Ticketline
+  description: This is the definition of the WebApi of Ticketline - as planned and
+    implemented by Group 16 SE&PM SS2020
+  contact:
+    email: e11808229@student.tuwien.ac.at
+  version: 0.0.1
+servers:
+- url: http://localhost:8080/v1
+tags:
+- name: user
+  description: Users and customer access and modification
+- name: news
+  description: News creation and access
+- name: location
+  description: Manage locations
+- name: event
+  description: Manage events
+- name: ticket
+  description: Create, print, and manage tickets
+- name: artist
+  description: Manage artists
+paths:
+  /user:
+    post:
+      tags:
+      - user
+      summary: Register a new user
+      operationId: register
+      requestBody:
+        description: User information to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      responses:
+        201:
+          description: Registered
+          content: {}
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        409:
+          description: Already existing user with this email address
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Errors in parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/{userId}:
+    put:
+      security:
+        - ticketline_auth: []
+      tags:
+      - user
+      summary: Update the profile information for a user
+      operationId: updateUser
+      requestBody:
+        description: Updated user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDTO'
+        required: true
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: ID of a user to update the profile information for
+          example: 3
+      responses:
+        200:
+          description: Successfully changed profile information
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Validation failed on updated user information input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+    delete:
+      tags:
+      - user
+      security:
+        - ticketline_auth: []
+      summary: remove a user account
+      operationId: removeUser
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: Id of the user to remove
+          example: 3
+      responses:
+        200:
+          description: Successfully removed user account
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Cannot find user to remove
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/locked:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+      - user
+      summary: Get all locked users - Admin task
+      operationId: getLockedUsers
+      responses:
+        200:
+          description: List of locked users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserDTO'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/{userId}/unlock:
+    patch:
+      security:
+        - ticketline_auth: []
+      tags:
+      - user
+      summary: Unlock a user after being locked because of too many login attempts - Admin task
+      operationId: unlockUser
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: ID of the user to unlock
+          example: 3
+      responses:
+        200:
+          description: Successfully unlocked user
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: User to unlock not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /login:
+    post:
+      tags:
+      - user
+      summary: Login as user
+      operationId: login
+      requestBody:
+        description: Login credentials
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+        required: true
+      responses:
+        200:
+          description: Successful Login
+          content:
+            text/plain: {}
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Locked user account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Wrong credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /news:
+    get:
+      tags:
+      - news
+      summary: Return a list of news summaries
+      operationId: getNewsList
+      parameters:
+        - in: query
+          name: unreadBy
+          required: false
+          schema:
+            type: integer
+          description: ID of a user to list only unread news of the user
+          example: 3
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of news summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsSummaryDTO'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find user to check for unread news
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+      - news
+      summary: Create a new news entry - Admin task
+      operationId: createNews
+      requestBody:
+        description: News entry to be persisted
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsDTO'
+        required: true
+      responses:
+        201:
+          description: Created news entry
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Wrong credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /news/{newsId}:
+    get:
+      tags:
+      - news
+      summary: Get the content of one news article
+      operationId: getNews
+      parameters:
+        - in: path
+          name: newsId
+          schema:
+            type: integer
+          description: ID of the news entity to return
+          required: true
+          example: 14
+      responses:
+        200:
+          description: Content of the news article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsDTO'
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find news entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /news/{newsId}/picture:
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - news
+      summary: Upload a picture to a news article - Admin task
+      operationId: uploadPictureForNews
+      parameters:
+        - in: path
+          name: newsId
+          schema:
+            type: integer
+          description: ID of the news entry to upload the picture to
+          required: true
+          example: 14
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: file
+          image/jpeg:
+            schema:
+              type: string
+              format: file
+      responses:
+        201:
+          description: Uploaded picture to news entry
+          content:
+            application/json:
+              schema:
+                type: string
+                example: images/3sdf.png
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: News to upload picture to not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /news/{newsId}/markUnread:
+    put:
+      security:
+        - ticketline_auth: []
+      tags:
+      - news
+      summary: Mark a news article read by a user
+      operationId: markRead
+      parameters:
+        - in: path
+          name: newsId
+          schema:
+            type: integer
+          description: ID of the news entry to mark as read
+          required: true
+          example: 14
+        - in: query
+          name: userId
+          schema:
+            type: integer
+          description: ID of the user to mark the news read for
+          required: true
+          example: 3
+      responses:
+        200:
+          description: Successfully marked as read
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: User or News to mark read not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event:
+    get:
+      tags:
+      - event
+      summary: Get the top 10 events of a month by ticket sales
+      operationId: getTopTenEvents
+      parameters:
+        - in: query
+          name: year
+          schema:
+            type: integer
+          description: Year of the month to get the events for - default current year
+          required: false
+          example: 2019
+        - in: query
+          name: month
+          schema:
+            type: integer
+          description: Month in year to get the events for (between 1 and 12) - default current month
+          required: false
+          example: 2
+        - in: query
+          name: category
+          schema:
+            $ref: '#/components/schemas/EventCategory'
+          description: Category of events to get Top Ten out of
+          required: false
+      responses:
+        200:
+          description: Top Ten Events of the queried month
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventDTO'
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - event
+      summary: Create a new event - Admin task
+      operationId: createEvent
+      requestBody:
+        description: Event information to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventDTO'
+        required: true
+      responses:
+        201:
+          description: Created event entry
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/search:
+    post:
+      tags:
+        - event
+      summary: Search for events
+      operationId: searchEvents
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchEventDTO'
+        required: true
+      responses:
+        200:
+          description: Search performed without errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Search parameter don't validate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}/performance:
+    get:
+      tags:
+        - event
+      summary: Get the performances of a specific event
+      operationId: getPerformances
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          description: ID of the event to get the performances for
+          required: true
+          example: 73
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerformanceDTO'
+        404:
+          description: Couldn't find event entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - event
+      summary: Create a new performance - Admin task
+      operationId: createPerformance
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          description: ID of the event to create the performance for
+          required: true
+          example: 73
+      requestBody:
+        description: Performance information to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PerformanceDTO'
+        required: true
+      responses:
+        201:
+          description: Created performance entry
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}/performance/{performanceId}/seatmap:
+    get:
+      tags:
+        - event
+      summary: Get the occupation seatmap of a specific performance
+      operationId: getSeatmapOfPerformance
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          description: ID of the event of the performance
+          required: true
+          example: 73
+        - in: path
+          name: performanceId
+          schema:
+            type: integer
+          description: ID of the performance to get the seatmap of
+          required: true
+          example: 66
+      responses:
+        200:
+          description: Occupation Seatmap of the performance
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                    - $ref: '#/components/schemas/FreeSeatgroupOccupationDTO'
+                    - $ref: '#/components/schemas/FixedSeatgroupOccupationDTO'
+                  discriminator:
+                    propertyName: type
+        404:
+          description: Couldn't find event or performance entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}/performance/{performanceId}/ticket:
+    post:
+      security:
+      - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Buy or reserve tickets for a specific performance
+      operationId: createTicket
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          description: ID of the event of the performance
+          required: true
+          example: 73
+        - in: path
+          name: performanceId
+          schema:
+            type: integer
+          description: ID of the performance to get the seatmap of
+          required: true
+          example: 66
+        - in: query
+          name: reserve
+          description: Do a reservation instead of a booking
+          schema:
+            type: boolean
+          required: false
+          example: false
+      requestBody:
+        description: Booked seats to create or reserve tickets for
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+                  - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
+                discriminator:
+                  propertyName: type
+      responses:
+        201:
+          description: Created Tickets
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 254
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}/performance/{performanceId}/ticket/cancel:
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Cancel booked or reserved tickets
+      operationId: cancelTickets
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          description: ID of the event of the performance
+          required: true
+          example: 73
+        - in: path
+          name: performanceId
+          schema:
+            type: integer
+          description: ID of the performance to cancel tickets from
+          required: true
+          example: 66
+      requestBody:
+        description: Booked seats to cancel
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                oneOf:
+                  - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+                  - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
+                discriminator:
+                  propertyName: type
+      responses:
+        200:
+          description: Canceled Tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/{userId}/tickets:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Get all booked and reserved tickets of a user
+      operationId: getTicketsOfUser
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: ID of the user to display the booked tickets of
+          example: 3
+      responses:
+        200:
+          description: Tickets of the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reservedTickets:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+                        - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
+                      discriminator:
+                        propertyName: type
+                  bookedTickets:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+                        - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
+                      discriminator:
+                        propertyName: type
+                  
+        404:
+          description: Couldn't find event or performance entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/{userId}/ticket/{bookingId}/invoice:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Get the invoice for a booking
+      operationId: getInvoice
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+          description: ID of the User that has booked the ticket
+          example: 3
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: integer
+          description: ID of the booking to generate the invoice for
+          example: 254
+        - in: query
+          name: cancel
+          required: false
+          schema:
+            type: boolean
+          description: If true, a cancellation invoice is generated
+          example: false
+      responses:
+        200:
+          description: Invoice of the booking
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: file
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient Permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find user or booking entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /location:
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - location
+      summary: Create a new location - Admin task
+      operationId: createLocation
+      requestBody:
+        description: Location and seatmap info
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                location:
+                  $ref: '#/components/schemas/LocationDTO'
+                seatmap:
+                  $ref: '#/components/schemas/SeatmapDTO'
+        required: true
+      responses:
+        201:
+          description: Created Location
+          content: {}
+        401:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Insufficient Permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /location/{locationId}:
+    get:
+      tags:
+        - location
+      summary: Get the infos and seatmap for a location
+      operationId: getLocation
+      parameters:
+        - in: path
+          name: locationId
+          schema:
+            type: integer
+          description: ID of the location to get the info for
+          required: true
+          example: 9
+      responses:
+        200:
+          description: Location info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SeatmapDTO'
+        404:
+          description: Couldn't find location entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /location/search:
+    post:
+      tags:
+        - location
+      summary: Search for locations
+      operationId: searchLocations
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchLocationDTO'
+        required: true
+      responses:
+        200:
+          description: Search performed without errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Search parameter don't validate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /location/{locationId}/performances:
+    get:
+      tags:
+        - location
+      summary: Get the performances of a specific location
+      operationId: getPerformancesOfLocation
+      parameters:
+        - in: path
+          name: locationId
+          schema:
+            type: integer
+          description: ID of the location to get the performances for
+          required: true
+          example: 22
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerformanceDTO'
+        404:
+          description: Couldn't find location entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /artist/search:
+    post:
+      tags:
+        - artist
+      summary: Search for artists
+      operationId: searchArtists
+      requestBody:
+        description: Search parameter
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchArtistDTO'
+        required: true
+      responses:
+        200:
+          description: Search without errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArtistDTO'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Search parameter don't validate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /artist/{artistId}/events:
+    get:
+      tags:
+        - artist
+      summary: Get the events of an artist
+      operationId: getEventsOfArtist
+      parameters:
+        - in: path
+          name: artistId
+          schema:
+            type: integer
+          description: ID of the artist to get the events for
+          required: true
+          example: 68
+      responses:
+        200:
+          description: List of events of the artist
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventDTO'
+        404:
+          description: Couldn't find artist entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+components:
+  schemas:
+    UserDTO:
+      type: object
+      properties:
+        login:
+          $ref: '#/components/schemas/LoginDTO'
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+    AddressDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Max
+        lastname:
+          type: string
+          example: Mustermann
+        street:
+          type: string
+          example: Testgasse
+        housenr:
+          type: string
+          example: 3A/3
+        postalcode:
+          type: integer
+          example: 1020
+        city:
+          type: string
+          example: Wien
+        country:
+          type: string
+          example: Österreich
+    LoginDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: max.mustermann@example.com
+        password:
+          type: string
+          format: password
+          example: secr3t! or *** in responses
+    ErrorDTO:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ErrorType'
+        message:
+          type: string
+          example: 'Was für ein Fehler!'
+    ErrorType:
+      type: string
+      enum: [FATAL, WARN, INFO]
+    NewsSummaryDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 14
+        title:
+          type: string
+          example: New shiny ticketline application!
+        summary:
+          type: string
+          example: A group of top level experts created an awesome cool app.
+        created:
+          type: string
+          format: date
+          example: 2020-04-20
+    NewsDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 14
+        title:
+          type: string
+          example: New shiny ticketline application!
+        summary:
+          type: string
+          example: A group of top level experts created an awesome cool app.
+        created:
+          type: string
+          format: date
+          example: 2020-04-20
+        content:
+          type: string
+          example: Bla Bla Bla Bla....
+        picturePath:
+          type: string
+          example: images/as4k_3d.png
+        author:
+          $ref: '#/components/schemas/AuthorDTO'
+    AuthorDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: max.mustermann@example.com
+        firstname:
+          type: string
+          example: Max
+        lastname:
+          type: string
+          example: Mustermann
+    EventDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 41
+        title:
+          type: string
+          example: CLF Band danube island concert
+        category:
+          $ref: '#/components/schemas/EventCategory'
+        duration:
+          type: string
+          example: 1h 30m
+        description:
+          type: string
+          example: Awesome concert of the best band in the best location!
+    EventCategory:
+      type: string
+      enum: [CONCERT, FESTIVAL, THREATRE, OPERA, PARTY, LITERATURE, MUSICAL, SHOW, CIRCUS, COMEDY, WELLNESS, ADVENTURE, OTHER]
+      example: CONCERT
+    PerformanceDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 73
+        date:
+          type: string
+          format: date
+          example: '2020-08-17'
+        time:
+          type: string
+          format: time of day
+          example: '18:00'
+        event:
+          $ref: '#/components/schemas/EventDTO'
+        location:
+          $ref: '#/components/schemas/LocationDTO'
+    SearchEventDTO:
+      type: object
+      properties:
+        artistId:
+          type: integer
+          example: 68
+        locationId:
+          type: integer
+          example: 9
+        date:
+          type: string
+          format: date
+          example: '2020-08-17'
+        time:
+          type: string
+          format: time of day
+          example: '18:00'
+        price:
+          type: number
+          example: 69.99
+    ArtistDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 68
+        firstname:
+          type: string
+          example: Hans
+        lastname:
+          type: string
+          example: Hölzl
+    SearchArtistDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Hans
+        lastname:
+          type: string
+          example: Hölzl
+    LocationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 9
+        description:
+          type: string
+          example: Danube Island
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+    SearchLocationDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          example: Danube Island
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+    SeatmapDTO:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationDTO'
+        seatgroups:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/FixedSeatgroupDTO'
+              - $ref: '#/components/schemas/FreeSeatgroupDTO'
+    SeatgroupDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 66
+        rotation:
+          type: integer
+          example: 45
+        positionX:
+          type: integer
+          example: 3
+        positionY:
+          type: integer
+          example: 0
+    FixedSeatgroupDTO:
+      allOf:
+        - $ref: '#/components/schemas/SeatgroupDTO'
+        - type: object
+          properties:
+            rows:
+              type: integer
+              example: 5
+            seatsPerRow:
+              type: integer
+              example: 20
+    FreeSeatgroupDTO:
+      allOf:
+        - $ref: '#/components/schemas/SeatgroupDTO'
+        - type: object
+          properties:
+            maxPeople:
+              type: integer
+              example: 300
+    SeatgroupOccupationDTO:
+      type: object
+      properties:
+        seatgroupId:
+          type: integer
+          example: 66
+        price:
+          type: number
+          example: 29.99
+        type:
+          type: string
+          example: FixedSeatgroupOccupationDTO
+    FixedSeatgroupOccupationDTO:
+      allOf:
+        - $ref: '#/components/schemas/SeatgroupOccupationDTO'
+        - type: object
+          properties:
+            occupiedSeats:
+              type: array
+              items:
+                $ref: '#/components/schemas/SeatgroupSeatDTO'
+    FreeSeatgroupOccupationDTO:
+      allOf:
+        - $ref: '#/components/schemas/SeatgroupOccupationDTO'
+        - type: object
+          properties:
+            amountOfFreeSeats:
+              type: integer
+              example: 15
+    SeatgroupSeatDTO:
+      type: object
+      properties:
+        x:
+          type: integer
+          example: 7
+        y:
+          type: integer
+          example: 3
+    SeatgroupBookingDTO:
+      type: object
+      properties:
+        seatgroupId:
+          type: integer
+          example: 66
+        type:
+          type: string
+          example: FreeSeatgroupBookingDTO
+    FreeSeatgroupBookingDTO:
+      allOf:
+        - $ref: '#/components/schemas/SeatgroupBookingDTO'
+        - type: object
+          properties:
+            amount:
+              type: integer
+              example: 3
+    FixedSeatgroupBookingDTO:
+      allOf:
+        - $ref: '#/components/schemas/SeatgroupBookingDTO'
+        - type: object
+          properties:
+            bookedSeats:
+              type: array
+              items:
+                $ref: '#/components/schemas/SeatgroupSeatDTO'
+  securitySchemes:
+    ticketline_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - ticketline_auth: []
