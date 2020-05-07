@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.security;
 
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
-import at.ac.tuwien.sepm.groupphase.backend.endpoint.dto.UserLoginDto;
+import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,11 +38,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
         throws AuthenticationException {
         try {
-            UserLoginDto user = new ObjectMapper().readValue(request.getInputStream(), UserLoginDto.class);
-            //Compares the user with CustomUserDetailService#loadUserByUsername and check if the credentials are correct
+            LoginDTO user = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
-                user.getPassword()));
+                user.getPassword()
+            ));
         } catch (IOException e) {
             throw new BadCredentialsException("Wrong API request or JSON schema", e);
         }

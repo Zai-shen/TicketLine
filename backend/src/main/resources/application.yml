@@ -27,7 +27,7 @@ security:
   auth:
     header: Authorization
     prefix: "Bearer "
-    login-uri: /api/v1/authentication
+    login-uri: /v1/login
     white-list:
       # Browser requests
       - /
