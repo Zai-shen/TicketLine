@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "openapi-generator generate -g typescript-angular -i ../openapi.yaml -o src/generated/ && node hack/patch_generated.js && ng serve",
-    "build": "openapi-generator generate -g typescript-angular -i ../openapi.yaml -o src/generated/ && node hack/patch_generated.js && ng build",
+    "start": "npm run generate && ng serve",
+    "build": "npm run generate && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "generate": "openapi-generator generate -g typescript-angular -i ../openapi.yaml -o src/generated/ && node hack/patch_generated.js"
+    "generate": "openapi-generator generate -c openapi-generator-config.json -g typescript-angular -i ../openapi.yaml -o src/generated/ && node hack/patch_generated.js"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +25,7 @@
     "@openapitools/openapi-generator-cli": "1.0.12-4.3.0",
     "bootstrap": "4.4.1",
     "core-js": "3.6.5",
-    "jquery": "3.5.0",
+    "jquery": "3.4.1",
     "jwt-decode": "2.2.0",
     "lodash": "4.17.15",
     "replace-in-file": "6.0.0",

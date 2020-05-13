@@ -20,10 +20,10 @@ public class NewsController implements NewsApi {
     @Override
     @GetMapping("/news")
     @ApiOperation("Returns list of News")
-    public ResponseEntity<List<NewsSummaryDTO>> getNewsList(@Valid Optional<Integer> unreadBy,
+    public ResponseEntity<List<NewsSummaryDTO>> getNewsList(@Valid Optional<Long> unreadBy,
         @Valid Optional<Integer> page) {
         var list = new ArrayList<NewsSummaryDTO>();
-        list.add(new NewsSummaryDTO().title("News!").id(42).created(LocalDate.now()).summary("foobar"));
+        list.add(new NewsSummaryDTO().title("News!").id(42L).created(LocalDate.now()).summary("foobar"));
         return ResponseEntity.of(Optional.of(list));
     }
 }

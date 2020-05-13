@@ -17,13 +17,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
     private final SecurityProperties securityProperties;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, SecurityProperties securityProperties) {
@@ -47,27 +46,31 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthToken(HttpServletRequest request)
         throws JwtException, IllegalArgumentException {
         String token = request.getHeader(securityProperties.getAuthHeader());
-        if (token == null || token.isEmpty() || !token.startsWith(securityProperties.getAuthTokenPrefix()))
+        final String authPrefix = securityProperties.getAuthTokenPrefix();
+        if (token == null || token.isEmpty() || !token.startsWith(authPrefix)) {
             throw new IllegalArgumentException("Authorization header is malformed or missing");
+        }
 
         byte[] signingKey = securityProperties.getJwtSecret().getBytes();
 
-        if (!token.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Token must start with 'Bearer'");
+        if (!token.startsWith(authPrefix)) {
+            throw new IllegalArgumentException(String.format("Token must start with %s", authPrefix));
         }
-        Claims claims = Jwts.parser()
+        Claims claims = Jwts.parserBuilder()
             .setSigningKey(signingKey)
-            .parseClaimsJws(token.replace(securityProperties.getAuthTokenPrefix(), ""))
+            .build()
+            .parseClaimsJws(token.replace(authPrefix, ""))
             .getBody();
 
         String username = claims.getSubject();
 
-        List<SimpleGrantedAuthority> authorities = ((List<?>) claims
-            .get("rol")).stream()
+        List<SimpleGrantedAuthority> authorities = ((List<?>) claims.get("rol")).stream()
             .map(authority -> new SimpleGrantedAuthority((String) authority))
             .collect(Collectors.toList());
 
-        if (username == null || username.isEmpty()) throw new IllegalArgumentException("Token contains no user");
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Token contains no user");
+        }
 
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
     }

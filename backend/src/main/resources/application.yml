@@ -5,7 +5,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:h2:file:./database/db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:./backend/database/db
     driver-class-name: org.h2.Driver
     username: admin
     password: password
@@ -27,7 +27,7 @@ security:
   auth:
     header: Authorization
     prefix: "Bearer "
-    login-uri: /v1/login
+    login-uri: /login
     white-list:
       # Browser requests
       - /
@@ -40,11 +40,13 @@ security:
       - /swagger-ui.html
       # H2
       - /h2-console/**
+    cors-origins: "http://localhost:4200"
   jwt:
-    # Use http://www.allkeysgenerator.com/ to generate secrets
-    secret: ?E(H+MbQeThWmZq4t7w!z%C*F-J@NcRfUjXn2r5u8x/A?D(G+KbPdSgVkYp3s6v9
+    secret: 4u7x!A%D*F-JaNdRgUkXp2s5v8y/B?E(H+KbPeShVmYq3t6w9z$C&F)J@NcQfTjW
     type: JWT
-    issuer: secure-backend
-    audience: secure-app
+    issuer: ticketline16-backend
+    audience: ticketline16-app
     # 12 hours in milliseconds
     expiration-time: 43200000
+
+server.servlet.context-path: /v1
