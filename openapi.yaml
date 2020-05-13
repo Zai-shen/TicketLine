@@ -445,17 +445,10 @@ paths:
       operationId: getTopTenEvents
       parameters:
         - in: query
-          name: year
+          name: page
           schema:
             type: integer
-          description: Year of the month to get the events for - default current year
-          required: false
-          example: 2019
-        - in: query
-          name: month
-          schema:
-            type: integer
-          description: Month in year to get the events for (between 1 and 12) - default current month
+          description: Pagination information
           required: false
           example: 2
         - in: query
@@ -466,13 +459,13 @@ paths:
           required: false
       responses:
         200:
-          description: Top Ten Events of the queried month
+          description: Top Ten Events this Month
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EventDTO'
+                  $ref: '#/components/schemas/PerformanceDTO'
     post:
       security:
         - ticketline_auth: []
@@ -1239,7 +1232,7 @@ components:
           example: Awesome concert of the best band in the best location!
     EventCategory:
       type: string
-      enum: [CONCERT, FESTIVAL, THREATRE, OPERA, PARTY, LITERATURE, MUSICAL, SHOW, CIRCUS, COMEDY, WELLNESS, ADVENTURE, OTHER]
+      enum: [CONCERT, FESTIVAL, THEATRE, OPERA, PARTY, LITERATURE, MUSICAL, SHOW, CIRCUS, COMEDY, WELLNESS, ADVENTURE, OTHER]
       example: CONCERT
     PerformanceDTO:
       type: object
@@ -1263,25 +1256,19 @@ components:
     SearchEventDTO:
       type: object
       properties:
-        artistId:
-          type: integer
-          format: int64
-          example: 68
-        locationId:
+        description:
+          type: string
+          example: Event 1
+        duration:
           type: integer
           format: int64
           example: 9
-        date:
+          description: duration in minutes
+        title:
           type: string
-          format: date
-          example: '2020-08-17'
-        time:
-          type: string
-          format: time of day
-          example: '18:00'
-        price:
-          type: number
-          example: 69.99
+          example: 'event title'
+        category:
+          $ref: '#/components/schemas/EventCategory'
     ArtistDTO:
       type: object
       properties:
