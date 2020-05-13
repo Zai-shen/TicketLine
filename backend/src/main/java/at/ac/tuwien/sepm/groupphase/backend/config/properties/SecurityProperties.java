@@ -35,6 +35,10 @@ public class SecurityProperties {
         return auth.getWhiteList();
     }
 
+    public List<String> getCorsOrigins() {
+        return auth.getCorsOrigins();
+    }
+
     public String getJwtSecret() {
         return jwt.getSecret();
     }
@@ -72,6 +76,7 @@ public class SecurityProperties {
         private String prefix;
         private String loginUri;
         private List<String> whiteList;
+        private List<String> corsOrigins;
 
         public String getHeader() {
             return header;
@@ -103,6 +108,14 @@ public class SecurityProperties {
 
         public void setWhiteList(List<String> whiteList) {
             this.whiteList = whiteList;
+        }
+
+        public List<String> getCorsOrigins() {
+            return corsOrigins;
+        }
+
+        public void setCorsOrigins(List<String> corsOrigins) {
+            this.corsOrigins = corsOrigins;
         }
     }
 

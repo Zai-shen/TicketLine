@@ -1,9 +1,4 @@
-<div *ngIf="error" class="alert alert-warning alert-dismissible fade show" role="alert">
-  <strong>Authentication problems!</strong> {{ errorMessage }}
-  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+<tl-error-message></tl-error-message>
 
 <div class="pt-5">
   <div class="row">
@@ -19,34 +14,34 @@
           <form class="form" [formGroup]="loginForm" (ngSubmit)="loginUser()">
 
             <div class="form-group">
-              <label for="inputUsername">Username</label>
+              <label for="inputUsername">E-Mail</label>
               <input type="text" name="username" formControlName="username" class="form-control" id="inputUsername"
                      aria-describedby="usernameHelp" placeholder="Enter username">
               <div *ngIf="submitted && loginForm.controls.username.errors" class="error">
-                <small class="form-text text-warning" *ngIf="loginForm.controls.username.errors.required">Your username is
-                  required!
+                <small class="form-text text-warning" *ngIf="loginForm.controls.username.errors.required">
+                  Die E-Mail ist ein Pflichtfeld!
                 </small>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="password">Password</label>
+              <label for="password">Passwort</label>
               <input type="password" name="password" formControlName="password" class="form-control" id="password"
                      placeholder="Password">
               <div *ngIf="submitted && loginForm.controls.password.errors" class="error">
-                <small class="form-text text-warning" *ngIf="loginForm.controls.password.errors.required">Your password
-                  is
-                  required!
+                <small class="form-text text-warning" *ngIf="loginForm.controls.password.errors.required">
+                  Das Passwort ist ein Pflichtfeld!
                 </small>
-                <small class="form-text text-warning" *ngIf="loginForm.controls.password.errors.minlength">Your password
-                  must be at least 8 characters long!
+                <small class="form-text text-warning" *ngIf="loginForm.controls.password.errors.minlength">
+                  Das Passwort muss mindestens 8 Zeichen lang sein!
                 </small>
               </div>
             </div>
 
-            <button type="button" (click)="loginUser()" class="btn btn-success float-right">Login</button>
+            <button type="submit" id="submit-btn" class="btn btn-success float-right">Login</button>
 
           </form>
+          <button type="button" class="btn btn-outline-secondary float-right" routerLink="/register">Als neuer Nutzer registrieren</button>
         </div>
 
       </div>

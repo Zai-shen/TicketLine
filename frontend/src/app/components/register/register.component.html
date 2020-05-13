@@ -1,0 +1,155 @@
+<tl-error-message></tl-error-message>
+
+<div class="pt-5">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <span class="anchor" id="formLogin"></span>
+
+      <div class="card rounded-0">
+        <div class="card-header">
+          <h3 class="mb-0">Registrieren</h3>
+        </div>
+
+        <div class="card-body">
+          <form class="form" [formGroup]="registerForm" (ngSubmit)="submitRegister()">
+            <div formGroupName="login">
+              <div class="form-group">
+                <label for="email">E-Mail</label>
+                <input type="text" name="email" formControlName="email" class="form-control" id="email"
+                       placeholder="E-Mail">
+                <div *ngIf="submitted && registerForm.get('login.email').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('login.email').errors.required">
+                    Die E-Mail ist ein Pflichtfeld!
+                  </small>
+                  <small class="form-text text-warning" *ngIf="registerForm.get('login.email').errors.email">
+                    Entspricht keiner gültigen E-Mail Adresse!
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="password">Passwort</label>
+                <input type="password" name="password" formControlName="password" class="form-control" id="password"
+                       placeholder="Passwort">
+                <div *ngIf="submitted && registerForm.get('login.password').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('login.password').errors.required">
+                    Das Passwort ist ein Pflichtfeld!
+                  </small>
+                  <small class="form-text text-warning" *ngIf="registerForm.get('login.password').errors.minlength">
+                    Das Passwort muss mindestens 8 Zeichen lang sein!
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="passwordRepeat">Passwort wiederholen</label>
+                <input type="password" name="passwordRepeat" formControlName="passwordRepeat" class="form-control"
+                       id="passwordRepeat" placeholder="Passwort wiederholen">
+                <div *ngIf="submitted && registerForm.get('login.passwordRepeat').errors" class="error">
+                  <small class="form-text text-warning"
+                         *ngIf="registerForm.get('login.passwordRepeat').errors.required">
+                    Passwort wiederholen ist ein Pflichtfeld!
+                  </small>
+                  <small class="form-text text-warning"
+                         *ngIf="registerForm.get('login.passwordRepeat').errors.minlength">
+                    Passwort wiederholen muss mindestens 8 Zeichen lang sein!
+                  </small>
+                  <small class="form-text text-warning"
+                         *ngIf="registerForm.get('login.passwordRepeat').errors.mustMatch">
+                    Passwort wiederholen muss mit dem Passwort übereinstimmen!
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="firstname">Vorname</label>
+              <input type="text" name="firstname" formControlName="firstname" class="form-control"
+                     id="firstname" placeholder="Vorname">
+              <div *ngIf="submitted && registerForm.get('firstname').errors" class="error">
+                <small class="form-text text-warning" *ngIf="registerForm.get('firstname').errors.required">
+                  Der Vorname ist ein Pflichtfeld!
+                </small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="lastname">Nachname</label>
+              <input type="text" name="lastname" formControlName="lastname" class="form-control"
+                     id="lastname" placeholder="Nachname">
+              <div *ngIf="submitted && registerForm.get('lastname').errors" class="error">
+                <small class="form-text text-warning" *ngIf="registerForm.get('lastname').errors.required">
+                  Der Nachname ist ein Pflichtfeld!
+                </small>
+              </div>
+            </div>
+
+            <div formGroupName="address">
+              <div class="form-group">
+                <label for="street">Straße</label>
+                <input type="text" name="street" formControlName="street" class="form-control"
+                       id="street" placeholder="Straße">
+                <div *ngIf="submitted && registerForm.get('address.street').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('address.street').errors.required">
+                    Die Straße ist ein Pflichtfeld!
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="housenr">Hausnummer</label>
+                <input type="text" name="housenr" formControlName="housenr" class="form-control"
+                       id="housenr" placeholder="Hausnummer">
+                <div *ngIf="submitted && registerForm.get('address.housenr').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('address.housenr').errors.required">
+                    Die Hausnummer ist ein Pflichtfeld!
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="postalcode">PLZ</label>
+                <input type="text" name="postalcode" formControlName="postalcode" class="form-control"
+                       id="postalcode" placeholder="PLZ">
+                <div *ngIf="submitted && registerForm.get('address.postalcode').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('address.postalcode').errors.required">
+                    Die PLZ ist ein Pflichtfeld!
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="city">Stadt</label>
+                <input type="text" name="city" formControlName="city" class="form-control"
+                       id="city" placeholder="Stadt">
+                <div *ngIf="submitted && registerForm.get('address.city').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('address.city').errors.required">
+                    Die Stadt ist ein Pflichtfeld!
+                  </small>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="country">Staat</label>
+                <input type="text" name="country" formControlName="country" class="form-control"
+                       id="country" placeholder="Stadt">
+                <div *ngIf="submitted && registerForm.get('address.country').errors" class="error">
+                  <small class="form-text text-warning" *ngIf="registerForm.get('address.country').errors.required">
+                    Der Staat ist ein Pflichtfeld!
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-success float-right" [disabled]="submitted && !registerForm.valid">
+              Registrieren
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

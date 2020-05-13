@@ -1,6 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.ApplicationUser;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,10 +23,18 @@ public interface UserService extends UserDetailsService {
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
 
     /**
-     * Find a application user based on the email address
-     *
-     * @param email the email address
-     * @return a application user
+     * Registers a new user in the database
+     * @param user new user to create
+     * @throws BusinessValidationException if the user doesn't comply to business validation
+     * @throws DuplicateEntityException if there is already a user with the same email address in the database
      */
-    ApplicationUser findApplicationUserByEmail(String email);
+    void register(User user);
+
+    /**
+     * Reset the password of a user
+     * @param userId id of the user to update
+     * @param password to set the user's password to
+     * @throws BusinessValidationException if the password doesn't comply to business validation
+     */
+    void resetPassword(Long userId, String password);
 }

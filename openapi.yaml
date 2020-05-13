@@ -39,7 +39,7 @@ paths:
         201:
           description: Registered
           content: {}
-        405:
+        400:
           description: Invalid input
           content:
             application/json:
@@ -78,25 +78,65 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: ID of a user to update the profile information for
           example: 3
       responses:
         200:
           description: Successfully changed profile information
           content: {}
-        401:
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permission
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-        405:
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Validation failed on updated user information input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+    patch:
+      tags:
+        - user
+      security:
+        - ticketline_auth: []
+      summary: Reset a password of a user - Admin task
+      operationId: resetPassword
+      requestBody:
+        description: New Login information about the user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+        required: true
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the user to reset the password for
+          example: 3
+      responses:
+        200:
+          description: Successfully resetted password
+          content: {}
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        400:
           description: Invalid input
           content:
             application/json:
@@ -121,20 +161,15 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: Id of the user to remove
           example: 3
       responses:
         200:
           description: Successfully removed user account
           content: {}
-        401:
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permission
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -162,14 +197,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/UserDTO'
-        401:
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permission
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -187,6 +216,7 @@ paths:
           name: userId
           schema:
             type: integer
+            format: int64
           required: true
           description: ID of the user to unlock
           example: 3
@@ -194,56 +224,14 @@ paths:
         200:
           description: Successfully unlocked user
           content: {}
-        401:
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permission
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
         404:
           description: User to unlock not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-  /login:
-    post:
-      tags:
-      - user
-      summary: Login as user
-      operationId: login
-      requestBody:
-        description: Login credentials
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginDTO'
-        required: true
-      responses:
-        200:
-          description: Successful Login
-          content:
-            text/plain: {}
-        405:
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        403:
-          description: Locked user account
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        422:
-          description: Wrong credentials
           content:
             application/json:
               schema:
@@ -260,6 +248,7 @@ paths:
           required: false
           schema:
             type: integer
+            format: int64
           description: ID of a user to list only unread news of the user
           example: 3
         - in: query
@@ -278,7 +267,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/NewsSummaryDTO'
-        401:
+        403:
           description: Not logged in
           content:
             application/json:
@@ -308,20 +297,14 @@ paths:
         201:
           description: Created news entry
           content: {}
-        401:
-          description: Not logged in
+        400:
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permissions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        405:
-          description: Invalid input
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -343,6 +326,7 @@ paths:
           name: newsId
           schema:
             type: integer
+            format: int64
           description: ID of the news entity to return
           required: true
           example: 14
@@ -353,7 +337,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsDTO'
-        401:
+        403:
           description: Not logged in
           content:
             application/json:
@@ -378,6 +362,7 @@ paths:
           name: newsId
           schema:
             type: integer
+            format: int64
           description: ID of the news entry to upload the picture to
           required: true
           example: 14
@@ -399,14 +384,8 @@ paths:
               schema:
                 type: string
                 example: images/3sdf.png
-        401:
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permissions
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -430,6 +409,7 @@ paths:
           name: newsId
           schema:
             type: integer
+            format: int64
           description: ID of the news entry to mark as read
           required: true
           example: 14
@@ -437,6 +417,7 @@ paths:
           name: userId
           schema:
             type: integer
+            format: int64
           description: ID of the user to mark the news read for
           required: true
           example: 3
@@ -444,7 +425,7 @@ paths:
         200:
           description: Successfully marked as read
           content: {}
-        401:
+        403:
           description: Not logged in
           content:
             application/json:
@@ -510,20 +491,14 @@ paths:
         201:
           description: Created event entry
           content: {}
-        401:
-          description: Not logged in
+        400:
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permissions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        405:
-          description: Invalid input
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -556,7 +531,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/EventDTO'
-        405:
+        400:
           description: Invalid input
           content:
             application/json:
@@ -579,6 +554,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            format: int64
           description: ID of the event to get the performances for
           required: true
           example: 73
@@ -607,6 +583,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            format: int64
           description: ID of the event to create the performance for
           required: true
           example: 73
@@ -621,20 +598,14 @@ paths:
         201:
           description: Created performance entry
           content: {}
-        401:
-          description: Not logged in
+        400:
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient permissions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        405:
-          description: Invalid input
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -656,6 +627,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            format: int64
           description: ID of the event of the performance
           required: true
           example: 73
@@ -663,6 +635,7 @@ paths:
           name: performanceId
           schema:
             type: integer
+            format: int64
           description: ID of the performance to get the seatmap of
           required: true
           example: 66
@@ -698,6 +671,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            format: int64
           description: ID of the event of the performance
           required: true
           example: 73
@@ -705,6 +679,7 @@ paths:
           name: performanceId
           schema:
             type: integer
+            format: int64
           description: ID of the performance to get the seatmap of
           required: true
           example: 66
@@ -734,15 +709,16 @@ paths:
             application/json:
               schema:
                 type: integer
+                format: int64
                 example: 254
-        401:
-          description: Not logged in
+        400:
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-        405:
-          description: Invalid input
+        403:
+          description: Not logged in
           content:
             application/json:
               schema:
@@ -766,6 +742,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            format: int64
           description: ID of the event of the performance
           required: true
           example: 73
@@ -773,6 +750,7 @@ paths:
           name: performanceId
           schema:
             type: integer
+            format: int64
           description: ID of the performance to cancel tickets from
           required: true
           example: 66
@@ -797,14 +775,14 @@ paths:
                 type: array
                 items:
                   type: integer
-        401:
-          description: Not logged in
+        400:
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-        405:
-          description: Invalid input
+        403:
+          description: Not logged in
           content:
             application/json:
               schema:
@@ -829,6 +807,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: ID of the user to display the booked tickets of
           example: 3
       responses:
@@ -876,6 +855,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: ID of the User that has booked the ticket
           example: 3
         - in: path
@@ -883,6 +863,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
           description: ID of the booking to generate the invoice for
           example: 254
         - in: query
@@ -900,14 +881,8 @@ paths:
               schema:
                 type: string
                 format: file
-        401:
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient Permissions
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -942,20 +917,14 @@ paths:
         201:
           description: Created Location
           content: {}
-        401:
-          description: Not logged in
+        400:
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
         403:
-          description: Insufficient Permissions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        405:
-          description: Invalid input
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -977,6 +946,7 @@ paths:
           name: locationId
           schema:
             type: integer
+            format: int64
           description: ID of the location to get the info for
           required: true
           example: 9
@@ -1017,7 +987,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LocationDTO'
-        405:
+        400:
           description: Invalid input
           content:
             application/json:
@@ -1040,6 +1010,7 @@ paths:
           name: locationId
           schema:
             type: integer
+            format: int64
           description: ID of the location to get the performances for
           required: true
           example: 22
@@ -1078,7 +1049,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ArtistDTO'
-        405:
+        400:
           description: Invalid input
           content:
             application/json:
@@ -1101,6 +1072,7 @@ paths:
           name: artistId
           schema:
             type: integer
+            format: int64
           description: ID of the artist to get the events for
           required: true
           example: 68
@@ -1124,19 +1096,28 @@ components:
     UserDTO:
       type: object
       properties:
-        login:
-          $ref: '#/components/schemas/LoginDTO'
-        address:
-          $ref: '#/components/schemas/AddressDTO'
-    AddressDTO:
-      type: object
-      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
         firstname:
           type: string
           example: Max
         lastname:
           type: string
           example: Mustermann
+        login:
+          $ref: '#/components/schemas/LoginDTO'
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+      required:
+        - firstname
+        - lastname
+        - login
+        - address
+    AddressDTO:
+      type: object
+      properties:
         street:
           type: string
           example: Testgasse
@@ -1144,7 +1125,7 @@ components:
           type: string
           example: 3A/3
         postalcode:
-          type: integer
+          type: string
           example: 1020
         city:
           type: string
@@ -1152,6 +1133,12 @@ components:
         country:
           type: string
           example: Österreich
+      required:
+        - street
+        - housenr
+        - postalcode
+        - city
+        - country
     LoginDTO:
       type: object
       properties:
@@ -1163,6 +1150,9 @@ components:
           type: string
           format: password
           example: secr3t! or *** in responses
+      required:
+        - email
+        - password
     ErrorDTO:
       type: object
       properties:
@@ -1179,6 +1169,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 14
         title:
           type: string
@@ -1195,6 +1186,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 14
         title:
           type: string
@@ -1232,6 +1224,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 41
         title:
           type: string
@@ -1253,6 +1246,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 73
         date:
           type: string
@@ -1271,9 +1265,11 @@ components:
       properties:
         artistId:
           type: integer
+          format: int64
           example: 68
         locationId:
           type: integer
+          format: int64
           example: 9
         date:
           type: string
@@ -1291,6 +1287,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 68
         firstname:
           type: string
@@ -1312,6 +1309,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 9
         description:
           type: string
@@ -1342,6 +1340,7 @@ components:
       properties:
         id:
           type: integer
+          format: int64
           example: 66
         rotation:
           type: integer
@@ -1376,6 +1375,7 @@ components:
       properties:
         seatgroupId:
           type: integer
+          format: int64
           example: 66
         price:
           type: number
@@ -1414,6 +1414,7 @@ components:
       properties:
         seatgroupId:
           type: integer
+          format: int64
           example: 66
         type:
           type: string
