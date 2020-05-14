@@ -11,6 +11,8 @@ import at.ac.tuwien.sepm.groupphase.backend.service.validator.PasswordValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,6 +59,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException("Es existiert bereits ein Nutzer mit dieser Mailadresse");
         }
         user.setRole(AuthorizationRole.USER);
+        user.setLocked(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -71,6 +74,20 @@ public class UserServiceImpl implements UserService {
         }
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    @Override
+    public Page<User> getAllUsers(Pageable pageable) {
+        LOGGER.debug("Get all Users with page {} and size {}", pageable.getPageNumber(), pageable.getPageSize());
+
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> getLockedUsers(Pageable pageable) {
+        LOGGER.debug("Get all locked Users with page {} and size {}", pageable.getPageNumber(), pageable.getPageSize());
+
+        return userRepository.findAllByLockedIsTrue(pageable);
     }
 
     private User findUserByEmail(String email) {

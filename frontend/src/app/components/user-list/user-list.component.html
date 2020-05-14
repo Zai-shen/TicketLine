@@ -1,0 +1,26 @@
+<tl-error-message></tl-error-message>
+
+<form>
+  <mat-form-field>
+    <input matInput type="search" placeholder="E-Mail" aria-label="Suche nach E-Mail"/>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-button-toggle-group (valueChange)="onLockedToggleChanged($event)">
+      <mat-button-toggle value="false" aria-label="Show all users">
+        Alle
+      </mat-button-toggle>
+      <mat-button-toggle value="true" aria-label="Show only locked users">
+        Gesperrt
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-form-field>
+</form>
+
+<mat-card *ngFor="let user of users">
+  <mat-card-title>{{user.email}}</mat-card-title>
+  <mat-card-content>
+    <p>Test</p>
+    <p>Dingens</p>
+    <a routerLink="/admin/changePassword">Passwort zurücksetzen</a> <!-- TODO: Pass ID -->
+  </mat-card-content>
+</mat-card>

@@ -21,6 +21,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -32,22 +34,24 @@ import { MatIconModule } from '@angular/material/icon';
     EventsComponent,
     RegisterComponent,
     ErrorMessageComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    UserListComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatButtonToggleModule
+    ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })

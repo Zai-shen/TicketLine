@@ -16,9 +16,7 @@
     </ul>
 
     <ul class="navbar-nav mr-5">
-      <a class="nav-link admin-nav-item" *ngIf="isAdminLoggedIn()" routerLink="/admin/changePassword">
-        Passwort ändern
-      </a>
+      <a class="nav-link admin-nav-item" *ngIf="isAdminLoggedIn()" routerLink="/admin/users">Nutzer anzeigen</a>
       <a class="nav-link" *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
       <a class="nav-link" *ngIf="!authService.isLoggedIn()" routerLink="/register">Registrieren</a>
       <a class="nav-link" *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</a>

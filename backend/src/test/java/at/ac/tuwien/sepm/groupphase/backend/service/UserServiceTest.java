@@ -50,6 +50,7 @@ public class UserServiceTest {
 
         assertThat(user.getRole()).isEqualTo(AuthorizationRole.USER);
         assertThat(user.getPassword()).isEqualTo("encoded");
+        assertThat(user.getLocked()).isTrue();
         verify(userRepository, times(1)).save(user);
     }
 
