@@ -4,23 +4,28 @@
   <mat-form-field>
     <input matInput type="search" placeholder="E-Mail" aria-label="Suche nach E-Mail"/>
   </mat-form-field>
-  <mat-form-field>
-    <mat-button-toggle-group (valueChange)="onLockedToggleChanged($event)">
-      <mat-button-toggle value="false" aria-label="Show all users">
-        Alle
-      </mat-button-toggle>
-      <mat-button-toggle value="true" aria-label="Show only locked users">
-        Gesperrt
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </mat-form-field>
+  <mat-button-toggle-group value="false" (change)="onLockedToggleChanged($event)">
+    <mat-button-toggle value="false" aria-label="Show all users">
+      Alle
+    </mat-button-toggle>
+    <mat-button-toggle value="true" aria-label="Show only locked users">
+      Gesperrt
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </form>
 
+<div class="flex-container list-header">
+  <div class="flex-header">E-Mail</div>
+  <div class="flex-value">Rolle</div>
+  <div class="flex-value">Sperre</div>
+</div>
 <mat-card *ngFor="let user of users">
-  <mat-card-title>{{user.email}}</mat-card-title>
-  <mat-card-content>
-    <p>Test</p>
-    <p>Dingens</p>
-    <a routerLink="/admin/changePassword">Passwort zurücksetzen</a> <!-- TODO: Pass ID -->
+  <mat-card-content class="flex-container">
+    <div class="flex-header">{{user.email}}</div>
+    <div class="flex-value">{{user.role}}</div>
+    <div class="flex-value locked-message">{{user.locked ? 'gesperrt' : ''}}</div>
+    <button class="flex-link" mat-stroked-button color="primary" (click)="openResetPasswordDialog(user)">
+      Passwort zurücksetzen
+    </button>
   </mat-card-content>
 </mat-card>

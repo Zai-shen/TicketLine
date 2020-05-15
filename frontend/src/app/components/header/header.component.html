@@ -13,10 +13,12 @@
       <li class="nav-item">
         <a class="nav-link" routerLink="/events" routerLinkActive="active">Events</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link admin-nav-item" *ngIf="isAdminLoggedIn()" routerLink="/admin/users">Nutzer anzeigen</a>
+      </li>
     </ul>
 
     <ul class="navbar-nav mr-5">
-      <a class="nav-link admin-nav-item" *ngIf="isAdminLoggedIn()" routerLink="/admin/users">Nutzer anzeigen</a>
       <a class="nav-link" *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
       <a class="nav-link" *ngIf="!authService.isLoggedIn()" routerLink="/register">Registrieren</a>
       <a class="nav-link" *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</a>

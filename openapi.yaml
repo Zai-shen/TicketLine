@@ -39,6 +39,13 @@ paths:
           description: If true, will return locked users only
           example: true
         - in: query
+          name: email
+          required: false
+          schema:
+            type: string
+          description: E-Mail to search for
+          example: max.mustermann@example.com
+        - in: query
           name: page
           required: false
           schema:
@@ -1133,17 +1140,17 @@ components:
           type: string
           format: email
           example: max.mustermann@example.com
-        firstname:
+        role:
           type: string
-          example: Max
-        lastname:
-          type: string
-          example: Mustermann
+          example: USER
+        locked:
+          type: boolean
+          example: false
       required:
         - id
         - email
-        - firstname
-        - lastname
+        - role
+        - locked
     AddressDTO:
       type: object
       properties:

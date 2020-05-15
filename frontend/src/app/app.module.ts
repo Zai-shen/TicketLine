@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -37,21 +38,22 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     ChangePasswordComponent,
     UserListComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatButtonToggleModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatButtonToggleModule,
+    MatDialogModule
+  ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
