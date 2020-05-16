@@ -2,7 +2,8 @@
 
 <form>
   <mat-form-field>
-    <input matInput type="search" placeholder="E-Mail" aria-label="Suche nach E-Mail"/>
+    <input [(ngModel)]="searchEmail" (change)="onSearchEmailChange()" matInput type="search" placeholder="E-Mail"
+           aria-label="Suche nach E-Mail" name="E-Mail"/>
   </mat-form-field>
   <mat-button-toggle-group value="false" (change)="onLockedToggleChanged($event)">
     <mat-button-toggle value="false" aria-label="Show all users">

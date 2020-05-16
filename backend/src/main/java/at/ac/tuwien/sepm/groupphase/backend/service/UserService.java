@@ -43,13 +43,15 @@ public interface UserService extends UserDetailsService {
 
     /**
      * @param pageable Pagination information
+     * @param email Search for email if not null
      * @return returns a list with all Users. Restricted by the pagination.
      */
-    Page<User> getAllUsers(Pageable pageable);
+    Page<User> getAllUsers(Pageable pageable, String email);
 
     /**
      * @param pageable Pagination information
+     * @param email Search for email if not null
      * @return returns a list with all Users. Restricted by the pagination.
      */
-    Page<User> getLockedUsers(Pageable pageable);
+    Page<User> getLockedUsers(Pageable pageable, String email);
 }

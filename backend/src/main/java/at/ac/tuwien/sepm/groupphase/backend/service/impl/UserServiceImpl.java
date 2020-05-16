@@ -77,17 +77,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getAllUsers(Pageable pageable) {
-        LOGGER.debug("Get all Users with page {} and size {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<User> getAllUsers(Pageable pageable, String email) {
+        LOGGER.debug("Get all Users with page {}, size {} and email {}", pageable.getPageNumber(),
+            pageable.getPageSize(), email);
 
-        return userRepository.findAll(pageable);
+        if (email == null) {
+            return userRepository.findAll(pageable);
+        } else {
+            return userRepository.findAllByEmailContaining(pageable, email);
+        }
     }
 
     @Override
-    public Page<User> getLockedUsers(Pageable pageable) {
-        LOGGER.debug("Get all locked Users with page {} and size {}", pageable.getPageNumber(), pageable.getPageSize());
+    public Page<User> getLockedUsers(Pageable pageable, String email) {
+        LOGGER.debug("Get all locked Users with page {}, size {} and email {}", pageable.getPageNumber(),
+            pageable.getPageSize(), email);
 
-        return userRepository.findAllByLockedIsTrue(pageable);
+        if (email == null) {
+            return userRepository.findAllByLockedIsTrue(pageable);
+        } else {
+            return userRepository.findAllByEmailContainingAndLockedIsTrue(pageable, email);
+        }
     }
 
     private User findUserByEmail(String email) {

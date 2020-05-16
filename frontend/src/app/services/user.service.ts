@@ -18,7 +18,7 @@ export class UserService {
     return this.userApiService.resetPassword(userId, loginDTO);
   }
 
-  getUsers(locked: boolean, page: number): Observable<UserInfoDTO[]> {
-    return this.userApiService.getUsers(locked, page);
+  getUsers(locked: boolean, email: string, page: number): Observable<UserInfoDTO[]> {
+    return this.userApiService.getUsers(locked, email, page);
   }
 }

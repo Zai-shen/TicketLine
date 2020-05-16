@@ -14,6 +14,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 export class UserListComponent implements OnInit {
 
   users: UserInfoDTO[] = [];
+  searchEmail: string;
   private showOnlyLockedUsers: boolean;
 
   @ViewChild(ErrorMessageComponent)
@@ -23,11 +24,15 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUsers(false, 0);
+    this.loadUsers(0);
   }
 
   onLockedToggleChanged(event: MatButtonToggleChange) {
     this.showOnlyLockedUsers = event.value === 'true';
+    this.reload();
+  }
+
+  onSearchEmailChange(): void {
     this.reload();
   }
 
@@ -42,11 +47,11 @@ export class UserListComponent implements OnInit {
   }
 
   private reload(): void {
-    this.loadUsers(this.showOnlyLockedUsers, 0);
+    this.loadUsers(0);
   }
 
-  private loadUsers(locked: boolean, page: number): void {
-    this.userService.getUsers(locked, page)
+  private loadUsers(page: number): void {
+    this.userService.getUsers(this.showOnlyLockedUsers, this.searchEmail, page)
         .subscribe(users => this.users = users,
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }

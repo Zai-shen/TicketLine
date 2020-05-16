@@ -60,9 +60,9 @@ public class UserController implements UserApi {
         boolean showLockedUsers = locked.orElse(false);
         Page<User> users;
         if (showLockedUsers) {
-            users = userService.getLockedUsers(pageRequest);
+            users = userService.getLockedUsers(pageRequest, email.orElse(null));
         } else {
-            users = userService.getAllUsers(pageRequest);
+            users = userService.getAllUsers(pageRequest, email.orElse(null));
         }
 
         return ResponseEntity.ok(userInfoMapper.toDto(users.getContent()));
