@@ -2,11 +2,10 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.NewsApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.NewsMapper;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.NewsDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.NewsSummaryDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
-import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
+import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +54,7 @@ public class NewsController implements NewsApi {
     @ApiOperation("Create a new news entry - Admin task")
     public ResponseEntity<Void> createNews(@Valid NewsDTO newsDTO) {
         News news = newsMapper.toEntity(newsDTO);
-        newsService.save(news);
+        newsService.publishNews(news);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
