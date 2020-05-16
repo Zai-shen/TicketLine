@@ -31,7 +31,7 @@ public class PdfServiceImpl implements PdfService {
     }
 
     @Override
-    public ByteArrayFile createPdfFromTemplate(PlaceholderPdfData data, String filename, String templateName) {
+    public ByteArrayFile createPdfFromTemplate(Object data, String filename, String templateName) {
         HashMap dataMap = new HashMap();
         dataMap.put("data", data);
         String html = resolveHtmlTemplate(dataMap, templateName);
