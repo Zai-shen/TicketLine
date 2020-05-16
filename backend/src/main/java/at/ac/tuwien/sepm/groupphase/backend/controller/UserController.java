@@ -55,14 +55,14 @@ public class UserController implements UserApi {
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<List<UserInfoDTO>> getUsers(@Valid Optional<Boolean> locked, @Valid Optional<String> email,
         @Valid Optional<Integer> page) {
-        // TODO: 15.05.2020 use E-Mail to filter
         PageRequest pageRequest = PageRequest.of(page.orElse(0), USER_LIST_PAGE_SIZE);
         boolean showLockedUsers = locked.orElse(false);
+        String searchEmail = email.orElse(null);
         Page<User> users;
         if (showLockedUsers) {
-            users = userService.getLockedUsers(pageRequest, email.orElse(null));
+            users = userService.getLockedUsers(pageRequest, searchEmail);
         } else {
-            users = userService.getAllUsers(pageRequest, email.orElse(null));
+            users = userService.getAllUsers(pageRequest, searchEmail);
         }
 
         return ResponseEntity.ok(userInfoMapper.toDto(users.getContent()));
