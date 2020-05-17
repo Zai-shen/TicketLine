@@ -19,7 +19,7 @@ public class Event {
     @Column(nullable = false)
     private Integer duration; // duration in minutes
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1024)
     private String description;
 
     public Long getId() {

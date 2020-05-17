@@ -10,7 +10,7 @@ public class Location {
     @Id
     private Long id;
 
-    @Column(nullable=false)
+    @Column(nullable=false,length = 1024)
     private String description;
 
     public Long getId() {
