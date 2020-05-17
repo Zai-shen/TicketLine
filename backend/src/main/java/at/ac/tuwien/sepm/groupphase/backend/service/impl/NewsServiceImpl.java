@@ -4,12 +4,12 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
+import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewNewsValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +40,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News publishNews(News news) {
         LOGGER.debug("Publish new news {}", news);
+        new NewNewsValidator().build(news).validate();
         return newsRepository.save(news);
     }
 
