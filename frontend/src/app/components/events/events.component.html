@@ -10,7 +10,7 @@
 </form>
 
 <mat-card *ngFor="let performance of performances">
-  <mat-card-title>{{performance.event.title}}</mat-card-title>
+  <mat-card-title [routerLink]="['/events',performance.event.id]">{{performance.event.title}}</mat-card-title>
   <mat-card-content>
       <p><mat-icon>calendar_today</mat-icon>{{performance.event.duration}} minuten</p>
       <p><mat-icon>add_location</mat-icon> {{performance.date}}</p>

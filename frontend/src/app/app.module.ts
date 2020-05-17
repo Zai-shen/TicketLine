@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RegisterComponent } from './components/register/register.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,7 +33,8 @@ import { MatIconModule } from '@angular/material/icon';
     EventsComponent,
     RegisterComponent,
     ErrorMessageComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    EventDetailComponent
   ],
   imports: [
     BrowserModule,
