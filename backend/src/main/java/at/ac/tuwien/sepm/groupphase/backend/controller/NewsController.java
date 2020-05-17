@@ -3,10 +3,11 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 import at.ac.tuwien.sepm.groupphase.backend.api.NewsApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.NewsMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.NewsDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.NewsSummaryDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.Optional;
 
 @Controller
 public class NewsController implements NewsApi {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final NewsMapper newsMapper;
     private final NewsService newsService;
@@ -35,27 +38,26 @@ public class NewsController implements NewsApi {
     @Override
     @GetMapping("/news")
     @ApiOperation("Returns list of News")
-    public ResponseEntity<List<NewsSummaryDTO>> getNewsList(@Valid Optional<Long> unreadBy,
+    public ResponseEntity<List<NewsDTO>> getNewsList(@Valid Optional<Long> unreadBy,
         @Valid Optional<Integer> page) {
-        var list = new ArrayList<NewsSummaryDTO>();
-        list.add(new NewsSummaryDTO().title("News!").id(42L).created(LocalDate.now()).summary("foobar"));
-        return ResponseEntity.of(Optional.of(list));
+        LOGGER.info("Get all news");
+        var DTOList = new ArrayList<NewsDTO>();
+        var entityList = newsService.findAll();
+        for (News n: entityList) {
+            DTOList.add(newsMapper.toDTO(n));
+        }
+        return ResponseEntity.of(Optional.of(DTOList));
     }
-
-//    @Override
-//    public ResponseEntity<Void> register(@Valid UserDTO userDTO) {
-//        User user = userMapper.toEntity(userDTO);
-//        userService.register(user);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
 
     @Override
     @PostMapping("/news")
     @ApiOperation("Create a new news entry - Admin task")
-    public ResponseEntity<Void> createNews(@Valid NewsDTO newsDTO) {
+    public ResponseEntity<NewsDTO> createNews(@Valid NewsDTO newsDTO) {
+        LOGGER.info("Create news");
         News news = newsMapper.toEntity(newsDTO);
-        newsService.publishNews(news);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        NewsDTO responseDTO = newsMapper.toDTO(newsService.publishNews(news));
+        return ResponseEntity.of(Optional.of(responseDTO));
+        //return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

@@ -266,7 +266,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/NewsSummaryDTO'
+                  $ref: '#/components/schemas/NewsDTO'
         403:
           description: Not logged in
           content:
@@ -1157,23 +1157,6 @@ components:
     ErrorType:
       type: string
       enum: [FATAL, WARN, INFO]
-    NewsSummaryDTO:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 14
-        title:
-          type: string
-          example: New shiny ticketline application!
-        summary:
-          type: string
-          example: A group of top level experts created an awesome cool app.
-        created:
-          type: string
-          format: date
-          example: 2020-04-20
     NewsDTO:
       type: object
       properties:
@@ -1189,8 +1172,8 @@ components:
           example: A group of top level experts created an awesome cool app.
         created:
           type: string
-          format: date
-          example: 2020-04-20
+          format: date-time
+          example: 2018-06-01T07:30+08:00
         content:
           type: string
           example: Bla Bla Bla Bla....

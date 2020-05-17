@@ -40,7 +40,6 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News publishNews(News news) {
         LOGGER.debug("Publish new news {}", news);
-        news.setPublishedAt(LocalDateTime.now());
         return newsRepository.save(news);
     }
 
