@@ -23,6 +23,12 @@ public class News {
     @Column(nullable = false, length = 10000)
     private String text;
 
+    @Column(nullable = true, name = "picture_name")
+    private byte[] picture;
+
+    @ManyToOne
+    private Author author;
+
     public Long getId() {
         return id;
     }
@@ -61,6 +67,22 @@ public class News {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -37,6 +38,15 @@ public class NewsController implements NewsApi {
     }
 
     @Override
+    @GetMapping("/news/{newsId}")
+    @ApiOperation("Get the content of one news article")
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<NewsDTO> getNews(@PathVariable Long newsId) {
+        LOGGER.info("Find news with id {}", newsId);
+        return ResponseEntity.of(Optional.of(newsMapper.toDTO(newsService.findOne(newsId))));
+    }
+
+    @Override
     @GetMapping("/news")
     @ApiOperation("Returns list of News")
     @Secured(AuthorizationRole.USER_ROLE)
@@ -56,9 +66,8 @@ public class NewsController implements NewsApi {
     @ApiOperation("Create a new news entry - Admin task")
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Void> createNews(@Valid NewsDTO newsDTO) {
-        LOGGER.info("Create news");
+        LOGGER.info("Create news with title {}", newsDTO.getTitle());
         News news = newsMapper.toEntity(newsDTO);
-        //return ResponseEntity.of(Optional.of(newsMapper.toDTO(newsService.publishNews(news))));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
