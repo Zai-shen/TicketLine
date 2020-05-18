@@ -6,7 +6,7 @@ public class NewAuthorValidator extends Validator<Author>{
     @Override
     protected void doValidation(Author author) {
         callValidatorOnChild(new EmailValidator(), author.getEmail());
-        notEmptyOrName(author.getFirstName(), "First Name");
-        notEmptyOrName(author.getLastName(), "Last Name");
+        notEmptyOrName(author.getFirstName(), "Vorname");
+        notEmptyOrName(author.getLastName(), "Nachname");
     }
 }

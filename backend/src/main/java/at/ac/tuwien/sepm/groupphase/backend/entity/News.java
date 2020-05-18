@@ -21,10 +21,10 @@ public class News {
     private String summary;
 
     @Column(nullable = false, length = 10000)
-    private String text;
+    private String content;
 
-    @Column(nullable = true, name = "picture_name")
-    private byte[] picture;
+    @Column(nullable = true, name = "picture_path")
+    private String picturePath;
 
     @ManyToOne
     private Author author;
@@ -61,20 +61,20 @@ public class News {
         this.summary = summary;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String text) {
+        this.content = text;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public String getPicturePath() {
+        return picturePath;
     }
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
+    public void setPicturePath(String picture) {
+        this.picturePath = picture;
     }
 
     public Author getAuthor() {
@@ -94,12 +94,12 @@ public class News {
             Objects.equals(publishedAt, news.publishedAt) &&
             Objects.equals(title, news.title) &&
             Objects.equals(summary, news.summary) &&
-            Objects.equals(text, news.text);
+            Objects.equals(content, news.content);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, publishedAt, title, summary, text);
+        return Objects.hash(id, publishedAt, title, summary, content);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class News {
             ", publishedAt=" + publishedAt +
             ", title='" + title + '\'' +
             ", summary='" + summary + '\'' +
-            ", text='" + text + '\'' +
+            ", text='" + content + '\'' +
             '}';
     }
 
@@ -159,7 +159,7 @@ public class News {
             news.setPublishedAt(publishedAt);
             news.setTitle(title);
             news.setSummary(summary);
-            news.setText(text);
+            news.setContent(text);
             return news;
         }
     }

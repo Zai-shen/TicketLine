@@ -1170,13 +1170,13 @@ components:
         summary:
           type: string
           example: A group of top level experts created an awesome cool app.
-        created:
-          type: string
-          format: date-time
-          example: 2018-06-01T07:30+08:00
         content:
           type: string
           example: Bla Bla Bla Bla....
+        publishedAt:
+          type: string
+          format: date-time
+          example: 2018-06-01T07:30+08:00
         picturePath:
           type: string
           example: images/as4k_3d.png
@@ -1189,10 +1189,10 @@ components:
           type: string
           format: email
           example: max.mustermann@example.com
-        firstname:
+        firstName:
           type: string
           example: Max
-        lastname:
+        lastName:
           type: string
           example: Mustermann
     EventDTO:

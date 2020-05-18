@@ -39,4 +39,40 @@ public class NewsRepositoryTest implements TestData {
         );
     }
 
+    @Test
+    public void givenNothing_whenSaveMultipleNews_thenFindListWithMultipleElementsAndFindTheseNewsById() {
+        News news = News.MessageBuilder.aMessage()
+            .withTitle(TEST_NEWS_TITLE)
+            .withSummary(TEST_NEWS_SUMMARY)
+            .withText(TEST_NEWS_TEXT)
+            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
+            .build();
+
+        News newsTwo = News.MessageBuilder.aMessage()
+            .withTitle(TEST_NEWS_TITLE)
+            .withSummary(TEST_NEWS_SUMMARY)
+            .withText(TEST_NEWS_TEXT)
+            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
+            .build();
+
+        News newsThree = News.MessageBuilder.aMessage()
+            .withTitle(TEST_NEWS_TITLE)
+            .withSummary(TEST_NEWS_SUMMARY)
+            .withText(TEST_NEWS_TEXT)
+            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
+            .build();
+
+
+        newsRepository.save(news);
+        newsRepository.save(newsTwo);
+        newsRepository.save(newsThree);
+
+        assertAll(
+            () -> assertEquals(3, newsRepository.findAll().size()),
+            () -> assertNotNull(newsRepository.findById(news.getId())),
+            () -> assertNotNull(newsRepository.findById(newsTwo.getId())),
+            () -> assertNotNull(newsRepository.findById(newsThree.getId()))
+        );
+    }
+
 }
