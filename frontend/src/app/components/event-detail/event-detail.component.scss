@@ -1,20 +1,7 @@
 .details {
   background-color: #ffffff;
   margin-top: 5em;
-  padding-bottom: 2em;
-}
-
-.event-image {
-  width:100%;
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 20em;
-    background-size: cover;
-  }
-}
-.event-details {
-  margin: 5em;
+  padding: 5em;
 }
 
 mat-grid-tile {
