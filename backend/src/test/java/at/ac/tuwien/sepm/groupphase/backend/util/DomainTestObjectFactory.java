@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.util;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 
@@ -25,5 +26,11 @@ public class DomainTestObjectFactory {
         address.setCity("St. Pölten");
         address.setCountry("Österreich");
         return address;
+    }
+    public static Location getLocation() {
+        final Location location = new Location();
+        location.setDescription("Veranstaltunsort");
+        location.setAddress(getAddress());
+        return location;
     }
 }
