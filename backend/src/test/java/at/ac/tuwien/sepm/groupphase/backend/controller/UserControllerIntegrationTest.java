@@ -88,4 +88,14 @@ public class UserControllerIntegrationTest {
             .andExpect(jsonPath("$.type").value("WARN"))
             .andExpect(jsonPath("$.message").isNotEmpty());
     }
+
+    @Test
+    public void testGetUsersWithPermissions() throws Exception {
+        mockMvc.perform(securityHelper.withAdminAuthentication(MockMvcRequestBuilders.get("/user")
+            .contentType(MediaType.APPLICATION_JSON)))
+
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.header().exists("X-Total-Count"))
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+    }
 }

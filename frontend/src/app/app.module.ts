@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatButtonModule,
     MatIconModule,
     MatButtonToggleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatPaginatorModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

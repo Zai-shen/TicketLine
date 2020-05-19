@@ -5,6 +5,7 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'tl-user-list',
@@ -13,9 +14,13 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 })
 export class UserListComponent implements OnInit {
 
+  readonly USER_LIST_PAGE_SIZE = 25;
+
   users: UserInfoDTO[] = [];
   searchEmail: string;
+  amountOfPages = 1;
   private showOnlyLockedUsers: boolean;
+  private currentPage = 0;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -24,15 +29,20 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUsers(0);
+    this.reload();
   }
 
-  onLockedToggleChanged(event: MatButtonToggleChange) {
+  onLockedToggleChanged(event: MatButtonToggleChange): void {
     this.showOnlyLockedUsers = event.value === 'true';
     this.reload();
   }
 
   onSearchEmailChange(): void {
+    this.reload();
+  }
+
+  onPaginationChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
     this.reload();
   }
 
@@ -47,12 +57,11 @@ export class UserListComponent implements OnInit {
   }
 
   private reload(): void {
-    this.loadUsers(0);
-  }
-
-  private loadUsers(page: number): void {
-    this.userService.getUsers(this.showOnlyLockedUsers, this.searchEmail, page)
-        .subscribe(users => this.users = users,
+    this.userService.getUsers(this.showOnlyLockedUsers, this.searchEmail, this.currentPage)
+        .subscribe(users => {
+            this.users = users.body;
+            this.amountOfPages = Number(users.headers.get('X-Total-Count')) || 1;
+          },
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
 

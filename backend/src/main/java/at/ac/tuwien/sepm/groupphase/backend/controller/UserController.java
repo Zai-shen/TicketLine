@@ -65,6 +65,8 @@ public class UserController implements UserApi {
             users = userService.getAllUsers(pageRequest, searchEmail);
         }
 
-        return ResponseEntity.ok(userInfoMapper.toDto(users.getContent()));
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(users.getTotalElements()))
+            .body(userInfoMapper.toDto(users.getContent()));
     }
 }

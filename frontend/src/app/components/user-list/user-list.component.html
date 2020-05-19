@@ -30,3 +30,9 @@
     </button>
   </mat-card-content>
 </mat-card>
+
+<mat-paginator [length]="amountOfPages"
+               [pageSize]="USER_LIST_PAGE_SIZE"
+               [pageSizeOptions]="[USER_LIST_PAGE_SIZE]"
+               (page)="onPaginationChange($event)">
+</mat-paginator>
