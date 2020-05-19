@@ -16,6 +16,8 @@ export class EventDetailComponent implements OnInit {
 
   constructor(private eventService: EventApiService, private route: ActivatedRoute) { }
 
+  public seats = Array.from(Array(32).keys());
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.eventService.getEvent(+params['id']).subscribe(

@@ -23,6 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { CreateLocationComponent } from './components/create-location/create-loc
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule,
+    MatGridListModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

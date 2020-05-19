@@ -1,4 +1,16 @@
-<h1>Event Detail</h1>
 <div class="details" *ngIf="event">
-  <h2>{{ event.title }}</h2>
+  <div class="event-image">
+    <img src="https://picsum.photos/seed/{{event.id}}/1000/700"/>
+  </div>
+  <div class="event-details">
+    <h1 class="mat-display-3">{{ event.title }}</h1>
+    <mat-divider></mat-divider>
+    <p>{{ event.description }}</p>
+
+    <mat-divider></mat-divider>
+    <h3>Saalplan</h3>
+    <mat-grid-list cols="8" rowHeight="1:1">
+      <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>
+    </mat-grid-list>
+  </div>
 </div>
