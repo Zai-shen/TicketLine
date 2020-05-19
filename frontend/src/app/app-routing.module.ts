@@ -5,6 +5,8 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AdminGuard } from './guards/admin.guard';
 import { EventsComponent } from './components/events/events.component';
+import { LocationComponent } from './components/location/location.component';
+import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 
 const routes: Routes = [
@@ -12,7 +14,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'events', component: EventsComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin/users', canActivate: [AdminGuard], component: UserListComponent }
+  { path: 'admin/users', canActivate: [AdminGuard], component: UserListComponent },
+  { path: 'location', component: LocationComponent},
+  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent }
 ];
 
 @NgModule({
