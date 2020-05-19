@@ -1,12 +1,15 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewNewsValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
@@ -24,9 +27,9 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> findAll() {
+    public Page<News> findAll(Pageable pageable) {
         LOGGER.debug("Find all news");
-        return newsRepository.findAllByOrderByPublishedAtDesc();
+        return newsRepository.findAllByOrderByPublishedAtDesc(pageable);
     }
 
     @Override

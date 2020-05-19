@@ -26,7 +26,7 @@ public class NewsServiceTest {
 
     @Test
     public void testFindNewsNonExisting() {
-        assertThatThrownBy(() -> newsService.findOne(99999L)).isExactlyInstanceOf(
+        assertThatThrownBy(() -> newsService.findOne(null)).isExactlyInstanceOf(
             NotFoundException.class);
     }
 

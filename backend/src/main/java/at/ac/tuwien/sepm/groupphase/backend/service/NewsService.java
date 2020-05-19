@@ -1,18 +1,20 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface NewsService {
 
     /**
-     * Find all news entries ordered by published at date (descending).
+     * Find all news entries of specified page ordered by published at date (descending).
      *
-     * @return ordered list of al news entries
+     * @param pageable Pagination information
+     * @return ordered list of all news entries. Restricted by the pagination.
      */
-    List<News> findAll();
-
+    Page<News> findAll(Pageable pageable);
 
     /**
      * Find a single news entry by id.

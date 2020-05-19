@@ -3,10 +3,10 @@ package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.NewsDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Mapper
 public interface NewsMapper {
@@ -14,6 +14,8 @@ public interface NewsMapper {
     News toEntity(NewsDTO newsDTO);
 
     NewsDTO toDTO(News news);
+
+    List<NewsDTO> toDtoList(List<News> news);
 
     /**
      * Standard mapper for all OffsetDateTimes
