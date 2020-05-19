@@ -5,6 +5,8 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 import { mustMatch } from '../../global/must-match-validator';
 import { UserInfoDTO } from '../../../generated';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { get } from 'lodash-es';
+import { ErrorType } from '../../../generated';
 
 @Component({
   selector: 'tl-change-password',
@@ -34,9 +36,13 @@ export class ChangePasswordComponent implements OnInit {
 
   changePassword(): void {
     this.submitted = true;
-    if (this.passwordForm.valid) {
-      const userId: number = this.user.id;
-      const password: string = this.passwordForm.get('password').value;
+    if (this.passwordForm != null && this.passwordForm.valid) {
+      const userId: number | null = get(this.passwordForm.get('userId'), 'value');
+      const password: string = get(this.passwordForm.get('password'), 'value');
+      if (userId == null || password == null) {
+        this.errorMessageComponent.throwCustomError('invalid password-form state', ErrorType.FATAL);
+        return;
+      }
       this.userService.changePassword(userId, password).subscribe(
         () => {
           console.log('Successfully changed password');

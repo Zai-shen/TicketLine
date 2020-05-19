@@ -7,7 +7,7 @@ import { ErrorDTO, ErrorType } from '../../../generated';
 })
 export class ErrorMessageComponent implements OnInit {
 
-  error: ErrorDTO = null;
+  error?: ErrorDTO  = undefined;
 
   constructor() { }
 
@@ -15,7 +15,7 @@ export class ErrorMessageComponent implements OnInit {
   }
 
   vanishError(): void {
-    this.error = null;
+    this.error = undefined;
   }
 
   defaultServiceErrorHandling(error: any): void {
