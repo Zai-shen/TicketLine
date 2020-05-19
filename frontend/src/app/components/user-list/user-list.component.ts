@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UserInfoDTO } from '../../../generated';
+import { ErrorType, UserInfoDTO } from '../../../generated';
 import { UserService } from '../../services/user.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -47,8 +47,10 @@ export class UserListComponent implements OnInit {
   }
 
   openResetPasswordDialog(user: UserInfoDTO) {
-    const openDialog = this.matDialog.open(ChangePasswordComponent, { width: '60%',
-      data: user });
+    const openDialog = this.matDialog.open(ChangePasswordComponent, {
+      width: '60%',
+      data: user
+    });
     openDialog.afterClosed().subscribe(hasChanged => {
       if (hasChanged) {
         this.reload();
@@ -59,8 +61,13 @@ export class UserListComponent implements OnInit {
   private reload(): void {
     this.userService.getUsers(this.showOnlyLockedUsers, this.searchEmail, this.currentPage)
         .subscribe(users => {
-            this.users = users.body;
-            this.amountOfPages = Number(users.headers.get('X-Total-Count')) || 1;
+            if (users.body !== null) {
+              this.users = users.body;
+              this.amountOfPages = Number(users.headers.get('X-Total-Count')) || 1;
+            } else {
+              this.errorMessageComponent.throwCustomError('Ungültige Antwort vom Server in der Nutzerabfrage',
+                ErrorType.FATAL);
+            }
           },
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }

@@ -37,13 +37,12 @@ export class ChangePasswordComponent implements OnInit {
   changePassword(): void {
     this.submitted = true;
     if (this.passwordForm != null && this.passwordForm.valid) {
-      const userId: number | null = get(this.passwordForm.get('userId'), 'value');
       const password: string = get(this.passwordForm.get('password'), 'value');
-      if (userId == null || password == null) {
+      if (password == null) {
         this.errorMessageComponent.throwCustomError('invalid password-form state', ErrorType.FATAL);
         return;
       }
-      this.userService.changePassword(userId, password).subscribe(
+      this.userService.changePassword(this.user.id, password).subscribe(
         () => {
           console.log('Successfully changed password');
           this.dialogRef.close(true);
