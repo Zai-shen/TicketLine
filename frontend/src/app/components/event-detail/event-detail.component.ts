@@ -14,6 +14,8 @@ export class EventDetailComponent implements OnInit {
 
   public event: EventDTO;
 
+  public errorMsg?: string;
+
   constructor(private eventService: EventApiService, private route: ActivatedRoute) { }
 
   public seats = Array.from(Array(32).keys());
@@ -25,7 +27,9 @@ export class EventDetailComponent implements OnInit {
           this.event = event;
         },
         error => {
-          console.log(error);
+          if(error.status === 404) {
+            this.errorMsg = 'Das angeforderte Event konnte nicht gefunden werden';
+          }
         }
       );
     });
