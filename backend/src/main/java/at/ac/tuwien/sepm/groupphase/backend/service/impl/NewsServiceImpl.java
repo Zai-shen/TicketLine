@@ -33,8 +33,7 @@ public class NewsServiceImpl implements NewsService {
     public News findOne(Long id) {
         LOGGER.debug("Find news with id {}", id);
         Optional<News> news = newsRepository.findById(id);
-        if (news.isPresent()) return news.get();
-        else throw new NotFoundException(String.format("Could not find news with id %s", id));
+        return news.orElseThrow(() -> new NotFoundException(String.format("Could not find news with id %s", id)));
     }
 
     @Override

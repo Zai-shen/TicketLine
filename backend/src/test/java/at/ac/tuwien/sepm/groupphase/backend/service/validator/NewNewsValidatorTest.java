@@ -24,8 +24,6 @@ public class NewNewsValidatorTest {
         assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
         BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
         assertThat(businessValidationException.getValidationMessages()).containsExactly(
-            "PubliziertAm ist nicht gesetzt", "Titel ist leer", "Kurzfassung ist leer", "Text ist leer"
-            //,"E-Mail ist nicht gesetzt", "Vorname ist leer", "Nachname ist leer"
-        );
+            "PubliziertAm ist nicht gesetzt", "Titel ist leer", "Kurzfassung ist leer", "Text ist leer");
     }
 }

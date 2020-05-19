@@ -38,8 +38,6 @@ public class NewsController implements NewsApi {
     }
 
     @Override
-    @GetMapping("/news/{newsId}")
-    @ApiOperation("Get the content of one news article")
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<NewsDTO> getNews(@PathVariable Long newsId) {
         LOGGER.info("Find news with id {}", newsId);
@@ -47,8 +45,6 @@ public class NewsController implements NewsApi {
     }
 
     @Override
-    @GetMapping("/news")
-    @ApiOperation("Returns list of News")
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<List<NewsDTO>> getNewsList(@Valid Optional<Long> unreadBy,
         @Valid Optional<Integer> page) {
@@ -62,12 +58,11 @@ public class NewsController implements NewsApi {
     }
 
     @Override
-    @PostMapping("/news")
-    @ApiOperation("Create a new news entry - Admin task")
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Void> createNews(@Valid NewsDTO newsDTO) {
         LOGGER.info("Create news with title {}", newsDTO.getTitle());
         News news = newsMapper.toEntity(newsDTO);
+        newsService.publishNews(news);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

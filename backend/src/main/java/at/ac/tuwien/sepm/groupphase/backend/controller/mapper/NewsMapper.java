@@ -11,12 +11,8 @@ import java.time.OffsetDateTime;
 @Mapper
 public interface NewsMapper {
 
-    //@Mapping(target = "publishedAt", source = "created")
-    //@Mapping(target = "text", source = "content")
     News toEntity(NewsDTO newsDTO);
 
-    //@Mapping(target = "created", source = "publishedAt")
-    //@Mapping(target = "content", source = "text")
     NewsDTO toDTO(News news);
 
     /**

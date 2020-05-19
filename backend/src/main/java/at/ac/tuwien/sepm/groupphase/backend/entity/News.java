@@ -90,11 +90,7 @@ public class News {
         if (this == o) return true;
         if (!(o instanceof News)) return false;
         News news = (News) o;
-        return Objects.equals(id, news.id) &&
-            Objects.equals(publishedAt, news.publishedAt) &&
-            Objects.equals(title, news.title) &&
-            Objects.equals(summary, news.summary) &&
-            Objects.equals(content, news.content);
+        return Objects.equals(id, news.id);
     }
 
     @Override
@@ -109,7 +105,7 @@ public class News {
             ", publishedAt=" + publishedAt +
             ", title='" + title + '\'' +
             ", summary='" + summary + '\'' +
-            ", text='" + content + '\'' +
+            ", content='" + content + '\'' +
             '}';
     }
 

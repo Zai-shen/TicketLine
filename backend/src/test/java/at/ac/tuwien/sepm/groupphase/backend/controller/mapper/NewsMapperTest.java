@@ -19,7 +19,6 @@ public class NewsMapperTest {
     @Test
     public void testToDTO() {
         assertThat(newsMapper.toDTO(DomainTestObjectFactory.getNews()))
-        //.isEqualToComparingOnlyGivenFields(DTOTestObjectFactory.getNewsDTO(), "summary");
-    .isEqualToIgnoringGivenFields(DTOTestObjectFactory.getNewsDTO());
+            .isEqualToIgnoringGivenFields(DTOTestObjectFactory.getNewsDTO());
     }
 }

@@ -9,7 +9,6 @@ public class NewNewsValidator extends Validator<News> {
         notEmptyOrName(news.getTitle(), "Titel");
         notEmptyOrName(news.getSummary(), "Kurzfassung");
         notEmptyOrName(news.getContent(), "Text");
-        //notNullOrName(news.getPicturePath(), "Picture");
         callValidatorOnChild(new NewAuthorValidator(), news.getAuthor());
     }
 }
