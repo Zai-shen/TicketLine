@@ -1,17 +1,21 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import com.google.common.base.Objects;
-
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Location {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable=false,length = 1024)
     private String description;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
     public Long getId() {
         return id;
@@ -29,20 +33,33 @@ public class Location {
         this.description = description;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        return java.util.Objects.equals(id, location.id);
+        return Objects.equals(id, location.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+            "id=" + id +
+            ", description='" + description + '\'' +
+            ", address=" + address.toString() +
+            '}';
     }
 }
