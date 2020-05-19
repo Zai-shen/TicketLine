@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -21,6 +20,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { LocationComponent } from './components/location/location.component';
+import { CreateLocationComponent } from './components/create-location/create-location.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,9 @@ import { MatIconModule } from '@angular/material/icon';
     EventsComponent,
     RegisterComponent,
     ErrorMessageComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    LocationComponent,
+    CreateLocationComponent,
   ],
   imports: [
     BrowserModule,
