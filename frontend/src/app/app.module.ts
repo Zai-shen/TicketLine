@@ -21,6 +21,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ArtistsComponent } from './components/artists/artists.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { MatIconModule } from '@angular/material/icon';
     EventsComponent,
     RegisterComponent,
     ErrorMessageComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    ArtistsComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatPaginatorModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

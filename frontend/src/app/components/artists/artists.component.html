@@ -1,0 +1,23 @@
+<div class="artists mat-elevation-z4">
+  <form [formGroup]="artistForm" (ngSubmit)="searchArtists()">
+    <mat-form-field>
+      <input matInput name="firstname" formControlName="firstname" id="firstname" type="search" placeholder="Vorname" aria-label="Search"/>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="lastname" formControlName="lastname" id="lastname" type="search" placeholder="Nachname" aria-label="Search"/>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Suchen</button>
+  </form>
+
+  <mat-card *ngFor="let artist of artists">
+    <mat-card-title>{{artist.firstname}} {{artist.lastname}}</mat-card-title>
+  </mat-card>
+
+  <mat-paginator [length]="amountOfPages"
+                 [pageSize]="ARTIST_LIST_PAGE_SIZE"
+                 [pageSizeOptions]="[ARTIST_LIST_PAGE_SIZE]"
+                 (page)="onPaginationChange($event)">
+  </mat-paginator>
+</div>
+
