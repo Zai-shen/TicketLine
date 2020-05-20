@@ -58,6 +58,7 @@ public class PerformanceDataGenerator {
                 locaddr.setPostalcode(f.address().zipCode());
                 Location location = new Location();
                 location.setDescription(f.rickAndMorty().quote());
+                location.setAddress(locaddr);
 
                 Performance performance = new Performance();
                 performance.setDate(LocalDate.now().plusDays(i));
@@ -65,7 +66,6 @@ public class PerformanceDataGenerator {
                 performance.setEvent(event);
                 performance.setLocation(location);
 
-                addressRepository.save(locaddr);
                 eventRepository.save(event);
                 locationRepository.save(location);
                 performanceRepository.save(performance);
