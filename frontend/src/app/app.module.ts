@@ -17,11 +17,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { RegisterComponent } from './components/register/register.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -38,6 +44,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     RegisterComponent,
     ErrorMessageComponent,
     ChangePasswordComponent,
+    EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
     ChangePasswordComponent,
@@ -56,6 +63,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDividerModule,
+    MatGridListModule,
+    MatRippleModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatPaginatorModule
