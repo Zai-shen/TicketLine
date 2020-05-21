@@ -6,16 +6,16 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class Location {
+public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @Column(nullable=false)
-    private String description;
+    @Column(nullable = false)
+    private Boolean isReservation;
 
     @OneToMany
-    private List<Seatgroup> seatGroups;
+    private Performance performance;
 
     public Long getId() {
         return id;
@@ -25,20 +25,20 @@ public class Location {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public Boolean getReservation() {
+        return isReservation;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setReservation(Boolean reservation) {
+        isReservation = reservation;
     }
 
-    public List<Seatgroup> getSeatGroups() {
-        return seatGroups;
+    public Performance getPerformance() {
+        return performance;
     }
 
-    public void setSeatGroups(List<Seatgroup> seatGroups) {
-        this.seatGroups = seatGroups;
+    public void setPerformance(Performance performance) {
+        this.performance = performance;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Location {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Location location = (Location) o;
+        Booking location = (Booking) o;
         return java.util.Objects.equals(id, location.id);
     }
 

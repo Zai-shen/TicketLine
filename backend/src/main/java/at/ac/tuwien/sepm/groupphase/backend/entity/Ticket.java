@@ -3,19 +3,15 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import com.google.common.base.Objects;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-public class Location {
+public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    @Column(nullable=false)
-    private String description;
-
     @OneToMany
-    private List<Seatgroup> seatGroups;
+    private Seatgroup seatgroup;
 
     public Long getId() {
         return id;
@@ -25,20 +21,12 @@ public class Location {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public Seatgroup getSeatgroup() {
+        return seatgroup;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Seatgroup> getSeatGroups() {
-        return seatGroups;
-    }
-
-    public void setSeatGroups(List<Seatgroup> seatGroups) {
-        this.seatGroups = seatGroups;
+    public void setSeatgroup(Seatgroup seatgroup) {
+        this.seatgroup = seatgroup;
     }
 
     @Override
@@ -49,7 +37,7 @@ public class Location {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Location location = (Location) o;
+        Ticket location = (Ticket) o;
         return java.util.Objects.equals(id, location.id);
     }
 

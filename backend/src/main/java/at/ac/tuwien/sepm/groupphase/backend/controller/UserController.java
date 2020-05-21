@@ -14,9 +14,10 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
-public class UserController implements UserApi {
+public class    UserController implements UserApi {
 
     private final UserMapper userMapper;
     private final UserService userService;

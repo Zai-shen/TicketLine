@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.EventApi;
+import at.ac.tuwien.sepm.groupphase.backend.dto.CreateTicket;
 import at.ac.tuwien.sepm.groupphase.backend.dto.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
@@ -37,5 +38,13 @@ public class EventController implements EventApi {
         LOGGER.info("Show top events");
         return ResponseEntity.ok(performanceMapper.toDto(
             performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE)).getContent()));
+    }
+
+    @Override
+    public ResponseEntity<Long> createTicket(Long eventId, Long performanceId, @Valid Optional<Boolean> reserve,
+        @Valid List<CreateTicket> createTicket) {
+        LOGGER.info("Creat Ticket");
+        performanceService.createTicket(performanceId, reserve.orElse(false));
+        return ResponseEntity.ok(0L);
     }
 }
