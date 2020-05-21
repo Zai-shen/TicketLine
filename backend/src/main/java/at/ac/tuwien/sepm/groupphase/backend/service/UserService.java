@@ -37,4 +37,11 @@ public interface UserService extends UserDetailsService {
      * @throws BusinessValidationException if the password doesn't comply to business validation
      */
     void resetPassword(Long userId, String password);
+
+    /**
+     *  Finds a user based on their email address
+     * @param email email address of the user
+     * @return User entity containing the specified user
+     */
+    User findUserByEmail(String email);
 }

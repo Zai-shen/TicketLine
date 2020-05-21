@@ -180,6 +180,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /user/self:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+      - user
+      summary: Get user information for the currently logged in user
+      operationId: getSelf
+      responses:
+        200:
+          description: Currently logged in user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /user/locked:
     get:
       security:

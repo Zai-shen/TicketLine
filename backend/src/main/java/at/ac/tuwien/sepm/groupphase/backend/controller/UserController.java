@@ -10,9 +10,14 @@ import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.validation.Valid;
 
@@ -40,5 +45,13 @@ public class UserController implements UserApi {
     public ResponseEntity<Void> resetPassword(Long userId, @Valid LoginDTO loginDTO) {
         userService.resetPassword(userId, loginDTO.getPassword());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<UserDTO> getSelf() {
+        String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.findUserByEmail(username);
+        return ResponseEntity.ok(userMapper.toDto(currentUser));
     }
 }

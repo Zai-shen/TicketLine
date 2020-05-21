@@ -73,7 +73,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    private User findUserByEmail(String email) {
+    @Override
+    public User findUserByEmail(String email) {
         LOGGER.debug("Find user by email");
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
