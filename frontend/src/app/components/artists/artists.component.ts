@@ -36,7 +36,7 @@ export class ArtistsComponent implements OnInit {
 
   onPaginationChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
-    if (this.searched = true) {
+    if (this.searched == true) {
       this.searchArtists();
     } else {
       this.getAllArtists();

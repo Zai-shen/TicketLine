@@ -17,18 +17,21 @@ import { MatSelectModule } from '@angular/material/select';
 import { RegisterComponent } from './components/register/register.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-<<<<<<< HEAD
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ArtistsComponent } from './components/artists/artists.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
-=======
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
->>>>>>> master
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { CreateLocationComponent } from './components/create-location/create-loc
     RegisterComponent,
     ErrorMessageComponent,
     ChangePasswordComponent,
+    EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
     ArtistsComponent
@@ -59,6 +63,11 @@ import { CreateLocationComponent } from './components/create-location/create-loc
     MatButtonModule,
     MatIconModule,
     MatPaginatorModule,
+    MatDividerModule,
+    MatGridListModule,
+    MatRippleModule,
+    MatProgressSpinnerModule,
+    MatChipsModule
   ],
   providers: [
    {

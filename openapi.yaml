@@ -502,6 +502,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}:
+    get:
+      tags:
+        - event
+      summary: Get the details of a  specific event
+      operationId: getEvent
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to get the performances for
+          required: true
+          example: 73
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDTO'
+        404:
+          description: Couldn't find event entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /event/search:
     post:
       tags:
