@@ -81,11 +81,8 @@ public class UserServiceImpl implements UserService {
         LOGGER.debug("Get all Users with page {}, size {} and email {}", pageable.getPageNumber(),
             pageable.getPageSize(), email);
 
-        if (email == null) {
-            return userRepository.findAll(pageable);
-        } else {
-            return userRepository.findAllByEmailContaining(pageable, email);
-        }
+        return email == null ? userRepository.findAll(pageable) :
+            userRepository.findAllByEmailContaining(pageable, email);
     }
 
     @Override
