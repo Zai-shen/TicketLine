@@ -39,9 +39,16 @@ public interface UserService extends UserDetailsService {
     void resetPassword(Long userId, String password);
 
     /**
-     *  Finds a user based on their email address
+     * Finds a user based on their email address
      * @param email email address of the user
      * @return User entity containing the specified user
      */
     User findUserByEmail(String email);
+
+    /**
+     * Update a user
+     * @param user user to be updated
+     * @return the updated user
+     */
+    User updateUser(User user);
 }

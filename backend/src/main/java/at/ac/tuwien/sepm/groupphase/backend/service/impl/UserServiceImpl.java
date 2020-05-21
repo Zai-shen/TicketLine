@@ -82,4 +82,10 @@ public class UserServiceImpl implements UserService {
         }
         throw new NotFoundException(String.format("Could not find the user with the email address %s", email));
     }
+
+    @Override
+    public User updateUser(User user) {
+        LOGGER.debug("Update User");
+        return userRepository.saveAndFlush(user);
+    }
 }
