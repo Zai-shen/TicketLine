@@ -115,7 +115,7 @@ public class News {
         private LocalDateTime publishedAt;
         private String title;
         private String summary;
-        private String text;
+        private String content;
 
         private MessageBuilder() {
         }
@@ -144,8 +144,8 @@ public class News {
             return this;
         }
 
-        public MessageBuilder withText(String text) {
-            this.text = text;
+        public MessageBuilder withContent(String text) {
+            this.content = text;
             return this;
         }
 
@@ -155,7 +155,7 @@ public class News {
             news.setPublishedAt(publishedAt);
             news.setTitle(title);
             news.setSummary(summary);
-            news.setContent(text);
+            news.setContent(content);
             return news;
         }
     }

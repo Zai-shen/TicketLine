@@ -1,0 +1,7 @@
+<mat-card *ngFor="let newsEntry of news">
+  <mat-card-title>{{newsEntry.title}}</mat-card-title>
+  <mat-card-content>
+    <p><mat-icon>calendar_today</mat-icon>{{newsEntry.publishedAt}} minuten</p>
+    <p><mat-icon>add_location</mat-icon> {{newsEntry.id}}</p>
+  </mat-card-content>
+</mat-card>

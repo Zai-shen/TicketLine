@@ -27,7 +27,7 @@ public class NewsRepositoryTest implements TestData {
         News news = News.MessageBuilder.aMessage()
             .withTitle(TEST_NEWS_TITLE)
             .withSummary(TEST_NEWS_SUMMARY)
-            .withText(TEST_NEWS_TEXT)
+            .withContent(TEST_NEWS_TEXT)
             .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
             .build();
 
@@ -44,21 +44,21 @@ public class NewsRepositoryTest implements TestData {
         News news = News.MessageBuilder.aMessage()
             .withTitle(TEST_NEWS_TITLE)
             .withSummary(TEST_NEWS_SUMMARY)
-            .withText(TEST_NEWS_TEXT)
+            .withContent(TEST_NEWS_TEXT)
             .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
             .build();
 
         News newsTwo = News.MessageBuilder.aMessage()
             .withTitle(TEST_NEWS_TITLE)
             .withSummary(TEST_NEWS_SUMMARY)
-            .withText(TEST_NEWS_TEXT)
+            .withContent(TEST_NEWS_TEXT)
             .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
             .build();
 
         News newsThree = News.MessageBuilder.aMessage()
             .withTitle(TEST_NEWS_TITLE)
             .withSummary(TEST_NEWS_SUMMARY)
-            .withText(TEST_NEWS_TEXT)
+            .withContent(TEST_NEWS_TEXT)
             .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
             .build();
 

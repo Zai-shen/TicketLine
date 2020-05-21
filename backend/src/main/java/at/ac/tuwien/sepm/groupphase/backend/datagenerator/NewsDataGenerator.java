@@ -19,7 +19,7 @@ public class NewsDataGenerator {
     private static final int NUMBER_OF_NEWS_TO_GENERATE = 5;
     private static final String TEST_NEWS_TITLE = "Title";
     private static final String TEST_NEWS_SUMMARY = "Summary of the news";
-    private static final String TEST_NEWS_TEXT = "This is the text of the news";
+    private static final String TEST_NEWS_CONTENT = "This is the text of the news";
 
     private final NewsRepository newsRepository;
 
@@ -37,7 +37,7 @@ public class NewsDataGenerator {
                 News news = News.MessageBuilder.aMessage()
                     .withTitle(TEST_NEWS_TITLE + " " + i)
                     .withSummary(TEST_NEWS_SUMMARY + " " + i)
-                    .withText(TEST_NEWS_TEXT + " " + i)
+                    .withContent(TEST_NEWS_CONTENT + " " + i)
                     .withPublishedAt(LocalDateTime.now().minusMonths(i))
                     .build();
                 LOGGER.debug("saving news {}", news);

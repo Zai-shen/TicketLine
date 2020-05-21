@@ -22,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { NewsComponent } from './components/news/news.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { CreateLocationComponent } from './components/create-location/create-loc
     ChangePasswordComponent,
     LocationComponent,
     CreateLocationComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,
