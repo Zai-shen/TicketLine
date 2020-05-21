@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.util;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Author;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 
@@ -50,4 +51,10 @@ public class DomainTestObjectFactory {
         return news;
     }
 
+    public static Location getLocation() {
+        final Location location = new Location();
+        location.setDescription("Veranstaltunsort");
+        location.setAddress(getAddress());
+        return location;
+    }
 }

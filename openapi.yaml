@@ -827,7 +827,7 @@ paths:
                         - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
                       discriminator:
                         propertyName: type
-                  
+
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -887,6 +887,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /location:
+    get:
+      tags:
+      - location
+      summary: Return a list of locations
+      operationId: getLocationList
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationDTO'
     post:
       security:
         - ticketline_auth: []
@@ -895,16 +917,11 @@ paths:
       summary: Create a new location - Admin task
       operationId: createLocation
       requestBody:
-        description: Location and seatmap info
+        description: Location information to be created
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                location:
-                  $ref: '#/components/schemas/LocationDTO'
-                seatmap:
-                  $ref: '#/components/schemas/SeatmapDTO'
+              $ref: '#/components/schemas/LocationDTO'
         required: true
       responses:
         201:

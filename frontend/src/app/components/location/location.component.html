@@ -1,0 +1,63 @@
+<div class="location-body">
+<form class="form" [formGroup]="searchForm" (ngSubmit)="searchLocations()">
+
+  <div class="form">
+    <div class="form-group">
+      <label for="description">Bezeichnung</label>
+      <input type="text" name="description" formControlName="description" class="form-control"
+             id="description" placeholder="Bezeichnung">
+    </div>
+
+    <div class="form-group-name" formGroupName="address">
+      <div class="form-group">
+        <label for="street">Straße</label>
+        <input type="text" name="street" formControlName="street" class="form-control"
+               id="street" placeholder="Straße">
+      </div>
+
+      <div class="form-group">
+        <label for="housenr">Hausnummer</label>
+        <input type="text" name="housenr" formControlName="housenr" class="form-control"
+               id="housenr" placeholder="Hausnummer">
+      </div>
+
+      <div class="form-group">
+        <label for="postalcode">PLZ</label>
+        <input type="text" name="postalcode" formControlName="postalcode" class="form-control"
+               id="postalcode" placeholder="PLZ">
+      </div>
+
+      <div class="form-group">
+        <label for="city">Stadt</label>
+        <input type="text" name="city" formControlName="city" class="form-control"
+               id="city" placeholder="Stadt">
+      </div>
+
+      <div class="form-group">
+        <label for="country">Staat</label>
+        <input type="text" name="country" formControlName="country" class="form-control"
+               id="country" placeholder="Staat">
+      </div>
+    </div>
+  </div>
+
+  <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+</form>
+
+<div class="results">
+  <p><b>{{locations.length}} Veranstaltungen gefunden</b></p>
+  <button *ngIf="isAdmin()" routerLink="/location/addLocation" type="button" class="btn btn-secondary btn-sm mr-4">Ort hinzufügen</button>
+</div>
+
+
+<mat-card *ngFor="let location of locations">
+  <mat-card-title>{{location.description}}</mat-card-title>
+  <mat-card-content class="card-body" >
+    <div>
+      <p><mat-icon>add_location</mat-icon> {{location.address.street}} {{location.address.housenr}}</p>
+      <p>{{location.address.postalcode}} {{location.address.city}}, {{location.address.country}}</p>
+    </div>
+    <div class="upcoming-events">bevorstehende Veranstaltungen</div>
+  </mat-card-content>
+</mat-card>
+</div>

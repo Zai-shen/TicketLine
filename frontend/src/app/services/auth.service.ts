@@ -6,10 +6,17 @@ import { tap } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 import { Globals } from '../global/globals';
 
+enum ROLE {
+  User = "USER",
+  Admin = "ADMIN",
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  static ROLE = ROLE;
 
   private authBaseUri: string = this.globals.backendUri + '/login';
 
@@ -30,7 +37,12 @@ export class AuthService {
    * Check if a valid JWT token is saved in the localStorage
    */
   isLoggedIn() {
-    return !!this.getToken() && (this.getTokenExpirationDate(this.getToken()).valueOf() > new Date().valueOf());
+    const expirationDate = this.getTokenExpirationDate(this.getToken());
+    return !!this.getToken() && expirationDate != null && expirationDate > new Date();
+  }
+
+  isAdminLoggedIn(): boolean {
+    return this.isLoggedIn() && this.getUserRole() === ROLE.Admin;
   }
 
   logoutUser() {
@@ -38,7 +50,7 @@ export class AuthService {
     localStorage.removeItem('authToken');
   }
 
-  getToken() {
+  getToken(): string | null {
     return localStorage.getItem('authToken');
   }
 
@@ -47,12 +59,12 @@ export class AuthService {
    */
   getUserRole() {
     if (this.getToken() != null) {
-      const decoded: any = jwt_decode(this.getToken());
+      const decoded: any = jwt_decode(this.getToken() || '');
       const authInfo: string[] = decoded.rol;
       if (authInfo.includes('ROLE_ADMIN')) {
-        return 'ADMIN';
+        return ROLE.Admin;
       } else if (authInfo.includes('ROLE_USER')) {
-        return 'USER';
+        return ROLE.User;
       }
     }
     return 'UNDEFINED';
@@ -62,9 +74,9 @@ export class AuthService {
     localStorage.setItem('authToken', authResponse);
   }
 
-  private getTokenExpirationDate(token: string): Date {
+  private getTokenExpirationDate(token: string | null): Date | null {
 
-    const decoded: any = jwt_decode(token);
+    const decoded: any = jwt_decode(token || '');
     if (decoded.exp === undefined) {
       return null;
     }
