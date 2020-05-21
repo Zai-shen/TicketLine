@@ -37,6 +37,7 @@ public class ArtistController implements ArtistApi {
         LOGGER.info("get all artists");
         Page<Artist> artists = artistService.getAllArtists(PageRequest.of(page.orElse(0), PAGE_SIZE));
         return ResponseEntity.ok()
+            .header("Access-Control-Expose-Headers", "X-Total-Count")
             .header("X-Total-Count", String.valueOf(artists.getTotalElements()))
             .body(artistMapper.toDto(artists.getContent()));
     }
@@ -46,6 +47,7 @@ public class ArtistController implements ArtistApi {
         LOGGER.info("search for artist");
         Page<Artist> artists = artistService.searchArtists(artistMapper.fromDto(searchArtistDTO), PageRequest.of(page.orElse(0), PAGE_SIZE));
         return ResponseEntity.ok()
+            .header("Access-Control-Expose-Headers", "X-Total-Count")
             .header("X-Total-Count", String.valueOf(artists.getTotalElements()))
             .body(artistMapper.toDto(artists.getContent()));
     }

@@ -17,8 +17,9 @@ export class ArtistsComponent implements OnInit {
 
   artists: ArtistDTO[];
   artistForm: FormGroup;
-  amountOfPages = 1;
+  amountOfPages = 0;
   private currentPage = 0;
+  searched: boolean;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -26,7 +27,7 @@ export class ArtistsComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private artistService: ArtistService) { }
 
   ngOnInit(): void {
-    this.reload();
+    this.getAllArtists();
     this.artistForm = this.formBuilder.group({
       firstname: [''],
       lastname: [''],
@@ -35,32 +36,42 @@ export class ArtistsComponent implements OnInit {
 
   onPaginationChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
-    this.reload();
+    if (this.searched = true) {
+      this.searchArtists();
+    } else {
+      this.getAllArtists();
+    }
+  }
+
+  clearSearch() {
+    this.searched = false;
+    this.artistForm.reset();
+    this.getAllArtists();
   }
 
   searchArtists() {
     const searchArtistDTO: SearchArtistDTO = Object.assign({}, this.artistForm.value);
-    this.artistService.searchArtists(searchArtistDTO, this.currentPage).subscribe(artists => {
-      if (artists.body !== null) {
-        this.artists = artists.body;
-        this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 1;
-        console.log(artists.headers);
-      }
-    });
+    if (!searchArtistDTO.firstname && !searchArtistDTO.lastname) {
+    } else {
+      this.searched = true;
+      this.artistService.searchArtists(searchArtistDTO, this.currentPage).subscribe(artists => {
+          if (artists.body !== null) {
+            this.artists = artists.body;
+            this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 0;
+          }
+        },
+        error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+    }
   }
 
-  private reload(): void {
+  private getAllArtists(): void {
     this.artistService.getArtistList(this.currentPage).subscribe(artists => {
-      if (artists.body !== null) {
-        this.artists = artists.body;
-        this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 1;
-        console.log(artists);
-      } else {
-        this.errorMessageComponent.throwCustomError('Ungültige Antwort vom Server in der Nutzerabfrage', ErrorType.FATAL);
-      }
-    },
-    error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+        if (artists.body !== null) {
+          this.artists = artists.body;
+          this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 0;
+        }
+      },
+      error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
-
 
 }
