@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import {LocationApiService} from '../../../generated/api/location.api.service';
 import {LocationDTO} from '../../../generated/model/locationDTO';
-import {InlineObject} from '../../../generated/model/inlineObject';
 import {AuthService} from '../../services/auth.service';
 
 @Component({

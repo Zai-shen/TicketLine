@@ -5,7 +5,6 @@ import {LocationApiService} from '../../../generated/api/location.api.service';
 import {LocationDTO} from '../../../generated/model/locationDTO';
 import {AddressDTO} from '../../../generated/model/addressDTO';
 import {SearchLocationDTO} from '../../../generated/model/searchLocationDTO';
-import {InlineObject} from '../../../generated/model/inlineObject';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
