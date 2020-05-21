@@ -8,6 +8,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { AdminGuard } from './guards/admin.guard';
 import { EventsComponent } from './components/events/events.component';
 import { ArtistsComponent } from './components/artists/artists.component';
+import { LocationComponent } from './components/location/location.component';
+import { CreateLocationComponent } from './components/create-location/create-location.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'admin/changePassword', canActivate: [AdminGuard], component: ChangePasswordComponent },
   { path: 'artists', component: ArtistsComponent }
+  { path: 'location', component: LocationComponent},
+  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent }
 ];
 
 @NgModule({

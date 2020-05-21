@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -21,10 +20,15 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+<<<<<<< HEAD
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ArtistsComponent } from './components/artists/artists.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
+=======
+import { LocationComponent } from './components/location/location.component';
+import { CreateLocationComponent } from './components/create-location/create-location.component';
+>>>>>>> master
 
 @NgModule({
   declarations: [
@@ -37,6 +41,8 @@ import { CustomPaginatorComponent } from './components/custom-paginator/custom-p
     RegisterComponent,
     ErrorMessageComponent,
     ChangePasswordComponent,
+    LocationComponent,
+    CreateLocationComponent,
     ArtistsComponent
   ],
   imports: [
@@ -55,7 +61,6 @@ import { CustomPaginatorComponent } from './components/custom-paginator/custom-p
     MatPaginatorModule,
   ],
   providers: [
-
    {
       provide: MatPaginatorIntl,
       useClass: CustomPaginatorComponent

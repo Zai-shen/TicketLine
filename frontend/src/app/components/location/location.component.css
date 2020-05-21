@@ -1,0 +1,59 @@
+.form {
+  display: flex;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+.form-group-name {
+  display: flex;
+}
+
+.upcoming-events {
+  text-align: right;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.card {
+  width: auto;
+  border: none;
+  box-shadow: 2px 3px 5px 1px rgb(199, 197, 199);
+  margin-bottom: 10px;
+}
+
+.searchbutton {
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+mat-card {margin-bottom: 1rem}
+mat-form-field {margin-right: 2rem}
+
+.location-body {
+  background-color: white;
+  padding-left: 40px;
+  margin: 50px;
+  padding-right: 40px;
+}
+
+.results {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.formCreate {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroupCreate {
+  display: flex;
+  flex-display: column;
+}

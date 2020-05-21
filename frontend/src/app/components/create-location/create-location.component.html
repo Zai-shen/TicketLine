@@ -1,0 +1,78 @@
+<div class="location-body">
+
+  <h1>Ort hinzufügen</h1>
+
+  <form [formGroup]="locationForm" (ngSubmit)="createLocation()">
+    <div class="formCreate">
+      <div class="form-group">
+        <label for="description">Bezeichnung</label>
+        <input type="text" name="description" formControlName="description" class="form-control" id="description"
+               placeholder="Bezeichnung">
+        <div *ngIf="submitted && locationForm.get('description').errors" class="error">
+          <small class="form-text text-warning" *ngIf="locationForm.get('description').errors.required">
+            Die Bezeichnung ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group-create" formGroupName="address">
+        <div class="form-group">
+          <label for="street">Straße</label>
+          <input type="text" name="street" formControlName="street" class="form-control"
+                 id="street" placeholder="Straße">
+          <div *ngIf="submitted && locationForm.get('address.street').errors" class="error">
+            <small class="form-text text-warning" *ngIf="locationForm.get('address.street').errors.required">
+              Die Straße ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="housenr">Hausnummer</label>
+          <input type="text" name="housenr" formControlName="housenr" class="form-control"
+                 id="housenr" placeholder="Hausnummer">
+          <div *ngIf="submitted && locationForm.get('address.housenr').errors" class="error">
+            <small class="form-text text-warning" *ngIf="locationForm.get('address.housenr').errors.required">
+              Die Hausnummer ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="postalcode">PLZ</label>
+          <input type="text" name="postalcode" formControlName="postalcode" class="form-control"
+                 id="postalcode" placeholder="PLZ">
+          <div *ngIf="submitted && locationForm.get('address.postalcode').errors" class="error">
+            <small class="form-text text-warning" *ngIf="locationForm.get('address.postalcode').errors.required">
+              Die PLZ ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="city">Stadt</label>
+          <input type="text" name="city" formControlName="city" class="form-control"
+                 id="city" placeholder="Stadt">
+          <div *ngIf="submitted && locationForm.get('address.city').errors" class="error">
+            <small class="form-text text-warning" *ngIf="locationForm.get('address.city').errors.required">
+              Stadt ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Land</label>
+          <input type="text" name="country" formControlName="country" class="form-control"
+                 id="country" placeholder="Land">
+          <div *ngIf="submitted && locationForm.get('address.country').errors" class="error">
+            <small class="form-text text-warning" *ngIf="locationForm.get('address.country').errors.required">
+              Das Land ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success float-right">Speichern</button>
+  </form>
+</div>
