@@ -5,10 +5,10 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 public class NewNewsValidator extends Validator<News> {
     @Override
     protected void doValidation(News news) {
-        notNullOrName(news.getPublishedAt(), "PubliziertAm");
+        notNullOrName(news.getPublishedAt(), "Publiziert am");
         notEmptyOrName(news.getTitle(), "Titel");
         notEmptyOrName(news.getSummary(), "Kurzfassung");
         notEmptyOrName(news.getContent(), "Text");
-        callValidatorOnChild(new NewAuthorValidator(), news.getAuthor());
+        notEmptyOrName(news.getAuthor(), "Author");
     }
 }

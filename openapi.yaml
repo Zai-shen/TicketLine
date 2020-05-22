@@ -1198,20 +1198,8 @@ components:
           type: string
           example: images/as4k_3d.png
         author:
-          $ref: '#/components/schemas/AuthorDTO'
-    AuthorDTO:
-      type: object
-      properties:
-        email:
           type: string
-          format: email
-          example: max.mustermann@example.com
-        firstName:
-          type: string
-          example: Max
-        lastName:
-          type: string
-          example: Mustermann
+          example: Peter Pan
     EventDTO:
       type: object
       properties:

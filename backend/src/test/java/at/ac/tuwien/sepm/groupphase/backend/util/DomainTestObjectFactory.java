@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.util;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Author;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
@@ -32,14 +31,6 @@ public class DomainTestObjectFactory {
         return address;
     }
 
-    public static Author getAuthor() {
-        final Author author = new Author();
-        author.setEmail("hans.mueller@example.com");
-        author.setFirstName("Hans");
-        author.setLastName("Mueller");
-        return author;
-    }
-
     public static News getNews(){
         final News news = new News();
         news.setId(16L);
@@ -47,7 +38,7 @@ public class DomainTestObjectFactory {
         news.setSummary("In conclusion we can conclude alternative facts are in fact no facts.");
         news.setContent("Today we discovered, that I am to lazy to write more content.");
         news.setPublishedAt(LocalDateTime.of(2002,1,13,12,55,59));
-        news.setAuthor(getAuthor());
+        news.setAuthor("Doris Duftler");
         return news;
     }
 

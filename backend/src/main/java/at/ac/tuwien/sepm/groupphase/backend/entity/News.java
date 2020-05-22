@@ -26,8 +26,8 @@ public class News {
     @Column(nullable = true, name = "picture_path")
     private String picturePath;
 
-    @ManyToOne //(cascade = CascadeType.ALL)
-    private Author author;
+    @Column(nullable = false, length = 100)
+    private String author;
 
     public Long getId() {
         return id;
@@ -77,11 +77,11 @@ public class News {
         this.picturePath = picture;
     }
 
-    public Author getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
@@ -95,7 +95,7 @@ public class News {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, publishedAt, title, summary, content);
+        return Objects.hash(id, publishedAt, title, summary, content, author);
     }
 
     @Override
@@ -106,57 +106,7 @@ public class News {
             ", title='" + title + '\'' +
             ", summary='" + summary + '\'' +
             ", content='" + content + '\'' +
+            ", author='" + author + '\'' +
             '}';
-    }
-
-
-    public static final class MessageBuilder {
-        private Long id;
-        private LocalDateTime publishedAt;
-        private String title;
-        private String summary;
-        private String content;
-
-        private MessageBuilder() {
-        }
-
-        public static MessageBuilder aMessage() {
-            return new MessageBuilder();
-        }
-
-        public MessageBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public MessageBuilder withPublishedAt(LocalDateTime publishedAt) {
-            this.publishedAt = publishedAt;
-            return this;
-        }
-
-        public MessageBuilder withTitle(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public MessageBuilder withSummary(String summary) {
-            this.summary = summary;
-            return this;
-        }
-
-        public MessageBuilder withContent(String text) {
-            this.content = text;
-            return this;
-        }
-
-        public News build() {
-            News news = new News();
-            news.setId(id);
-            news.setPublishedAt(publishedAt);
-            news.setTitle(title);
-            news.setSummary(summary);
-            news.setContent(content);
-            return news;
-        }
     }
 }

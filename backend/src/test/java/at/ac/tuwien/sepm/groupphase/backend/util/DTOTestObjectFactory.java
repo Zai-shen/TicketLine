@@ -34,14 +34,6 @@ public class DTOTestObjectFactory {
         return addressDTO;
     }
 
-    public static AuthorDTO getAuthorDTO() {
-        final AuthorDTO authorDTO = new AuthorDTO();
-        authorDTO.setEmail("hans.mueller@example.com");
-        authorDTO.setFirstName("Hans");
-        authorDTO.setLastName("Mueller");
-        return authorDTO;
-    }
-
     public static NewsDTO getNewsDTO(){
         final NewsDTO newsDTO = new NewsDTO();
         newsDTO.setId(16L);
@@ -49,7 +41,7 @@ public class DTOTestObjectFactory {
         newsDTO.setSummary("In conclusion we can conclude alternative facts are in fact no facts.");
         newsDTO.setContent("Today we discovered, that I am to lazy to write more content.");
         newsDTO.setPublishedAt(LocalDateTime.of(2002,1,13,12,55,59).atOffset(OffsetDateTime.now().getOffset()));
-        newsDTO.setAuthor(getAuthorDTO());
+        newsDTO.setAuthor("Doris Duftler");
         return newsDTO;
     }
 }

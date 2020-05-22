@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -24,12 +26,12 @@ public class NewsRepositoryTest implements TestData {
 
     @Test
     public void givenNothing_whenSaveNews_thenFindListWithOneElementAndFindNewsById() {
-        News news = News.MessageBuilder.aMessage()
-            .withTitle(TEST_NEWS_TITLE)
-            .withSummary(TEST_NEWS_SUMMARY)
-            .withContent(TEST_NEWS_TEXT)
-            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
-            .build();
+        News news = new News();
+        news.setTitle(TEST_NEWS_TITLE + " " + 0);
+        news.setSummary(TEST_NEWS_SUMMARY + " " + 0);
+        news.setContent(TEST_NEWS_CONTENT + " " + 0);
+        news.setPublishedAt(LocalDateTime.now().minusMonths(10));
+        news.setAuthor(TEST_NEWS_AUTHOR);
 
         newsRepository.save(news);
 
@@ -41,27 +43,26 @@ public class NewsRepositoryTest implements TestData {
 
     @Test
     public void givenNothing_whenSaveMultipleNews_thenFindListWithMultipleElementsAndFindTheseNewsById() {
-        News news = News.MessageBuilder.aMessage()
-            .withTitle(TEST_NEWS_TITLE)
-            .withSummary(TEST_NEWS_SUMMARY)
-            .withContent(TEST_NEWS_TEXT)
-            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
-            .build();
+        News news = new News();
+        news.setTitle(TEST_NEWS_TITLE + " " + 1);
+        news.setSummary(TEST_NEWS_SUMMARY + " " + 1);
+        news.setContent(TEST_NEWS_CONTENT + " " + 1);
+        news.setPublishedAt(LocalDateTime.now().minusMonths(1));
+        news.setAuthor(TEST_NEWS_AUTHOR);
 
-        News newsTwo = News.MessageBuilder.aMessage()
-            .withTitle(TEST_NEWS_TITLE)
-            .withSummary(TEST_NEWS_SUMMARY)
-            .withContent(TEST_NEWS_TEXT)
-            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
-            .build();
+        News newsTwo = new News();
+        newsTwo.setTitle(TEST_NEWS_TITLE + " " + 2);
+        newsTwo.setSummary(TEST_NEWS_SUMMARY + " " + 2);
+        newsTwo.setContent(TEST_NEWS_CONTENT + " " + 2);
+        newsTwo.setPublishedAt(LocalDateTime.now().minusMonths(2));
+        newsTwo.setAuthor(TEST_NEWS_AUTHOR);
 
-        News newsThree = News.MessageBuilder.aMessage()
-            .withTitle(TEST_NEWS_TITLE)
-            .withSummary(TEST_NEWS_SUMMARY)
-            .withContent(TEST_NEWS_TEXT)
-            .withPublishedAt(TEST_NEWS_PUBLISHED_AT)
-            .build();
-
+        News newsThree = new News();
+        newsThree.setTitle(TEST_NEWS_TITLE + " " + 3);
+        newsThree.setSummary(TEST_NEWS_SUMMARY + " " + 3);
+        newsThree.setContent(TEST_NEWS_CONTENT + " " + 3);
+        newsThree.setPublishedAt(LocalDateTime.now().minusMonths(3));
+        newsThree.setAuthor(TEST_NEWS_AUTHOR);
 
         newsRepository.save(news);
         newsRepository.save(newsTwo);

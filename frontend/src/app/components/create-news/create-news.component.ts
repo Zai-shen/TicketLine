@@ -25,11 +25,7 @@ export class CreateNewsComponent implements OnInit {
       title: ['', Validators.required],
       summary: ['', Validators.required],
       content: ['', Validators.required],
-      author: this.formBuilder.group({
-        email: ['', Validators.required],
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required]
-      })
+      author: ['', Validators.required]
     });
   }
 
@@ -42,10 +38,6 @@ export class CreateNewsComponent implements OnInit {
     if (this.newsForm.valid) {
       const newsDTO: NewsDTO = Object.assign({}, this.newsForm.value);
       newsDTO.publishedAt = new Date().toISOString();
-      console.log(newsDTO.author);
-      console.log(newsDTO.author?.email);
-      console.log(newsDTO.author?.firstName);
-      console.log(newsDTO.author?.lastName);
       this.newsApiService.createNews(newsDTO).subscribe(
         () => {
           console.log('News successfully created');
