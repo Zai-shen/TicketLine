@@ -53,14 +53,14 @@ public class UserController implements UserApi {
         String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.findUserByEmail(username);
         if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
-            throw new AccessDeniedException("You may only update your own credentials");
+            throw new AccessDeniedException("You may only update your own user");
         }
         if(userUpdateDTO.getAddress() != null)
             currentUser.setAddress(addressMapper.fromDto(userUpdateDTO.getAddress()));
         if(userUpdateDTO.getFirstname() != null && !userUpdateDTO.getFirstname().isEmpty())
             currentUser.setFirstname(userUpdateDTO.getFirstname());
         if(userUpdateDTO.getLastname() != null && !userUpdateDTO.getLastname().isEmpty())
-            currentUser.setFirstname(userUpdateDTO.getLastname());
+            currentUser.setLastname(userUpdateDTO.getLastname());
         userService.updateUser(currentUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }

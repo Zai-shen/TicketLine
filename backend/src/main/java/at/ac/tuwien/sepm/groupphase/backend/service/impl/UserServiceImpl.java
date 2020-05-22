@@ -8,6 +8,7 @@ import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewUserValidator;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.PasswordValidator;
+import at.ac.tuwien.sepm.groupphase.backend.service.validator.UpdateUserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user) {
         LOGGER.debug("Update User");
+        new UpdateUserValidator().build(user).validate();
         return userRepository.saveAndFlush(user);
     }
 }

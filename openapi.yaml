@@ -70,7 +70,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/UserUpdateDTO'
         required: true
       parameters:
         - in: path
@@ -1174,6 +1174,17 @@ components:
         - lastname
         - login
         - address
+    UserUpdateDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Max
+        lastname:
+          type: string
+          example: Mustermann
+        address:
+          $ref: '#/components/schemas/AddressDTO'
     AddressDTO:
       type: object
       properties:
