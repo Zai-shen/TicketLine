@@ -19,7 +19,7 @@ import java.lang.invoke.MethodHandles;
 public class UserDataGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final int NUMBER_OF_USERS_TO_GENERATE = 20;
+    private static final int NUMBER_OF_USERS_TO_GENERATE = 30;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;

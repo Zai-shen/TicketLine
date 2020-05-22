@@ -32,6 +32,7 @@
 </mat-card>
 
 <mat-paginator [length]="amountOfPages"
+               [pageIndex]="currentPage"
                [pageSize]="USER_LIST_PAGE_SIZE"
                [pageSizeOptions]="[USER_LIST_PAGE_SIZE]"
                (page)="onPaginationChange($event)">

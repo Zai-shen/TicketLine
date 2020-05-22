@@ -20,7 +20,7 @@ export class UserListComponent implements OnInit {
   searchEmail: string;
   amountOfPages = 1;
   private showOnlyLockedUsers: boolean;
-  private currentPage = 0;
+  currentPage = 0;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -34,10 +34,12 @@ export class UserListComponent implements OnInit {
 
   onLockedToggleChanged(event: MatButtonToggleChange): void {
     this.showOnlyLockedUsers = event.value === 'true';
+    this.currentPage = 0;
     this.reload();
   }
 
   onSearchEmailChange(): void {
+    this.currentPage = 0;
     this.reload();
   }
 
