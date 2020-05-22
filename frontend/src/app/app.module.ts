@@ -29,6 +29,9 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,10 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
     MatGridListModule,
     MatRippleModule,
     MatProgressSpinnerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatSnackBarModule,
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
