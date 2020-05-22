@@ -26,7 +26,7 @@ public class News {
     @Column(nullable = true, name = "picture_path")
     private String picturePath;
 
-    @ManyToOne
+    @ManyToOne //(cascade = CascadeType.ALL)
     private Author author;
 
     public Long getId() {

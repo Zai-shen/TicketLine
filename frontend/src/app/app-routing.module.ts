@@ -10,6 +10,7 @@ import { EventsComponent } from './components/events/events.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import {NewsComponent} from './components/news/news.component';
+import {CreateNewsComponent} from './components/create-news/create-news.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +20,8 @@ const routes: Routes = [
   { path: 'admin/changePassword', canActivate: [AdminGuard], component: ChangePasswordComponent },
   { path: 'location', component: LocationComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
-  { path: 'news', component: NewsComponent }
+  { path: 'news', component: NewsComponent },
+  { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent }
 ];
 
 @NgModule({

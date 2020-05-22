@@ -1,0 +1,77 @@
+<div class="news-body">
+
+  <h1>News hinzuf&uuml;gen</h1>
+
+  <form [formGroup]="newsForm" (ngSubmit)="createNews()">
+    <div class="formCreate">
+
+      <div class="form-group">
+        <label for="title">Titel</label>
+        <input type="text" name="title" formControlName="title" class="form-control" id="title"
+               placeholder="Titel">
+        <div *ngIf="submitted && newsForm.get('title').errors" class="error">
+          <small class="form-text text-warning" *ngIf="newsForm.get('title').errors.required">
+            Der Titel ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="summary">Kurzfassung</label>
+        <textarea rows="2" cols="50" name="summary" formControlName="summary" class="form-control"
+                  id="summary" placeholder="Kurzfassung"></textarea>
+        <div *ngIf="submitted && newsForm.get('summary').errors" class="error">
+          <small class="form-text text-warning" *ngIf="newsForm.get('summary').errors.required">
+            Die Kurzfassung ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="content">Content</label>
+        <textarea rows="5" cols="50" name="content" formControlName="content" class="form-control"
+                  id="content" placeholder="Content"></textarea>
+        <div *ngIf="submitted && newsForm.get('content').errors" class="error">
+          <small class="form-text text-warning" *ngIf="newsForm.get('content').errors.required">
+            Der Content ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group-create" formGroupName="author">
+
+        <div class="form-group">
+          <label for="email">E-Mail</label>
+          <input type="text" name="email" formControlName="email" class="form-control"
+                 id="email" placeholder="E-Mail">
+          <div *ngIf="submitted && newsForm.get('email').errors" class="error">
+            <small class="form-text text-warning" *ngIf="newsForm.get('email').errors.required">
+              Die E-Mail ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="firstName">Vorname</label>
+          <input type="text" name="firstName" formControlName="firstName" class="form-control"
+                 id="firstName" placeholder="Vorname">
+          <div *ngIf="submitted && newsForm.get('firstName').errors" class="error">
+            <small class="form-text text-warning" *ngIf="newsForm.get('firstName').errors.required">
+              Der Vorname ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Nachname</label>
+          <input type="text" name="lastName" formControlName="lastName" class="form-control"
+                 id="lastName" placeholder="Nachname">
+          <div *ngIf="submitted && newsForm.get('lastName').errors" class="error">
+            <small class="form-text text-warning" *ngIf="newsForm.get('lastName').errors.required">
+              Der Nachname ist ein Pflichtfeld!
+            </small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success float-right">Speichern</button>
+  </form>
+</div>

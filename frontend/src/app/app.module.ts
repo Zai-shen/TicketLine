@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { NewsComponent } from './components/news/news.component';
+import { CreateNewsComponent } from './components/create-news/create-news.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NewsComponent } from './components/news/news.component';
     ChangePasswordComponent,
     LocationComponent,
     CreateLocationComponent,
-    NewsComponent
+    NewsComponent,
+    CreateNewsComponent
   ],
   imports: [
     BrowserModule,

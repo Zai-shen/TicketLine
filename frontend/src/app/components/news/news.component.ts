@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NewsApiService, NewsDTO } from '../../../generated';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'tl-news',
@@ -8,7 +9,7 @@ import { NewsApiService, NewsDTO } from '../../../generated';
 })
 export class NewsComponent implements OnInit {
 
-  constructor(private newsService: NewsApiService) {
+  constructor(private newsService: NewsApiService, private authService: AuthService) {
   }
 
   public news: NewsDTO[];
@@ -17,5 +18,9 @@ export class NewsComponent implements OnInit {
     this.newsService.getNewsList().subscribe(value => {
       this.news = value;
     });
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdminLoggedIn();
   }
 }
