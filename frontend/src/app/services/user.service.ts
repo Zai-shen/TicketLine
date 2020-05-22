@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginDTO, UserApiService, UserDTO } from '../../generated';
+import { LoginDTO, UserApiService, UserDTO, UserUpdateDTO } from '../../generated';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,5 +16,13 @@ export class UserService {
   changePassword(userId: number, password: string) {
     const loginDTO: LoginDTO = {email: 'dummy@example.com', password: password};
     return this.userApiService.resetPassword(userId, loginDTO);
+  }
+
+  updateUser(userId: number, updateDTO: UserUpdateDTO): Observable<void> {
+    return this.userApiService.updateUser(userId, updateDTO);
+  }
+
+  getSelf(): Observable<UserDTO> {
+    return this.userApiService.getSelf();
   }
 }
