@@ -55,12 +55,15 @@ public class UserController implements UserApi {
         if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
             throw new AccessDeniedException("You may only update your own user");
         }
-        if(userUpdateDTO.getAddress() != null)
-            currentUser.setAddress(addressMapper.fromDto(userUpdateDTO.getAddress()));
         if(userUpdateDTO.getFirstname() != null && !userUpdateDTO.getFirstname().isEmpty())
             currentUser.setFirstname(userUpdateDTO.getFirstname());
         if(userUpdateDTO.getLastname() != null && !userUpdateDTO.getLastname().isEmpty())
             currentUser.setLastname(userUpdateDTO.getLastname());
+        long addressId = currentUser.getAddress().getId();
+        if(userUpdateDTO.getAddress() != null) {
+            currentUser.setAddress(addressMapper.fromDto(userUpdateDTO.getAddress()));
+            currentUser.getAddress().setId(addressId);
+        }
         userService.updateUser(currentUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
