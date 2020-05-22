@@ -28,6 +28,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatChipsModule } from '@angular/material/chips';
     EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
+    UserDetailComponent,
   ],
   imports: [
     BrowserModule,

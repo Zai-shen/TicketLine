@@ -37,8 +37,11 @@ export class AuthService {
    * Check if a valid JWT token is saved in the localStorage
    */
   isLoggedIn() {
-    const expirationDate = this.getTokenExpirationDate(this.getToken());
-    return !!this.getToken() && expirationDate != null && expirationDate > new Date();
+    if (!!this.getToken()) {
+      const expirationDate = this.getTokenExpirationDate(this.getToken());
+      return expirationDate != null && expirationDate > new Date();
+    }
+    return false;
   }
 
   isAdminLoggedIn(): boolean {

@@ -1,0 +1,4 @@
+<div class="details mat-elevation-z4" *ngIf="user">
+  <h1>{{ user.firstname }}, {{ user.lastname }}</h1>
+</div>
+<mat-spinner *ngIf="!user && !errorMsg"></mat-spinner>
