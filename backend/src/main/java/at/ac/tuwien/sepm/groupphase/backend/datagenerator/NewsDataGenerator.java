@@ -29,7 +29,7 @@ public class NewsDataGenerator {
 
     @PostConstruct
     private void generateNews() {
-        if (newsRepository.findAll().size() > 0) {
+        if (!newsRepository.findAll().isEmpty()) {
             LOGGER.debug("news already generated");
         } else {
             LOGGER.debug("generating {} author entries", 2);
