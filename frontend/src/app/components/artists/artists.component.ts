@@ -3,7 +3,7 @@ import { ErrorType, ArtistDTO, SearchArtistDTO } from '../../../generated';
 import { ArtistService } from '../../services/artist.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { PageEvent } from '@angular/material/paginator';
+import { PageEvent, MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -17,12 +17,16 @@ export class ArtistsComponent implements OnInit {
 
   artists: ArtistDTO[];
   artistForm: FormGroup;
-  amountOfPages = 0;
+  amountOfPages = 1;
   private currentPage = 0;
   searched: boolean;
+  artistsFound = 0;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
+
+  @ViewChild(MatPaginator)
+  private paginator: MatPaginator;
 
   constructor(private formBuilder: FormBuilder, private artistService: ArtistService) { }
 
@@ -36,7 +40,7 @@ export class ArtistsComponent implements OnInit {
 
   onPaginationChange(event: PageEvent): void {
     this.currentPage = event.pageIndex;
-    if (this.searched == true) {
+    if (this.searched) {
       this.searchArtists();
     } else {
       this.getAllArtists();
@@ -46,7 +50,15 @@ export class ArtistsComponent implements OnInit {
   clearSearch() {
     this.searched = false;
     this.artistForm.reset();
+    this.currentPage = 0;
+    this.paginator.pageIndex = 0;
     this.getAllArtists();
+  }
+
+  newSearch() {
+    this.currentPage = 0;
+    this.paginator.pageIndex = 0;
+    this.searchArtists();
   }
 
   searchArtists() {
@@ -57,7 +69,8 @@ export class ArtistsComponent implements OnInit {
       this.artistService.searchArtists(searchArtistDTO, this.currentPage).subscribe(artists => {
           if (artists.body !== null) {
             this.artists = artists.body;
-            this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 0;
+            this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 1;
+            this.artistsFound = Number(artists.headers.get('X-Total-Count')) || 0;
           }
         },
         error => this.errorMessageComponent.defaultServiceErrorHandling(error));
@@ -68,7 +81,8 @@ export class ArtistsComponent implements OnInit {
     this.artistService.getArtistList(this.currentPage).subscribe(artists => {
         if (artists.body !== null) {
           this.artists = artists.body;
-          this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 0;
+          this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 1;
+          this.artistsFound = Number(artists.headers.get('X-Total-Count')) || 0;
         }
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));

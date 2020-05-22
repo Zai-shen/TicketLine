@@ -10,9 +10,9 @@ export class CustomPaginatorComponent extends MatPaginatorIntl {
   }
 
   getAndInitTranslations() {
-    this.itemsPerPageLabel = "Einträge pro Seite:";
-    this.nextPageLabel = "nächste Seite";
-    this.previousPageLabel = "vorherige Seite";
+    this.itemsPerPageLabel = 'Einträge pro Seite:';
+    this.nextPageLabel = 'nächste Seite';
+    this.previousPageLabel = 'vorherige Seite';
     this.changes.next();
   }
 
