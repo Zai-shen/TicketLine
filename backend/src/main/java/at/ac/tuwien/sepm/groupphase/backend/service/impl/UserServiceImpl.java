@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         if (email == null) {
             return userRepository.findAllByLockedIsTrue(pageable);
         } else {
-            return userRepository.findAllByEmailContainingIgnoreCase(pageable, email);
+            return userRepository.findAllByEmailContainingIgnoreCaseAndLockedIsTrue(pageable, email);
         }
     }
 

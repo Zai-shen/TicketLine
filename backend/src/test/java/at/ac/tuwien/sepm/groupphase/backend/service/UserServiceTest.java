@@ -106,6 +106,6 @@ public class UserServiceTest {
         String searchEmail = "test@example.com";
         userService.getLockedUsers(pageable, searchEmail);
 
-        verify(userRepository, times(1)).findAllByEmailContainingIgnoreCase(pageable, searchEmail);
+        verify(userRepository, times(1)).findAllByEmailContainingIgnoreCaseAndLockedIsTrue(pageable, searchEmail);
     }
 }
