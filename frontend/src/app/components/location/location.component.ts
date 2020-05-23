@@ -1,15 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated/api/location.api.service';
-import {LocationDTO} from '../../../generated/model/locationDTO';
-import {AddressDTO} from '../../../generated/model/addressDTO';
-import {SearchLocationDTO} from '../../../generated/model/searchLocationDTO';
-import {InlineObject} from '../../../generated/model/inlineObject';
-import {AuthService} from '../../services/auth.service';
+import { LocationApiService, LocationDTO, SearchLocationDTO } from '../../../generated';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-location',
+  selector: 'tl-location',
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
@@ -39,10 +35,10 @@ export class LocationComponent implements OnInit {
   }
 
   isAdmin(): boolean {
-    return this.authService.isAdminLoggedIn()
+    return this.authService.isAdminLoggedIn();
   }
 
-  getLocationList() {
+  getLocationList(): void {
     this.locationApiService.getLocationList().subscribe(
       (locationDTO: LocationDTO[]) => {
         this.locations = locationDTO;
@@ -50,7 +46,7 @@ export class LocationComponent implements OnInit {
     error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
 
-  searchLocations() {
+  searchLocations(): void {
       const searchLocationDTO: SearchLocationDTO = Object.assign({}, this.searchForm.value);
 
       this.locationApiService.searchLocations(searchLocationDTO).subscribe(

@@ -21,9 +21,8 @@ import { EventDetailComponent } from './components/event-detail/event-detail.com
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { ArtistsComponent } from './components/artists/artists.component';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
@@ -32,6 +31,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { MatChipsModule } from '@angular/material/chips';
     EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
-    ArtistsComponent
+    ArtistsComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
@@ -67,14 +70,16 @@ import { MatChipsModule } from '@angular/material/chips';
     MatGridListModule,
     MatRippleModule,
     MatProgressSpinnerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatButtonToggleModule,
+    MatDialogModule
   ],
   providers: [
-   {
+    {
       provide: MatPaginatorIntl,
       useClass: CustomPaginatorComponent
     },
-    httpInterceptorProviders,
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent]
 })

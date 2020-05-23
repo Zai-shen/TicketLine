@@ -66,7 +66,6 @@ public class UserControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
     public void testReturn403CodeErrorResponseOnInsufficientPermissions() throws Exception {
         String changePasswordJson = "{ \"email\": \"john@example.com\", \"password\": \"12345678\"}";
         mockMvc.perform(securityHelper.withUserAuthentication(MockMvcRequestBuilders.patch("/user/4")
@@ -77,5 +76,26 @@ public class UserControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.type").value("WARN"))
             .andExpect(jsonPath("$.message").isNotEmpty());
+    }
+
+    @Test
+    public void testGetUsersReturn403CodeErrorResponseOnInsufficientPermissions() throws Exception {
+        mockMvc.perform(securityHelper.withUserAuthentication(MockMvcRequestBuilders.get("/user")
+            .contentType(MediaType.APPLICATION_JSON)))
+
+            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.type").value("WARN"))
+            .andExpect(jsonPath("$.message").isNotEmpty());
+    }
+
+    @Test
+    public void testGetUsersWithPermissions() throws Exception {
+        mockMvc.perform(securityHelper.withAdminAuthentication(MockMvcRequestBuilders.get("/user")
+            .contentType(MediaType.APPLICATION_JSON)))
+
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andExpect(MockMvcResultMatchers.header().exists("X-Total-Count"))
+            .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 }

@@ -1,0 +1,30 @@
+.flex-container {
+  display: flex;
+  align-items: center;
+}
+.flex-header {
+  flex-basis: 30%;
+}
+.flex-value {
+  flex-basis: 20%;
+}
+.flex-link {
+  flex-basis: 30%;
+}
+mat-card {
+  margin-bottom: 1rem;
+}
+mat-form-field {
+  margin-right: 1rem;
+}
+.locked-message {
+  color: #F00;
+}
+.list-header {
+  font-weight: bold;
+  padding: 1rem;
+}
+.add-user-button {
+  flex-basis: 20%;
+  margin-left: auto;
+}
