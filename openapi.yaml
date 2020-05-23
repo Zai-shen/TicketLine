@@ -1065,12 +1065,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /artist:
+      get:
+        tags:
+        - artist
+        summary: Return a list of artists
+        operationId: getArtistList
+        parameters:
+          - in: query
+            name: page
+            required: false
+            schema:
+              type: integer
+            description: Pagination number
+            example: 0
+        responses:
+          200:
+            description: List of artists
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ArtistDTO'
   /artist/search:
     post:
       tags:
         - artist
       summary: Search for artists
       operationId: searchArtists
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameter
         content:

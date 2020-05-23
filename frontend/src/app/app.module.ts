@@ -21,6 +21,10 @@ import { EventDetailComponent } from './components/event-detail/event-detail.com
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ArtistsComponent } from './components/artists/artists.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -43,6 +47,7 @@ import { MatChipsModule } from '@angular/material/chips';
     EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
+    ArtistsComponent
   ],
   imports: [
     BrowserModule,
@@ -57,13 +62,20 @@ import { MatChipsModule } from '@angular/material/chips';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatPaginatorModule,
     MatDividerModule,
     MatGridListModule,
     MatRippleModule,
     MatProgressSpinnerModule,
     MatChipsModule
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+   {
+      provide: MatPaginatorIntl,
+      useClass: CustomPaginatorComponent
+    },
+    httpInterceptorProviders,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
