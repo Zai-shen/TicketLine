@@ -21,6 +21,9 @@ import { EventDetailComponent } from './components/event-detail/event-detail.com
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { ArtistsComponent } from './components/artists/artists.component';
+import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -31,7 +34,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
-    ChangePasswordComponent,
+    ArtistsComponent,
     UserListComponent
   ],
   imports: [
@@ -63,16 +65,22 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatPaginatorModule,
     MatDividerModule,
     MatGridListModule,
     MatRippleModule,
     MatProgressSpinnerModule,
     MatChipsModule,
     MatButtonToggleModule,
-    MatDialogModule,
-    MatPaginatorModule
+    MatDialogModule
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomPaginatorComponent
+    },
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
