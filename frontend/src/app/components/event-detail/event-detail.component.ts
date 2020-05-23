@@ -1,9 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { EventApiService, EventDTO } from '../../../generated';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tl-home',
@@ -16,18 +13,19 @@ export class EventDetailComponent implements OnInit {
 
   public errorMsg?: string;
 
-  constructor(private eventService: EventApiService, private route: ActivatedRoute) { }
+  constructor(private eventService: EventApiService, private route: ActivatedRoute) {
+  }
 
   public seats = Array.from(Array(32).keys());
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.eventService.getEvent(+params['id']).subscribe(
         (event: EventDTO) => {
           this.event = event;
         },
         error => {
-          if(error.status === 404) {
+          if (error.status === 404) {
             this.errorMsg = 'Das angeforderte Event konnte nicht gefunden werden';
           }
         }

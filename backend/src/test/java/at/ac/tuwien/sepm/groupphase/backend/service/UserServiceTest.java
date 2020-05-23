@@ -16,12 +16,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -91,7 +89,7 @@ public class UserServiceTest {
         String searchEmail = "test@example.com";
         userService.getAllUsers(pageable, searchEmail);
 
-        verify(userRepository, times(1)).findAllByEmailContaining(pageable, searchEmail);
+        verify(userRepository, times(1)).findAllByEmailContainingIgnoreCase(pageable, searchEmail);
     }
 
     @Test
@@ -108,6 +106,6 @@ public class UserServiceTest {
         String searchEmail = "test@example.com";
         userService.getLockedUsers(pageable, searchEmail);
 
-        verify(userRepository, times(1)).findAllByEmailContainingAndLockedIsTrue(pageable, searchEmail);
+        verify(userRepository, times(1)).findAllByEmailContainingIgnoreCase(pageable, searchEmail);
     }
 }

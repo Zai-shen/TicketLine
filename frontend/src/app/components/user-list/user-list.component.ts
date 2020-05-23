@@ -48,7 +48,7 @@ export class UserListComponent implements OnInit {
     this.reload();
   }
 
-  openResetPasswordDialog(user: UserInfoDTO) {
+  openResetPasswordDialog(user: UserInfoDTO): void {
     const openDialog = this.matDialog.open(ChangePasswordComponent, {
       width: '60%',
       data: user

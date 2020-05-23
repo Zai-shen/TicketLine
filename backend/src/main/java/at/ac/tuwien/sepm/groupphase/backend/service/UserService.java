@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationExceptio
 import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,12 +47,12 @@ public interface UserService extends UserDetailsService {
      * @param email Search for email if not null
      * @return returns a list with all Users. Restricted by the pagination.
      */
-    Page<User> getAllUsers(Pageable pageable, String email);
+    Page<User> getAllUsers(Pageable pageable, @Nullable String email);
 
     /**
      * @param pageable Pagination information
      * @param email Search for email if not null
      * @return returns a list with all Users. Restricted by the pagination.
      */
-    Page<User> getLockedUsers(Pageable pageable, String email);
+    Page<User> getLockedUsers(Pageable pageable, @Nullable String email);
 }

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Profile("generateData")
 @Component
@@ -42,7 +44,7 @@ public class UserDataGenerator {
                 user.setPassword(passwordEncoder.encode("12345678"));
                 user.setFirstname(f.name().firstName());
                 user.setLastname(f.name().lastName());
-                user.setLocked(false);
+                user.setLocked(ThreadLocalRandom.current().nextInt(4) == 0);
                 user.setRole(AuthorizationRole.USER);
                 user.setAddress(getAddress(f));
 

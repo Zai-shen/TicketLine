@@ -82,7 +82,7 @@ public class UserServiceImpl implements UserService {
             pageable.getPageSize(), email);
 
         return email == null ? userRepository.findAll(pageable) :
-            userRepository.findAllByEmailContaining(pageable, email);
+            userRepository.findAllByEmailContainingIgnoreCase(pageable, email);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         if (email == null) {
             return userRepository.findAllByLockedIsTrue(pageable);
         } else {
-            return userRepository.findAllByEmailContainingAndLockedIsTrue(pageable, email);
+            return userRepository.findAllByEmailContainingIgnoreCase(pageable, email);
         }
     }
 
