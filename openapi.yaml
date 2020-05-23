@@ -483,7 +483,13 @@ paths:
       responses:
         201:
           description: Created event entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created event
         400:
           description: Invalid input
           content:
@@ -590,7 +596,13 @@ paths:
       responses:
         201:
           description: Created performance entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created performance
         400:
           description: Invalid input
           content:
@@ -1258,9 +1270,9 @@ components:
           type: integer
           format: int64
           example: 73
-        date:
-          format: 'date-time'
-          type: 'string'
+        dateTime:
+          type: string
+          format: date-time
           example: '2020-08-17 18:00'
         event:
           $ref: '#/components/schemas/EventDTO'

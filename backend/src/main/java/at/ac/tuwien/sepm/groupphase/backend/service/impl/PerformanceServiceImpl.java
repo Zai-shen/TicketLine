@@ -1,8 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
+import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewPerformanceValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,13 +13,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class PerformanceServiceImpl implements PerformanceService {
     private final PerformanceRepository performanceRepository;
+    private final EventService eventService;
 
-    public PerformanceServiceImpl(PerformanceRepository performanceRepository) {
+    public PerformanceServiceImpl(PerformanceRepository performanceRepository,
+        EventService eventService) {
         this.performanceRepository = performanceRepository;
+        this.eventService = eventService;
     }
 
     @Override
     public Page<Performance> getAllPerformances(Pageable pageable) {
         return performanceRepository.findAll(pageable);
+    }
+
+    @Override
+    public Long createPerformance(Long eventId, Performance performance) throws BusinessValidationException {
+        performance.setEvent(eventService.getEvent(eventId));
+        new NewPerformanceValidator().build(performance).validate();
+        return performanceRepository.saveAndFlush(performance).getId();
     }
 }

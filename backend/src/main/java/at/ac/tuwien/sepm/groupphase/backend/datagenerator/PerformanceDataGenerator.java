@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Profile("generateData")
@@ -55,8 +56,7 @@ public class PerformanceDataGenerator {
                 location.setDescription("Location" + "1");
 
                 Performance performance = new Performance();
-                performance.setDate(LocalDate.now().plusDays(i));
-                performance.setLocalTime(LocalTime.NOON.plusHours(i));
+                performance.setDateTime(LocalDateTime.now().plusDays(i).plusHours(i));
                 performance.setEvent(event);
                 performance.setLocation(location);
 

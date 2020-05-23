@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { ErrorMessageComponent } from '../../error-message/error-message.component';
 import { lowerCase } from 'lodash-es';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatDatepickerInput, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'tl-create-performance-modal',
@@ -22,21 +22,7 @@ export class CreatePerformanceModalComponent implements OnInit {
   performance: PerformanceDTO = {};
   selectedTime = '';
 
-  locationControl = new FormControl(this.performance.location, [
-    Validators.required,
-    this.locationValidator()
-  ]);
-
-  performanceForm = new FormGroup({
-    location: this.locationControl,
-    date: new FormControl(this.performance.date, [
-      Validators.required
-    ]),
-    time: new FormControl(this.selectedTime, [
-      Validators.required,
-      Validators.pattern('\\d{1,2}:\\d{1,2}')
-    ]),
-  });
+  performanceForm: FormGroup;
   submitted = false;
   isEditMode = false;
 
@@ -54,22 +40,31 @@ export class CreatePerformanceModalComponent implements OnInit {
     if (this.inputPerformance != null) {
       this.isEditMode = true;
       this.performance = this.inputPerformance;
-      this.performanceForm.setValue({
-        location: this.performance.location,
-        date: this.performance.date,
-        time: this.performance.date?.getHours() + ':' + this.performance.date?.getMinutes()
-      });
     }
+    const locationControl = new FormControl(this.performance.location, [
+      Validators.required,
+      this.locationValidator()
+    ]);
+    this.performanceForm = new FormGroup({
+      location: locationControl,
+      date: new FormControl(this.performance.dateTime, [
+        Validators.required
+      ]),
+      time: new FormControl(this.selectedTime, [
+        Validators.required,
+        Validators.pattern('\\d{1,2}:\\d{1,2}')
+      ]),
+    });
 
    this.locationService.getLocationList().subscribe(
-      locations => {
+      (locations: LocationDTO[]) => {
         this.locations = locations;
-          this.filteredLocations = this.locationControl.valueChanges.pipe(
+          this.filteredLocations = locationControl.valueChanges.pipe(
             startWith(''),
-            map(value => this.filterLocations(value || ''))
+            map((value: any) => this.filterLocations(value || ''))
           );
       },
-      error => this.errorMessageComponent.defaultServiceErrorHandling(error)
+      (error: any) => this.errorMessageComponent.defaultServiceErrorHandling(error)
     );
   }
 
@@ -78,8 +73,8 @@ export class CreatePerformanceModalComponent implements OnInit {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>) {
-    this.performance.date = event.value ? event.value : undefined;
-    if (this.selectedTime != null && this.performance.date != null) {
+    this.performance.dateTime = event.value ? event.value : undefined;
+    if (this.selectedTime != null) {
       this.setTimeOnDate(this.selectedTime);
     }
   }
@@ -90,11 +85,13 @@ export class CreatePerformanceModalComponent implements OnInit {
   }
 
   setTimeOnDate(time: string) {
-    const splitTime = time.split(':');
-    const hours = parseInt(splitTime[0], 10);
-    const minutes = parseInt(splitTime[1], 10);
-    if (this.performance.date != null && !isNaN(hours) && !isNaN(minutes)) {
-      this.performance.date.setHours(hours, minutes);
+    if (this.performance.dateTime != null) {
+      const splitTime = time.split(':');
+      const hours = parseInt(splitTime[0], 10);
+      const minutes = parseInt(splitTime[1], 10);
+      if (this.performance.dateTime != null && !isNaN(hours) && !isNaN(minutes)) {
+        this.performance.dateTime.setHours(hours, minutes);
+      }
     }
   }
 
