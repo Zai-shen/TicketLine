@@ -30,6 +30,7 @@
     "jquery": "3.4.1",
     "jwt-decode": "2.2.0",
     "lodash-es": "^4.17.15",
+    "ngx-material-timepicker": "^5.5.2",
     "replace-in-file": "6.0.0",
     "rxjs": "6.5.5",
     "tslib": "1.11.1",

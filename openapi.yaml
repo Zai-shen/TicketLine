@@ -1259,13 +1259,9 @@ components:
           format: int64
           example: 73
         date:
-          type: string
-          format: date
-          example: '2020-08-17'
-        time:
-          type: string
-          format: time of day
-          example: '18:00'
+          format: 'date-time'
+          type: 'string'
+          example: '2020-08-17 18:00'
         event:
           $ref: '#/components/schemas/EventDTO'
         location:

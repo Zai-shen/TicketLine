@@ -9,6 +9,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { EventsComponent } from './components/events/events.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { CreateEventComponent } from './components/create-event/create-event.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'admin/changePassword', canActivate: [AdminGuard], component: ChangePasswordComponent },
   { path: 'location', component: LocationComponent},
-  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent }
+  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
+  { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 
 @NgModule({

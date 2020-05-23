@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated/api/location.api.service';
-import {LocationDTO} from '../../../generated/model/locationDTO';
-import {InlineObject} from '../../../generated/model/inlineObject';
+import {LocationApiService} from '../../../generated';
+import {LocationDTO} from '../../../generated';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -45,7 +44,7 @@ export class CreateLocationComponent implements OnInit {
       const locationDTO: LocationDTO = Object.assign({}, this.locationForm.value);
       this.locationApiService.createLocation(locationDTO).subscribe(
         () => {
-          console.log("Location successfully created");
+          console.log('Location successfully created');
         },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
     }
