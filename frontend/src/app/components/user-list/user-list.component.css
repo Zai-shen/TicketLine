@@ -24,3 +24,7 @@ mat-form-field {
   font-weight: bold;
   padding: 1rem;
 }
+.add-user-button {
+  flex-basis: 20%;
+  margin-left: auto;
+}
