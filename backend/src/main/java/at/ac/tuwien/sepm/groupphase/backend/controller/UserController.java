@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -67,12 +66,7 @@ public class UserController implements UserApi {
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Void> updateUser(Long userId, @Valid UserUpdateDTO userUpdateDTO) {
         LOGGER.info("updating user {}",userId);
-        String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currentUser = userService.findUserByEmail(username);
-        if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
-            throw new AccessDeniedException("You may only update your own user");
-        }
-        userService.updateUser(userId,userMapper.toEntity(userUpdateDTO));
+        userService.updateUser(userId, userMapper.toEntity(userUpdateDTO));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

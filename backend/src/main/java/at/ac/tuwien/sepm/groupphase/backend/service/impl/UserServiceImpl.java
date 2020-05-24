@@ -14,13 +14,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -109,8 +112,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User updateUser(Long userId, User updateUser) {
-        User currentUser = userRepository.findUserById(userId);
+        String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = findUserByEmail(username);
+        if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
+            throw new AccessDeniedException("Der aktuelle Benutzer hat keine Berechtigung um andere Nutzer zu bearbeiten");
+        }
         LOGGER.debug("Update User");
         if(updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty())
             currentUser.setFirstname(updateUser.getFirstname());
