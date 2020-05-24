@@ -28,7 +28,9 @@ public class PerformanceServiceImpl implements PerformanceService {
 
     @Override
     public Long createPerformance(Long eventId, Performance performance) throws BusinessValidationException {
-        performance.setEvent(eventService.getEvent(eventId));
+        if(eventId != null) {
+            performance.setEvent(eventService.getEvent(eventId));
+        }
         new NewPerformanceValidator().build(performance).validate();
         return performanceRepository.saveAndFlush(performance).getId();
     }

@@ -17,7 +17,7 @@ public class Event {
     private CategoryEnum category;
 
     @Column(nullable = false)
-    private Integer duration; // duration in minutes
+    private Long duration; // duration in minutes
 
     @Column(nullable = false)
     private String description;
@@ -46,11 +46,11 @@ public class Event {
         this.category = category;
     }
 
-    public Integer getDuration() {
+    public Long getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(Long duration) {
         this.duration = duration;
     }
 

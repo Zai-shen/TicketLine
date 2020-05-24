@@ -1254,8 +1254,10 @@ components:
         category:
           $ref: '#/components/schemas/EventCategory'
         duration:
-          type: string
-          example: 1h 30m
+          type: integer
+          format: int64
+          example: 120
+          description: Duration in minutes
         description:
           type: string
           example: Awesome concert of the best band in the best location!

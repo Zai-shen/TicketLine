@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +14,7 @@ public class Performance {
     private Long id;
 
     @Column(nullable=false)
-    private LocalDateTime dateTime;
+    private OffsetDateTime dateTime;
 
     @ManyToOne
     private Event event;
@@ -29,11 +30,11 @@ public class Performance {
         this.id = id;
     }
 
-    public LocalDateTime getDateTime() {
+    public OffsetDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime date) {
+    public void setDateTime(OffsetDateTime date) {
         this.dateTime = date;
     }
 

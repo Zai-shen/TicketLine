@@ -9,7 +9,8 @@ public class NewEventValidator extends Validator<Event> {
         notNullOrName(event.getCategory(),"Kategorie");
         notNullOrName(event.getDescription(),"Beschreibung");
         notNullOrName(event.getDuration(),"Dauer");
-        validOrMessage(event.getDuration() > 0,"Dauer muss positiv sein");
-        notNullOrName(event.getDescription(),"Beschreibung");
+        if(event.getDescription() != null) {
+            validOrMessage(event.getDuration() > 0, "Dauer muss positiv sein");
+        }
     }
 }

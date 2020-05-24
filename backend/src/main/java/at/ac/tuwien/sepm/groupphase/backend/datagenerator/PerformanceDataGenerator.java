@@ -17,6 +17,7 @@ import java.lang.invoke.MethodHandles;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 
 @Profile("generateData")
 @Component
@@ -50,13 +51,13 @@ public class PerformanceDataGenerator {
                 event.setTitle(TEST_EVENT_TITLE + "" + i);
                 event.setDescription(TEST_EVENT_DESCRIPTION + " " + i);
                 event.setCategory(CategoryEnum.ADVENTURE);
-                event.setDuration(200);
+                event.setDuration(200L);
 
                 Location location = new Location();
                 location.setDescription("Location" + "1");
 
                 Performance performance = new Performance();
-                performance.setDateTime(LocalDateTime.now().plusDays(i).plusHours(i));
+                performance.setDateTime(OffsetDateTime.now().plusDays(i).plusHours(i));
                 performance.setEvent(event);
                 performance.setLocation(location);
 
