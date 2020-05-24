@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { UserApiService, UserDTO, UserUpdateDTO } from '../../../generated';
+import { UserDTO, UserUpdateDTO } from '../../../generated';
 import { UserService } from '../../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Globals } from '../../global/globals';
+
 @Component({
   selector: 'tl-home',
   templateUrl: './user-detail.component.html',
@@ -13,7 +15,7 @@ export class UserDetailComponent implements OnInit {
 
   public errorMsg?: string;
 
-  constructor(private userService: UserService, private snackBar: MatSnackBar) { }
+  constructor(private userService: UserService, private snackBar: MatSnackBar, private globals: Globals) { }
 
   ngOnInit() {
     this.getCurrentUser();
@@ -25,7 +27,7 @@ export class UserDetailComponent implements OnInit {
       this.userService.updateUser(this.user.id, updateDTO).subscribe(
         (_success: any) => {
           this.snackBar.open('Daten Gespeichert', 'OK', {
-            duration: 5 * 1000,
+            duration: this.globals.defaultSnackbarDuration,
           });
           this.getCurrentUser();
         },

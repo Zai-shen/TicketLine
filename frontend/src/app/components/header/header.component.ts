@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Globals } from '../../global/globals';
 
 @Component({
   selector: 'tl-header',
@@ -10,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(public authService: AuthService, private router: Router, private _snackBar: MatSnackBar) { }
+  constructor(public authService: AuthService, private router: Router, private _snackBar: MatSnackBar, private globals: Globals) { }
 
   ngOnInit() {
   }
@@ -22,7 +23,7 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.authService.logoutUser();
     this._snackBar.open('Erfolgreich abgemeldet', 'OK', {
-      duration: 5 * 1000
+      duration: this.globals.defaultSnackbarDuration,
     });
     this.router.navigate(['/']);
   }
