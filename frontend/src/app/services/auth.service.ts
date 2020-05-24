@@ -36,7 +36,7 @@ export class AuthService {
   /**
    * Check if a valid JWT token is saved in the localStorage
    */
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     if (!!this.getToken()) {
       const expirationDate = this.getTokenExpirationDate(this.getToken());
       return expirationDate != null && expirationDate > new Date();

@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(imports = AuthorizationRole.class)
 public interface UserMapper {
 
+    @Mapping(target = "locked", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "email", source = "login.email")
     @Mapping(target = "password", source = "login.password")

@@ -1,21 +1,23 @@
 <mat-toolbar color="primary">
   <div class="menu-item">
-      <button mat-button routerLink="/events">Events</button>
-      <button mat-button routerLink="/location">Orte</button>
+    <button mat-button routerLink="/events">Events</button>
+    <button mat-button routerLink="/location">Orte</button>
+    <button mat-button routerLink="/artists">Künstler</button>
   </div>
   <div class="menu-item middle">Ticketline</div>
   <div class="menu-item last">
     <div *ngIf="authService.isLoggedIn()" style="display: inline-block">
-        <button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="authService.isAdminLoggedIn()" color="warn">Admin</button>
-        <mat-menu #adminMenu="matMenu">
-          <button mat-menu-item routerLink="/user/settings"  routerLink="/admin/changePassword">Passwort ändern</button>
-        </mat-menu>
-        <button mat-button [matMenuTriggerFor]="userMenu">User</button>
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item routerLink="/user/settings">Meine Daten</button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item (click)="logout()">Abmelden</button>
-        </mat-menu>
+      <button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="authService.isAdminLoggedIn()" color="warn">Admin</button>
+      <mat-menu #adminMenu="matMenu">
+        <button mat-menu-item routerLink="/user/settings"  routerLink="/admin/users">Nutzer anzeigen</button>
+        <button mat-menu-item routerLink="/user/settings"  routerLink="/admin/changePassword">Passwort ändern</button>
+      </mat-menu>
+      <button mat-button [matMenuTriggerFor]="userMenu">User</button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/user/settings">Meine Daten</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">Abmelden</button>
+      </mat-menu>
     </div>
     <div *ngIf="!authService.isLoggedIn()">
       <button mat-button routerLink="/login">Login</button>

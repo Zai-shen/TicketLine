@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { LoginDTO, UserApiService, UserDTO } from '../../generated';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Globals } from '../global/globals';
 
