@@ -66,21 +66,13 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Void> updateUser(Long userId, @Valid UserUpdateDTO userUpdateDTO) {
+        LOGGER.info("updating user {}",userId);
         String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.findUserByEmail(username);
         if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
             throw new AccessDeniedException("You may only update your own user");
         }
-        if(userUpdateDTO.getFirstname() != null && !userUpdateDTO.getFirstname().isEmpty())
-            currentUser.setFirstname(userUpdateDTO.getFirstname());
-        if(userUpdateDTO.getLastname() != null && !userUpdateDTO.getLastname().isEmpty())
-            currentUser.setLastname(userUpdateDTO.getLastname());
-        long addressId = currentUser.getAddress().getId();
-        if(userUpdateDTO.getAddress() != null) {
-            currentUser.setAddress(addressMapper.fromDto(userUpdateDTO.getAddress()));
-            currentUser.getAddress().setId(addressId);
-        }
-        userService.updateUser(currentUser);
+        userService.updateUser(userId,userMapper.toEntity(userUpdateDTO));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

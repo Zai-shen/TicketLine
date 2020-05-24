@@ -51,10 +51,11 @@ public interface UserService extends UserDetailsService {
 
     /**
      * Update a user
-     * @param user user to be updated
+     * @param updateUser user entity containging the fields to be updated
+     * @param userId id of the user to be updatedk
      * @return the updated user
      */
-    User updateUser(User user);
+    User updateUser(Long userId, User updateUser);
 
     /**
      * @param pageable Pagination information
@@ -69,4 +70,5 @@ public interface UserService extends UserDetailsService {
      * @return returns a list with all Users. Restricted by the pagination.
      */
     Page<User> getLockedUsers(Pageable pageable, @Nullable String email);
+
 }

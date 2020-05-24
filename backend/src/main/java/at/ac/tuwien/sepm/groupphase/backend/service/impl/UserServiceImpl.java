@@ -109,9 +109,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUser(Long userId, User updateUser) {
+        User currentUser = userRepository.findUserById(userId);
         LOGGER.debug("Update User");
-        new UpdateUserValidator().build(user).validate();
-        return userRepository.saveAndFlush(user);
+        if(updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty())
+            currentUser.setFirstname(updateUser.getFirstname());
+        if(updateUser.getLastname() != null && !updateUser.getLastname().isEmpty())
+            currentUser.setLastname(updateUser.getLastname());
+        long addressId = currentUser.getAddress().getId();
+        if(updateUser.getAddress() != null) {
+            currentUser.setAddress(updateUser.getAddress());
+            currentUser.getAddress().setId(addressId);
+        }
+        new UpdateUserValidator().build(currentUser).validate();
+        return userRepository.saveAndFlush(currentUser);
     }
 }
