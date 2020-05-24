@@ -1222,6 +1222,9 @@ components:
         locked:
           type: boolean
           example: false
+        wrong_attempts:
+          type: integer
+          example: 4
       required:
         - id
         - email

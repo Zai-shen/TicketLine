@@ -60,11 +60,21 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  unlockUser(id: number): void {
+    this.userService.unlockUser(id)
+      .subscribe(() => {
+        console.log('User unlocked');
+      },
+      error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+    this.reload();
+  }
+
   private reload(): void {
     this.userService.getUsers(this.showOnlyLockedUsers, this.searchEmail, this.currentPage)
         .subscribe(users => {
             if (users.body !== null) {
               this.users = users.body;
+              console.log(this.users);
               this.amountOfPages = Number(users.headers.get('X-Total-Count')) || 1;
             } else {
               this.errorMessageComponent.throwCustomError('Ungültige Antwort vom Server in der Nutzerabfrage',

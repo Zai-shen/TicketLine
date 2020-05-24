@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Profile("generateData")
@@ -44,7 +43,8 @@ public class UserDataGenerator {
                 user.setPassword(passwordEncoder.encode("12345678"));
                 user.setFirstname(f.name().firstName());
                 user.setLastname(f.name().lastName());
-                user.setLocked(ThreadLocalRandom.current().nextInt(4) == 0);
+                user.setWrongAttempts(ThreadLocalRandom.current().nextInt(6));
+                user.setLocked(user.getWrongAttempts() == 5);
                 user.setRole(AuthorizationRole.USER);
                 user.setAddress(getAddress(f));
 
@@ -63,6 +63,7 @@ public class UserDataGenerator {
         admin.setFirstname("Max");
         admin.setLastname("Master");
         admin.setLocked(false);
+        admin.setWrongAttempts(0);
         admin.setRole(AuthorizationRole.ADMIN);
         admin.setAddress(getAddress(f));
         userRepository.save(admin);
@@ -73,6 +74,7 @@ public class UserDataGenerator {
         coadmin.setFirstname("Ben");
         coadmin.setLastname("Bachelor");
         coadmin.setLocked(false);
+        coadmin.setWrongAttempts(0);
         coadmin.setRole(AuthorizationRole.ADMIN);
         coadmin.setAddress(getAddress(f));
         userRepository.save(coadmin);

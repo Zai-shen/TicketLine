@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.security;
 
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
+import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,11 +27,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+    private UserRepository userRepository;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, SecurityProperties securityProperties,
-        JwtTokenizer jwtTokenizer) {
+        JwtTokenizer jwtTokenizer, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenizer = jwtTokenizer;
+        this.userRepository = userRepository;
         setFilterProcessesUrl(securityProperties.getLoginUri());
     }
 
@@ -40,10 +42,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         throws AuthenticationException {
         try {
             LoginDTO user = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
-            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                user.getEmail(),
-                user.getPassword()
-            ));
+            at.ac.tuwien.sepm.groupphase.backend.entity.User userInfo = userRepository.findUserByEmail(user.getEmail());
+            if (!userInfo.getLocked()) {
+                return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    user.getEmail(),
+                    user.getPassword()
+                ));
+            } else {
+                throw new BadCredentialsException("Bad credentials");
+            }
         } catch (IOException e) {
             throw new BadCredentialsException("Wrong API request or JSON schema", e);
         }

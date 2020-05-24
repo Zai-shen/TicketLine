@@ -73,4 +73,11 @@ public class UserController implements UserApi {
             .header("X-Total-Count", String.valueOf(users.getTotalElements()))
             .body(userInfoMapper.toDto(users.getContent()));
     }
+
+    @Override
+    public ResponseEntity<Void> unlockUser(Long userId) {
+        LOGGER.info("Unlock user with id " + userId);
+        userService.unlockUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

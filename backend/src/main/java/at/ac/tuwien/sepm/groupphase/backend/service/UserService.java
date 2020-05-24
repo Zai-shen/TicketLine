@@ -55,4 +55,10 @@ public interface UserService extends UserDetailsService {
      * @return returns a list with all Users. Restricted by the pagination.
      */
     Page<User> getLockedUsers(Pageable pageable, @Nullable String email);
+
+    /**
+     * Unlock user and reset attempts
+     * @param userId id of the user to unlock
+     */
+    void unlockUser(Long userId);
 }

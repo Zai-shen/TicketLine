@@ -97,6 +97,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void unlockUser(Long userId) {
+        LOGGER.debug("Unlock user with id " + userId);
+        User user = userRepository.findUserById(userId);
+        user.setWrongAttempts(0);
+        user.setLocked(false);
+        userRepository.save(user);
+    }
+
     private User findUserByEmail(String email) {
         LOGGER.debug("Find user by email");
         User user = userRepository.findUserByEmail(email);

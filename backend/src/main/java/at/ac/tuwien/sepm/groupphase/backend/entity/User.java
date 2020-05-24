@@ -28,6 +28,9 @@ public class User {
     private Boolean locked;
 
     @Column(nullable = false)
+    private Integer wrongAttempts;
+
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private AuthorizationRole role;
 
@@ -106,6 +109,14 @@ public class User {
 
     public void setLocked(Boolean locked) {
         this.locked = locked;
+    }
+
+    public Integer getWrongAttempts() {
+        return wrongAttempts;
+    }
+
+    public void setWrongAttempts(Integer wrongAttempts) {
+        this.wrongAttempts = wrongAttempts;
     }
 
     @Override

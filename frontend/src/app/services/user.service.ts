@@ -22,4 +22,8 @@ export class UserService {
   getUsers(locked: boolean, email: string, page: number): Observable<HttpResponse<Array<UserInfoDTO>>> {
     return this.userApiService.getUsers(locked, email, page, 'response');
   }
+
+  unlockUser(userId: number): Observable<any> {
+    return this.userApiService.unlockUser(userId);
+  }
 }
