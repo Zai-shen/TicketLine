@@ -6,8 +6,8 @@ import at.ac.tuwien.sepm.groupphase.backend.dto.EventCategory;
 import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
-import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
+import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
@@ -28,17 +27,18 @@ public class EventController implements EventApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final PerformanceService performanceService;
+    private final EventService eventService;
     private final PerformanceMapper performanceMapper;
     private final EventMapper eventMapper;
-    private final EventService eventService;
 
     private static final int PAGE_SIZE = 10;
 
-    public EventController(PerformanceService performanceService, PerformanceMapper performanceMapper, EventService eventService, EventMapper eventMapper) {
+    public EventController(PerformanceService performanceService, EventService eventService,
+        PerformanceMapper performanceMapper, EventMapper eventMapper) {
         this.performanceService = performanceService;
+        this.eventService = eventService;
         this.performanceMapper = performanceMapper;
         this.eventMapper = eventMapper;
-        this.eventService = eventService;
     }
 
     @Override
@@ -47,6 +47,13 @@ public class EventController implements EventApi {
         LOGGER.info("Show top events");
         return ResponseEntity.ok(performanceMapper.toDto(
             performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE)).getContent()));
+    }
+
+    @Override
+    public ResponseEntity<EventDTO> getEvent(Long eventId) {
+        var event = eventService.getEvent(eventId);
+        return event.map(value -> ResponseEntity.ok(eventMapper.toDto(value)))
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override

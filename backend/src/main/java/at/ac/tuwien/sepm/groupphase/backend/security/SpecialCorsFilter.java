@@ -41,6 +41,7 @@ public class SpecialCorsFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "43200");
         response.setHeader("Access-Control-Allow-Headers",
             "Content-Type, Accept, X-Requested-With, remember-me, Authorization");
+        response.setHeader("Access-Control-Expose-Headers", "X-Total-Count");
 
         chain.doFilter(req, res);
     }

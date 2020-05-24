@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { AuthGuard } from './guards/auth.guard';
 import { RegisterComponent } from './components/register/register.component';
-import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AdminGuard } from './guards/admin.guard';
 import { EventsComponent } from './components/events/events.component';
+import { ArtistsComponent } from './components/artists/artists.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
 
 const routes: Routes = [
@@ -16,7 +17,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'events', component: EventsComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin/changePassword', canActivate: [AdminGuard], component: ChangePasswordComponent },
+  { path: 'admin/users', canActivate: [AdminGuard], component: UserListComponent },
+  { path: 'artists', component: ArtistsComponent },
+  { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }

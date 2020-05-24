@@ -2,15 +2,16 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
-import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewEventValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
-public class EventServiceImpl implements EventService {
+public class EventServiceImpl  implements EventService {
     private final EventRepository eventRepository;
 
     @Autowired
@@ -25,8 +26,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Event getEvent(Long eventId) {
-        return this.eventRepository.findById(eventId).orElseThrow(() ->
-            new NotFoundException(String.format("Event with id=%d could not be found",eventId)));
+    public Optional<Event> getEvent(long eventid) {
+        return eventRepository.findById(eventid);
     }
 }

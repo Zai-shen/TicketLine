@@ -1,13 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated';
-import {LocationDTO} from '../../../generated';
-import {SearchLocationDTO} from '../../../generated';
-import {AuthService} from '../../services/auth.service';
+import { LocationApiService, LocationDTO, SearchLocationDTO } from '../../../generated';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-location',
+  selector: 'tl-location',
   templateUrl: './location.component.html',
   styleUrls: ['./location.component.css']
 })
@@ -40,7 +38,7 @@ export class LocationComponent implements OnInit {
     return this.authService.isAdminLoggedIn();
   }
 
-  getLocationList() {
+  getLocationList(): void {
     this.locationApiService.getLocationList().subscribe(
       (locationDTO: LocationDTO[]) => {
         this.locations = locationDTO;
@@ -48,7 +46,7 @@ export class LocationComponent implements OnInit {
     error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
 
-  searchLocations() {
+  searchLocations(): void {
       const searchLocationDTO: SearchLocationDTO = Object.assign({}, this.searchForm.value);
 
       this.locationApiService.searchLocations(searchLocationDTO).subscribe(

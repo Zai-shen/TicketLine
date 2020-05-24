@@ -17,9 +17,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { RegisterComponent } from './components/register/register.component';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { ArtistsComponent } from './components/artists/artists.component';
+import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
@@ -29,14 +33,15 @@ import { PerformanceTableComponent } from './components/create-event/performance
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS, MAT_DATE_LOCALE,
-  MatNativeDateModule
-} from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { DATE_FORMATS, InternalDateAdapter } from './date-formats';
-import { Platform } from '@angular/cdk/platform';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRippleModule } from '@angular/material/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -49,8 +54,11 @@ import { Platform } from '@angular/cdk/platform';
     RegisterComponent,
     ErrorMessageComponent,
     ChangePasswordComponent,
+    EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
+    ArtistsComponent,
+    UserListComponent,
     CreateEventComponent,
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
@@ -68,6 +76,14 @@ import { Platform } from '@angular/cdk/platform';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatPaginatorModule,
+    MatDividerModule,
+    MatGridListModule,
+    MatRippleModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatButtonToggleModule,
+    MatDialogModule,
     MatTableModule,
     MatDialogModule,
     MatAutocompleteModule,
@@ -75,7 +91,13 @@ import { Platform } from '@angular/cdk/platform';
     MatNativeDateModule,
     NgxMaterialTimepickerModule
   ],
-  providers: [httpInterceptorProviders],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useClass: CustomPaginatorComponent
+    },
+    httpInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

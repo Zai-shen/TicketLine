@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated';
-import {LocationDTO} from '../../../generated';
+import { LocationApiService, LocationDTO } from '../../../generated';
 import {AuthService} from '../../services/auth.service';
 
 @Component({
@@ -15,8 +14,7 @@ export class CreateLocationComponent implements OnInit {
   submitted: boolean = false;
   locationForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService,
-                            private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -34,11 +32,7 @@ export class CreateLocationComponent implements OnInit {
       });
   }
 
-  /**
-   * Sends location creation request
-   * @param locationDTO the location which should be created
-   */
-  createLocation() {
+  createLocation(): void {
     this.submitted = true;
     if (this.locationForm.valid) {
       const locationDTO: LocationDTO = Object.assign({}, this.locationForm.value);

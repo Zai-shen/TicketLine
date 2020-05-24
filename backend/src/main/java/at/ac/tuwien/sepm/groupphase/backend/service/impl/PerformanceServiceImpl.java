@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
@@ -9,6 +11,9 @@ import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewPerformanceVali
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.NoResultException;
+import javax.swing.text.html.Option;
 
 @Service
 public class PerformanceServiceImpl implements PerformanceService {
@@ -29,7 +34,9 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Override
     public Long createPerformance(Long eventId, Performance performance) throws BusinessValidationException {
         if(eventId != null) {
-            performance.setEvent(eventService.getEvent(eventId));
+            Event event = eventService.getEvent(eventId).orElseThrow(() ->
+                new NotFoundException(String.format("Event mit id=%d existiert nicht", eventId)));
+            performance.setEvent(event);
         }
         new NewPerformanceValidator().build(performance).validate();
         return performanceRepository.saveAndFlush(performance).getId();
