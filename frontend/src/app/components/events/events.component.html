@@ -10,7 +10,7 @@
     </mat-form-field>
   </form>
 
-  <mat-card class="mdc-layout-grid" *ngFor="let performance of performances" [routerLink]="['/events',performance.event.id]"
+  <mat-card class="mdc-layout-grid" *ngFor="let performance of performances" [routerLink]="['/events', performance.event.id]"
             mat-ripple>
     <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{performance.event.title}}</mat-card-title>
     <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">
