@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -62,6 +63,10 @@ public class Performance {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String formatDateTime() {
+        return date.format(DateTimeFormatter.ofPattern("dd.MM.yy")) + " " + localTime.toString();
     }
 
     @Override

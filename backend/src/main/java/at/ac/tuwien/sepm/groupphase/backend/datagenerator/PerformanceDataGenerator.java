@@ -57,7 +57,7 @@ public class PerformanceDataGenerator {
                 locaddr.setHousenr(f.address().buildingNumber());
                 locaddr.setPostalcode(f.address().zipCode());
                 Location location = new Location();
-                location.setDescription(f.rickAndMorty().quote());
+                location.setDescription(f.lordOfTheRings().location());
                 location.setAddress(locaddr);
 
                 Performance performance = new Performance();

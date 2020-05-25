@@ -9,8 +9,11 @@
         }
         .hero {
             width: 100%;
-            background: #3f51b5;
+            background: #ee6002;
             color: white;
+        }
+        .hero * {
+            padding: 10px;
         }
         .description {
             margin: 2em;
@@ -40,13 +43,27 @@
     </div>
     <div>
         <ul>
+            <li><b>Datum:</b> ${data.performance.formatDateTime()}</li>
             <li><b>Dauer:</b> ${data.event.duration} Minuten</li>
             <li><b>Kategorie</b> ${data.event.category}</li>
         </ul>
         <p class="description">
             ${data.event.description}
         </p>
-        <img src="${data.getBarcode()}" alt="${data.getUUID().toString()}"/>
+        <table>
+            <tr>
+                <td>
+                    <img src="${data.getBarcode()}" alt="${data.getUUID().toString()}"/>
+                </td>
+                <td>
+                    <b>${data.performance.location.description}</b>
+                    <br/>
+                    <i>${data.performance.location.address.street} ${data.performance.location.address.housenr}</i>
+                    <br/>
+                    <i>${data.performance.location.address.postalcode} ${data.performance.location.address.city}</i>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>

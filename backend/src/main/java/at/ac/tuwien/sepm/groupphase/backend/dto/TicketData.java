@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.dto;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -18,10 +19,12 @@ public class TicketData {
     private final Event event;
     private final String seat;
     private final UUID uuid;
+    private final Performance performance;
 
-    public TicketData(Event event, String seat, UUID uuid) {
+    public TicketData(Event event, String seat, Performance performance, UUID uuid) {
         this.event = event;
         this.seat = seat;
+        this.performance = performance;
         this.uuid = uuid;
     }
 
@@ -35,6 +38,10 @@ public class TicketData {
 
     public UUID getUUID() {
         return uuid;
+    }
+
+    public Performance getPerformance() {
+        return performance;
     }
 
     public String getBarcode() throws WriterException, IOException {
