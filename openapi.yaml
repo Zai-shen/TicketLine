@@ -245,29 +245,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /user/locked:
-    get:
-      security:
-        - ticketline_auth: []
-      tags:
-      - user
-      summary: Get all locked users - Admin task
-      operationId: getLockedUsers
-      responses:
-        200:
-          description: List of locked users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserDTO'
-        403:
-          description: Not logged in or insufficient permission
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
   /user/{userId}/unlock:
     patch:
       security:
