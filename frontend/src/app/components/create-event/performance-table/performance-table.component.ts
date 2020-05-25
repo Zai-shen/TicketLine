@@ -31,7 +31,7 @@ export class PerformanceTableComponent implements OnInit {
     dialogConfig.disableClose = true;
 
     const dialogRef = this.dialog.open(CreatePerformanceModalComponent, dialogConfig);
-    dialogRef.afterClosed().toPromise().then(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const newPerformances = cloneDeep(this.performances);
         Object.assign(newPerformances[editIndex], result);

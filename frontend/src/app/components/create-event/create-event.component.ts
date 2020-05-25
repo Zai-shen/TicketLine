@@ -7,7 +7,7 @@ import { PerformanceService } from '../../services/performance.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { noop } from 'rxjs';
+import { forkJoin, noop, Observable } from 'rxjs';
 
 @Component({
   selector: 'tl-create-event',
@@ -24,8 +24,7 @@ export class CreateEventComponent implements OnInit {
   constructor(private readonly formBuilder: FormBuilder,
               private readonly location: Location,
               private readonly performanceService: PerformanceService,
-              private readonly eventService: EventService,
-              private readonly router: Router) {
+              private readonly eventService: EventService) {
   }
 
   ngOnInit(): void {
@@ -51,13 +50,14 @@ export class CreateEventComponent implements OnInit {
 
   async createEvent() {
     this.submitted = true;
-    if (this.eventForm.valid) {
+    if (this.eventForm.valid && this.performances != null && this.performances.length > 0) {
       this.eventService.createEvent(this.eventForm.value).subscribe(
         eventId => {
-          const performancePromises = this.performances.map(perf => this.performanceService.createPerformance(eventId, perf).toPromise());
-          Promise.all(performancePromises).then(
-            result => this.goBack()
-          ).catch(error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+          const performancePromises: Observable<any>[] = [];
+          this.performances.map(perf => performancePromises.push(this.performanceService.createPerformance(eventId, perf)));
+          forkJoin(performancePromises).subscribe(
+            () => this.goBack(),
+            error => this.errorMessageComponent.defaultServiceErrorHandling(error));
         },
         error => this.errorMessageComponent.defaultServiceErrorHandling(error)
       );

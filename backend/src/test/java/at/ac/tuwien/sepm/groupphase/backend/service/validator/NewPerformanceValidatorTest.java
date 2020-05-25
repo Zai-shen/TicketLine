@@ -31,7 +31,7 @@ public class NewPerformanceValidatorTest {
     }
 
     @Test
-    public void testPerformanceWithUnsaferLocationAndEvent() {
+    public void testPerformanceWithUnsafedLocationAndEvent() {
         final Performance performance = DomainTestObjectFactory.getPerformance();
         performance.getLocation().setId(null);
         performance.getEvent().setId(null);
