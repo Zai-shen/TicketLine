@@ -9,7 +9,7 @@
   <mat-card-title>{{newsEntry.title}}</mat-card-title>
   <mat-card-content>
     <p>{{newsEntry.summary}}</p>
-    <p><mat-icon>history</mat-icon>vor {{newsEntry.publishedAt}} mintuen</p>
+    <p><mat-icon>history</mat-icon>{{ computeMinutes(newsEntry.publishedAt) }}</p>
     <p><mat-icon>perm_identity</mat-icon>von {{newsEntry.author}}</p>
   </mat-card-content>
 </mat-card>
