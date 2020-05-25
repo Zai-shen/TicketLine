@@ -5,9 +5,7 @@ import { Location } from '@angular/common';
 import { EventService } from '../../services/event.service';
 import { PerformanceService } from '../../services/performance.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { forkJoin, noop, Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'tl-create-event',
@@ -63,5 +61,4 @@ export class CreateEventComponent implements OnInit {
       );
     }
   }
-
 }

@@ -42,6 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
       provide: MatPaginatorIntl,
       useClass: CustomPaginatorComponent
     },
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

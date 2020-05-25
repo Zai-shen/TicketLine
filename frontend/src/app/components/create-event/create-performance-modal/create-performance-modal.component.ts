@@ -8,6 +8,7 @@ import { ErrorMessageComponent } from '../../error-message/error-message.compone
 import { lowerCase } from 'lodash-es';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'tl-create-performance-modal',
@@ -33,13 +34,16 @@ export class CreatePerformanceModalComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) private readonly inputPerformance: PerformanceDTO,
     private readonly formBuilder: FormBuilder,
     private readonly dialogRef: MatDialogRef<CreatePerformanceModalComponent>,
-    private readonly locationService: LocationApiService) {
+    private readonly locationService: LocationApiService,
+    private readonly datePipe: DatePipe) {
   }
 
   ngOnInit(): void {
     if (this.inputPerformance != null) {
       this.isEditMode = true;
       this.performance = this.inputPerformance;
+
+      this.selectedTime = this.datePipe.transform(this.performance.dateTime, 'HH:mm') || '';
     }
     const locationControl = new FormControl(this.performance.location, [
       Validators.required,
