@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class NewsServiceImpl implements NewsService {
     public News publishNews(News news) {
         LOGGER.debug("Publish new news {}", news);
         new NewNewsValidator().build(news).validate();
+        news.setPublishedAt(LocalDateTime.now()); // overwrite publishedAt, so we can guarantee server-time
         return newsRepository.save(news);
     }
 
