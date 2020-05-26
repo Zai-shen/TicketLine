@@ -2,7 +2,7 @@
   <h1 class="mat-title">Persönliche Daten</h1>
   <mat-divider></mat-divider>
   <form #userForm="ngForm">
-    <div class="input-group">
+    <div class="field-group">
       <mat-form-field appearance="standard" floatLabel="always">
         <mat-label>Vorname</mat-label>
         <input matInput placeholder="Max" name="firstname" [(ngModel)]="user.firstname" required>
@@ -13,7 +13,7 @@
       </mat-form-field>
     </div>
     <mat-divider></mat-divider>
-    <div class="input-group">
+    <div class="field-group">
       <mat-form-field appearance="standard" floatLabel="always">
         <mat-label>Straße</mat-label>
         <input matInput placeholder="Wallaby Way" name="street" [(ngModel)]="user.address.street" required>

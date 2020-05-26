@@ -11,8 +11,9 @@ mat-spinner {
 }
 
 form {
-  .input-group {
+  .field-group {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     * {
       flex: 1 1 auto;
