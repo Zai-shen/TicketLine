@@ -40,6 +40,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
@@ -58,6 +62,7 @@ import { DatePipe } from '@angular/common';
     EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
+    UserDetailComponent,
     ArtistsComponent,
     UserListComponent,
     CreateEventComponent,
@@ -83,6 +88,9 @@ import { DatePipe } from '@angular/common';
     MatRippleModule,
     MatProgressSpinnerModule,
     MatChipsModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatSnackBarModule,
     MatButtonToggleModule,
     MatDialogModule,
     MatTableModule,

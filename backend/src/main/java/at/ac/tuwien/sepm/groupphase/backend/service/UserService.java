@@ -43,6 +43,21 @@ public interface UserService extends UserDetailsService {
     void resetPassword(Long userId, String password);
 
     /**
+     * Finds a user based on their email address
+     * @param email email address of the user
+     * @return User entity containing the specified user
+     */
+    User findUserByEmail(String email);
+
+    /**
+     * Update a user
+     * @param updateUser user entity containging the fields to be updated
+     * @param userId id of the user to be updatedk
+     * @return the updated user
+     */
+    User updateUser(Long userId, User updateUser);
+
+    /**
      * @param pageable Pagination information
      * @param email Search for email if not null
      * @return returns a list with all Users. Restricted by the pagination.
@@ -55,4 +70,5 @@ public interface UserService extends UserDetailsService {
      * @return returns a list with all Users. Restricted by the pagination.
      */
     Page<User> getLockedUsers(Pageable pageable, @Nullable String email);
+
 }

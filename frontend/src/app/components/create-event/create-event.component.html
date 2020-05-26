@@ -1,21 +1,22 @@
-<h1>Veranstaltung hinzufügen</h1>
-<tl-error-message></tl-error-message>
-<form [formGroup]="eventForm">
-  <mat-form-field class="title-input" appearance="fill">
-    <mat-label>Titel</mat-label>
-    <input matInput type="text" name="title" formControlName="title">
-    <mat-error *ngIf="submitted && eventForm.get('title').errors">
-      <div *ngIf="eventForm.get('title').errors.required">
-        Titel ist ein Pflichtfeld!
-      </div>
-    </mat-error>
-  </mat-form-field>
-  <br>
+<div class="mat-elevation-z4 main-content">
+  <h1>Veranstaltung hinzufügen</h1>
+  <tl-error-message></tl-error-message>
+  <form [formGroup]="eventForm">
+    <mat-form-field class="title-input" appearance="fill">
+      <mat-label>Titel</mat-label>
+      <input matInput type="text" name="title" formControlName="title">
+      <mat-error *ngIf="submitted && eventForm.get('title').errors">
+        <div *ngIf="eventForm.get('title').errors.required">
+          Titel ist ein Pflichtfeld!
+        </div>
+      </mat-error>
+    </mat-form-field>
+    <br>
     <mat-form-field class="category-input" appearance="fill">
-     <mat-label>Kategorie</mat-label>
-        <mat-select formControlName="category" placeholder="Kategorie">
-          <mat-option *ngFor="let category of eventCategories" [value]="category">{{category}}</mat-option>
-        </mat-select>
+      <mat-label>Kategorie</mat-label>
+      <mat-select formControlName="category" placeholder="Kategorie">
+        <mat-option *ngFor="let category of eventCategories" [value]="category">{{category}}</mat-option>
+      </mat-select>
       <mat-error *ngIf="submitted && eventForm.get('category').errors">
         <div *ngIf="eventForm.get('category').errors.required">
           Kategorie ist ein Pflichtfeld!
@@ -32,7 +33,7 @@
         </div>
       </mat-error>
     </mat-form-field>
-  <br>
+    <br>
     <mat-form-field class="description-input" appearance="fill">
       <mat-label>Beschreibung</mat-label>
       <textarea matInput rows="5" type="text" name="description" formControlName="description"></textarea>
@@ -42,16 +43,17 @@
         </div>
       </mat-error>
     </mat-form-field>
-      <h2>Aufführungen</h2>
-      <tl-performance-table [performances]="performances" (performancesChanged)="performancesUpdated($event)"></tl-performance-table>
-      <mat-error *ngIf="submitted && (performances == null || performances.length === 0)">
-        <div>
-          Mindestens eine Aufführung muss hinzugefügt werden
-        </div>
-      </mat-error>
-<br>
-  <div class="button-footer">
-    <button mat-raised-button class="form-button" (click)="goBack()">Abbrechen</button>
-    <button mat-raised-button color="primary" class="form-button" (click)="createEvent()">Erstellen</button>
-  </div>
-</form>
+    <h2>Aufführungen</h2>
+    <tl-performance-table [performances]="performances" (performancesChanged)="performancesUpdated($event)"></tl-performance-table>
+    <mat-error *ngIf="submitted && (performances == null || performances.length === 0)">
+      <div>
+        Mindestens eine Aufführung muss hinzugefügt werden
+      </div>
+    </mat-error>
+    <br>
+    <div class="button-footer">
+      <button mat-raised-button class="form-button" (click)="goBack()">Abbrechen</button>
+      <button mat-raised-button color="primary" class="form-button" (click)="createEvent()">Erstellen</button>
+    </div>
+  </form>
+</div>

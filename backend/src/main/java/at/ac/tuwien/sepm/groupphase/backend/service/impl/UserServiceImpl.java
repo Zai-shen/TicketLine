@@ -8,17 +8,21 @@ import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewUserValidator;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.PasswordValidator;
+import at.ac.tuwien.sepm.groupphase.backend.service.validator.UpdateUserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -97,12 +101,36 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private User findUserByEmail(String email) {
+    @Override
+    @Transactional(readOnly=true)
+    public User findUserByEmail(String email) {
         LOGGER.debug("Find user by email");
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
             return user;
         }
         throw new NotFoundException(String.format("Could not find the user with the email address %s", email));
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(Long userId, User updateUser) {
+        String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = findUserByEmail(username);
+        if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
+            throw new AccessDeniedException("Der aktuelle Benutzer hat keine Berechtigung um andere Nutzer zu bearbeiten");
+        }
+        LOGGER.debug("Update User");
+        if(updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty())
+            currentUser.setFirstname(updateUser.getFirstname());
+        if(updateUser.getLastname() != null && !updateUser.getLastname().isEmpty())
+            currentUser.setLastname(updateUser.getLastname());
+        long addressId = currentUser.getAddress().getId();
+        if(updateUser.getAddress() != null) {
+            currentUser.setAddress(updateUser.getAddress());
+            currentUser.getAddress().setId(addressId);
+        }
+        new UpdateUserValidator().build(currentUser).validate();
+        return userRepository.saveAndFlush(currentUser);
     }
 }

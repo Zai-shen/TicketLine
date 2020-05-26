@@ -1,8 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.util;
 
+import at.ac.tuwien.sepm.groupphase.backend.dto.AddressDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.UserDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.UserUpdateDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 public class DTOTestObjectFactory {
@@ -15,6 +18,15 @@ public class DTOTestObjectFactory {
         userDTO.setLogin(getLoginDTO());
         userDTO.setAddress(getAddressDTO());
         return userDTO;
+    }
+
+    public static UserUpdateDTO getUserUpdateDTO() {
+        UserDTO reference = getUserDTO();
+        final UserUpdateDTO updateDTO = new UserUpdateDTO();
+        updateDTO.setAddress(getAddressDTO());
+        updateDTO.setFirstname(reference.getFirstname());
+        updateDTO.setLastname(reference.getLastname());
+        return updateDTO;
     }
 
     public static LoginDTO getLoginDTO() {

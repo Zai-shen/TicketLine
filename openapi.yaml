@@ -114,7 +114,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/UserUpdateDTO'
         required: true
       parameters:
         - in: path
@@ -220,6 +220,27 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         404:
           description: Cannot find user to remove
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/self:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+      - user
+      summary: Get user information for the currently logged in user
+      operationId: getSelf
+      responses:
+        200:
+          description: Currently logged in user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDTO'
+        403:
+          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -1217,6 +1238,17 @@ components:
         - lastname
         - login
         - address
+    UserUpdateDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Max
+        lastname:
+          type: string
+          example: Mustermann
+        address:
+          $ref: '#/components/schemas/AddressDTO'
     UserInfoDTO:
       type: object
       properties:
