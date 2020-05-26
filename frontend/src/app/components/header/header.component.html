@@ -1,27 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-  <a class="navbar-brand ml-lg-5" href="">SEPM Group Phase</a>
-  <div *ngIf="authService.isLoggedIn() && authService.getUserRole()==='ADMIN'" class="navbar-brand admin-nav-item">
-    --ADMIN--
+<mat-toolbar color="primary">
+  <div class="menu-item">
+    <button mat-button routerLink="/events">Events</button>
+    <button mat-button routerLink="/location">Orte</button>
+    <button mat-button routerLink="/artists">Künstler</button>
   </div>
-  <button class="navbar-toggler ml-5" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/events" routerLinkActive="active">Events</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav mr-5">
-      <a class="nav-link admin-nav-item" *ngIf="isAdminLoggedIn()" routerLink="/admin/changePassword">
-        Passwort ändern
-      </a>
-      <a class="nav-link" *ngIf="!authService.isLoggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
-      <a class="nav-link" *ngIf="!authService.isLoggedIn()" routerLink="/register">Registrieren</a>
-      <a class="nav-link" *ngIf="authService.isLoggedIn()" routerLink="/" (click)="authService.logoutUser()">Logout</a>
-    </ul>
+  <div class="menu-item middle">Ticketline</div>
+  <div class="menu-item last">
+    <div *ngIf="authService.isLoggedIn()" style="display: inline-block">
+      <button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="authService.isAdminLoggedIn()" color="warn">Admin</button>
+      <mat-menu #adminMenu="matMenu">
+        <button mat-menu-item routerLink="/admin/users">Nutzer anzeigen</button>
+      </mat-menu>
+      <button mat-button [matMenuTriggerFor]="userMenu">User</button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/user/settings">Meine Daten</button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">Abmelden</button>
+      </mat-menu>
+    </div>
+    <div *ngIf="!authService.isLoggedIn()">
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/register">Registrieren</button>
+    </div>
   </div>
-</nav>
+</mat-toolbar>

@@ -1,7 +1,26 @@
+@import '~@angular/material/theming';
+
 /* You can add global styles to this file, and also import other style files */
 body {
-  background-color: whitesmoke;
+  background-color: #f6f8f9;
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.timepicker-overlay {
+  z-index: 1100 !important;
+}
+
+.timepicker-backdrop-overlay {
+  z-index: 1100 !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.main-content {
+  background-color: #ffffff;
+  margin-top: 5em;
+  padding: 5em;
+}

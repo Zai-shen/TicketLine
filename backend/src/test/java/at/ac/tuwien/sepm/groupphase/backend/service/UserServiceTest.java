@@ -12,14 +12,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -50,6 +50,7 @@ public class UserServiceTest {
 
         assertThat(user.getRole()).isEqualTo(AuthorizationRole.USER);
         assertThat(user.getPassword()).isEqualTo("encoded");
+        assertThat(user.getLocked()).isFalse();
         verify(userRepository, times(1)).save(user);
     }
 
@@ -72,5 +73,39 @@ public class UserServiceTest {
         assertThatThrownBy(() -> userService.resetPassword(4L, "myPassword")).isExactlyInstanceOf(
             NotFoundException.class);
         verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    public void testGetAllUsersWithoutEmail() {
+        Pageable pageable = PageRequest.of(0, 20);
+        userService.getAllUsers(pageable, null);
+
+        verify(userRepository, times(1)).findAll(pageable);
+    }
+
+    @Test
+    public void testGetAllUsersWithEmail() {
+        Pageable pageable = PageRequest.of(0, 20);
+        String searchEmail = "test@example.com";
+        userService.getAllUsers(pageable, searchEmail);
+
+        verify(userRepository, times(1)).findAllByEmailContainingIgnoreCase(pageable, searchEmail);
+    }
+
+    @Test
+    public void testGetLockedUsersWithoutEmail() {
+        Pageable pageable = PageRequest.of(0, 20);
+        userService.getLockedUsers(pageable, null);
+
+        verify(userRepository, times(1)).findAllByLockedIsTrue(pageable);
+    }
+
+    @Test
+    public void testGetLockedUsersWithEmail() {
+        Pageable pageable = PageRequest.of(0, 20);
+        String searchEmail = "test@example.com";
+        userService.getLockedUsers(pageable, searchEmail);
+
+        verify(userRepository, times(1)).findAllByEmailContainingIgnoreCaseAndLockedIsTrue(pageable, searchEmail);
     }
 }

@@ -1,4 +1,5 @@
 {
   "serviceSuffix": "ApiService",
-  "serviceFileSuffix": ".api.service"
+  "serviceFileSuffix": ".api.service",
+  "supportsES6=true": true
 }

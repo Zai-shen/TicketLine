@@ -6,10 +6,17 @@ import { tap } from 'rxjs/operators';
 import * as jwt_decode from 'jwt-decode';
 import { Globals } from '../global/globals';
 
+enum ROLE {
+  User = "USER",
+  Admin = "ADMIN",
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  static ROLE = ROLE;
 
   private authBaseUri: string = this.globals.backendUri + '/login';
 
@@ -29,9 +36,16 @@ export class AuthService {
   /**
    * Check if a valid JWT token is saved in the localStorage
    */
-  isLoggedIn() {
-    const expirationDate = this.getTokenExpirationDate(this.getToken());
-    return !!this.getToken() && expirationDate != null && expirationDate > new Date();
+  isLoggedIn(): boolean {
+    if (!!this.getToken()) {
+      const expirationDate = this.getTokenExpirationDate(this.getToken());
+      return expirationDate != null && expirationDate > new Date();
+    }
+    return false;
+  }
+
+  isAdminLoggedIn(): boolean {
+    return this.isLoggedIn() && this.getUserRole() === ROLE.Admin;
   }
 
   logoutUser() {
@@ -51,9 +65,9 @@ export class AuthService {
       const decoded: any = jwt_decode(this.getToken() || '');
       const authInfo: string[] = decoded.rol;
       if (authInfo.includes('ROLE_ADMIN')) {
-        return 'ADMIN';
+        return ROLE.Admin;
       } else if (authInfo.includes('ROLE_USER')) {
-        return 'USER';
+        return ROLE.User;
       }
     }
     return 'UNDEFINED';

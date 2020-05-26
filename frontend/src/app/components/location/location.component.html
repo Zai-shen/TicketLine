@@ -1,0 +1,60 @@
+<div class="main-content mat-elevation-z4">
+  <form [formGroup]="searchForm" (ngSubmit)="searchLocations()">
+    <mat-form-field appearance="standard">
+      <mat-label>Bezeichnung</mat-label>
+      <input matInput type="text" name="description" formControlName="description"
+             id="description" placeholder="Bezeichnung">
+    </mat-form-field>
+
+    <div formGroupName="address">
+      <mat-form-field appearance="standard">
+        <mat-label for="street">Straße</mat-label>
+        <input matInput type="text" name="street" formControlName="street"
+               id="street" placeholder="Straße">
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label for="housenr">Hausnummer</mat-label>
+        <input matInput type="text" name="housenr" formControlName="housenr"
+               id="housenr" placeholder="Hausnummer">
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label for="postalcode">PLZ</mat-label>
+        <input matInput type="text" name="postalcode" formControlName="postalcode"
+               id="postalcode" placeholder="PLZ">
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label for="city">Stadt</mat-label>
+        <input matInput type="text" name="city" formControlName="city"
+               id="city" placeholder="Stadt">
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label for="country">Staat</mat-label>
+        <input matInput type="text" name="country" formControlName="country"
+               id="country" placeholder="Staat">
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+  </form>
+
+  <div class="results">
+    <p><b>{{locations.length}} Veranstaltungen gefunden</b></p>
+    <button *ngIf="isAdmin()" routerLink="/location/addLocation" type="button" class="btn btn-secondary btn-sm mr-4">Ort hinzufügen</button>
+  </div>
+
+
+  <mat-card *ngFor="let location of locations">
+    <mat-card-title>{{location.description}}</mat-card-title>
+    <mat-card-content class="card-body" >
+      <div>
+        <p><mat-icon>add_location</mat-icon> {{location.address.street}} {{location.address.housenr}}</p>
+        <p>{{location.address.postalcode}} {{location.address.city}}, {{location.address.country}}</p>
+      </div>
+      <div class="upcoming-events">bevorstehende Veranstaltungen</div>
+    </mat-card-content>
+  </mat-card>
+</div>

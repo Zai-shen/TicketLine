@@ -1,0 +1,42 @@
+<div class="main-content mat-elevation-z4">
+  <tl-error-message></tl-error-message>
+
+  <form class="flex-container">
+    <mat-form-field class="flex-header">
+      <input [(ngModel)]="searchEmail" (change)="onSearchEmailChange()" matInput type="search" placeholder="E-Mail"
+             aria-label="Suche nach E-Mail" name="E-Mail"/>
+    </mat-form-field>
+    <mat-button-toggle-group value="false" (change)="onLockedToggleChanged($event)">
+      <mat-button-toggle value="false" aria-label="Show all users">
+        Alle
+      </mat-button-toggle>
+      <mat-button-toggle value="true" aria-label="Show only locked users">
+        Gesperrt
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button class="add-user-button" mat-stroked-button color="primary" routerLink="/register">Nutzer hinzufügen</button>
+  </form>
+
+  <div class="flex-container list-header">
+    <div class="flex-header">E-Mail</div>
+    <div class="flex-value">Rolle</div>
+    <div class="flex-value">Sperre</div>
+  </div>
+  <mat-card *ngFor="let user of users">
+    <mat-card-content class="flex-container">
+      <div class="flex-header">{{user.email}}</div>
+      <div class="flex-value">{{user.role}}</div>
+      <div class="flex-value locked-message">{{user.locked ? 'gesperrt' : ''}}</div>
+      <button class="flex-link" mat-stroked-button color="primary" (click)="openResetPasswordDialog(user)">
+        Passwort zurücksetzen
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-paginator [length]="amountOfPages"
+                 [pageIndex]="currentPage"
+                 [pageSize]="USER_LIST_PAGE_SIZE"
+                 [pageSizeOptions]="[USER_LIST_PAGE_SIZE]"
+                 (page)="onPaginationChange($event)">
+  </mat-paginator>
+</div>

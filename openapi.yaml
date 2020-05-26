@@ -23,6 +23,50 @@ tags:
   description: Manage artists
 paths:
   /user:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - user
+      summary: Get all locked users - Admin task
+      operationId: getUsers
+      parameters:
+        - in: query
+          name: locked
+          required: false
+          schema:
+            type: boolean
+          description: If true, will return locked users only
+          example: true
+        - in: query
+          name: email
+          required: false
+          schema:
+            type: string
+          description: E-Mail to search for
+          example: max.mustermann@example.com
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfoDTO'
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
     post:
       tags:
       - user
@@ -70,7 +114,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserDTO'
+              $ref: '#/components/schemas/UserUpdateDTO'
         required: true
       parameters:
         - in: path
@@ -180,23 +224,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /user/locked:
+  /user/self:
     get:
       security:
         - ticketline_auth: []
       tags:
       - user
-      summary: Get all locked users - Admin task
-      operationId: getLockedUsers
+      summary: Get user information for the currently logged in user
+      operationId: getSelf
       responses:
         200:
-          description: List of locked users
+          description: Currently logged in user
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserDTO'
+                $ref: '#/components/schemas/UserDTO'
         403:
           description: Not logged in or insufficient permission
           content:
@@ -483,7 +525,13 @@ paths:
       responses:
         201:
           description: Created event entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created event
         400:
           description: Invalid input
           content:
@@ -498,6 +546,34 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         422:
           description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}:
+    get:
+      tags:
+        - event
+      summary: Get the details of a  specific event
+      operationId: getEvent
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to get the performances for
+          required: true
+          example: 73
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDTO'
+        404:
+          description: Couldn't find event entry with that id
           content:
             application/json:
               schema:
@@ -590,7 +666,13 @@ paths:
       responses:
         201:
           description: Created performance entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created performance
         400:
           description: Invalid input
           content:
@@ -827,7 +909,7 @@ paths:
                         - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
                       discriminator:
                         propertyName: type
-                  
+
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -887,6 +969,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /location:
+    get:
+      tags:
+      - location
+      summary: Return a list of locations
+      operationId: getLocationList
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of locations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocationDTO'
     post:
       security:
         - ticketline_auth: []
@@ -895,16 +999,11 @@ paths:
       summary: Create a new location - Admin task
       operationId: createLocation
       requestBody:
-        description: Location and seatmap info
+        description: Location information to be created
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                location:
-                  $ref: '#/components/schemas/LocationDTO'
-                seatmap:
-                  $ref: '#/components/schemas/SeatmapDTO'
+              $ref: '#/components/schemas/LocationDTO'
         required: true
       responses:
         201:
@@ -1020,12 +1119,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /artist:
+      get:
+        tags:
+        - artist
+        summary: Return a list of artists
+        operationId: getArtistList
+        parameters:
+          - in: query
+            name: page
+            required: false
+            schema:
+              type: integer
+            description: Pagination number
+            example: 0
+        responses:
+          200:
+            description: List of artists
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ArtistDTO'
   /artist/search:
     post:
       tags:
         - artist
       summary: Search for artists
       operationId: searchArtists
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameter
         content:
@@ -1108,6 +1238,39 @@ components:
         - lastname
         - login
         - address
+    UserUpdateDTO:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Max
+        lastname:
+          type: string
+          example: Mustermann
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+    UserInfoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        email:
+          type: string
+          format: email
+          example: max.mustermann@example.com
+        role:
+          type: string
+          example: USER
+        locked:
+          type: boolean
+          example: false
+      required:
+        - id
+        - email
+        - role
+        - locked
     AddressDTO:
       type: object
       properties:
@@ -1225,8 +1388,10 @@ components:
         category:
           $ref: '#/components/schemas/EventCategory'
         duration:
-          type: string
-          example: 1h 30m
+          type: integer
+          format: int64
+          example: 120
+          description: Duration in minutes
         description:
           type: string
           example: Awesome concert of the best band in the best location!
@@ -1241,14 +1406,10 @@ components:
           type: integer
           format: int64
           example: 73
-        date:
+        dateTime:
           type: string
-          format: date
-          example: '2020-08-17'
-        time:
-          type: string
-          format: time of day
-          example: '18:00'
+          format: date-time
+          example: '2020-08-17 18:00'
         event:
           $ref: '#/components/schemas/EventDTO'
         location:

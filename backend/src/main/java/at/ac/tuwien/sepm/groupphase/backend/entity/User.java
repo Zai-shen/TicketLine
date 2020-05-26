@@ -26,6 +26,9 @@ public class User {
     private String lastname;
 
     @Column(nullable = false)
+    private Boolean locked;
+
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private AuthorizationRole role;
 
@@ -101,6 +104,14 @@ public class User {
         this.address = address;
     }
 
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
     public List<Booking> getBookings() {
         return bookings;
     }
@@ -118,20 +129,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) &&
-            Objects.equals(password, user.password) && Objects.equals(firstname, user.firstname) &&
-            Objects.equals(lastname, user.lastname) && role == user.role && Objects.equals(address, user.address);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, firstname, lastname, role, address);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", email='" + email + '\'' + ", password set: " +
-            (password == null ? "no" : "yes") + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' +
-            ", role=" + role + ", address=" + address + '}';
+        return Objects.hashCode(id);
     }
 }

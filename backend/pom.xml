@@ -76,6 +76,17 @@
             <artifactId>springfox-bean-validators</artifactId>
             <version>${springfox.swagger.version}</version>
         </dependency>
+        <!-- PDF Generation -->
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.1.20</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.30</version>
+        </dependency>
         <!-- security -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
@@ -115,6 +126,11 @@
             <artifactId>assertj-core</artifactId>
             <version>3.16.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>1.0.2</version>
         </dependency>
     </dependencies>
 
@@ -177,6 +193,7 @@
                                 at.ac.tuwien.sepm.groupphase.backend.dto
                             </modelPackage>
                             <configOptions>
+                                <dateLibrary>java8-offsetdatetime</dateLibrary>
                                 <useOptional>true</useOptional>
                                 <interfaceOnly>true</interfaceOnly>
                                 <basePackage>
