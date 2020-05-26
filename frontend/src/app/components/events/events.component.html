@@ -4,18 +4,18 @@
       <input matInput type="search" placeholder="Veranstaltungen" aria-label="Search"/>
     </mat-form-field>
     <mat-form-field>
-      <mat-select>
+      <mat-select class="form-control form-control-sm w-10">
         <mat-option *ngFor="let categories of eventCategories">{{categories}}</mat-option>
       </mat-select>
     </mat-form-field>
   </form>
-
-  <mat-card class="mdc-layout-grid" *ngFor="let performance of performances" [routerLink]="['/events', performance.event.id]"
+  <button mat-raised-button *ngIf="isAdminLoggedIn()" class="new-event-button" routerLink="/event/newEvent" type="button">Event erstellen</button>
+  <mat-card class="mdc-layout-grid" *ngFor="let performance of performances" [routerLink]="['/events',performance.event.id]"
             mat-ripple>
-    <mat-card-title>{{performance.event.title}}</mat-card-title>
-    <mat-card-content>
+    <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{performance.event.title}}</mat-card-title>
+    <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">
       <p><mat-icon>calendar_today</mat-icon>{{performance.event.duration}} minuten</p>
-      <p><mat-icon>add_location</mat-icon> {{performance.date}}</p>
+      <p><mat-icon>add_location</mat-icon> {{performance.dateTime}}</p>
     </mat-card-content>
   </mat-card>
 </div>
