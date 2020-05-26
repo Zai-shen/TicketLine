@@ -10,6 +10,7 @@ import { EventDetailComponent } from './components/event-detail/event-detail.com
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { CreateEventComponent } from './components/create-event/create-event.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'artists', component: ArtistsComponent },
   { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationComponent},
-  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent }
+  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
+  { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 
 @NgModule({

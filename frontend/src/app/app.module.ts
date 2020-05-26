@@ -26,6 +26,15 @@ import { ArtistsComponent } from './components/artists/artists.component';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { CreateEventComponent } from './components/create-event/create-event.component';
+import { CreatePerformanceModalComponent } from './components/create-event/create-performance-modal/create-performance-modal.component';
+import { MatTableModule } from '@angular/material/table';
+import { PerformanceTableComponent } from './components/create-event/performance-table/performance-table.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
@@ -33,7 +42,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialogModule } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -50,7 +59,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     LocationComponent,
     CreateLocationComponent,
     ArtistsComponent,
-    UserListComponent
+    UserListComponent,
+    CreateEventComponent,
+    CreatePerformanceModalComponent,
+    PerformanceTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,14 +84,21 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatProgressSpinnerModule,
     MatChipsModule,
     MatButtonToggleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule,
+    MatDialogModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMaterialTimepickerModule
   ],
   providers: [
     {
       provide: MatPaginatorIntl,
       useClass: CustomPaginatorComponent
     },
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

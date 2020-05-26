@@ -504,7 +504,13 @@ paths:
       responses:
         201:
           description: Created event entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created event
         400:
           description: Invalid input
           content:
@@ -639,7 +645,13 @@ paths:
       responses:
         201:
           description: Created performance entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created performance
         400:
           description: Invalid input
           content:
@@ -1344,8 +1356,10 @@ components:
         category:
           $ref: '#/components/schemas/EventCategory'
         duration:
-          type: string
-          example: 1h 30m
+          type: integer
+          format: int64
+          example: 120
+          description: Duration in minutes
         description:
           type: string
           example: Awesome concert of the best band in the best location!
@@ -1360,14 +1374,10 @@ components:
           type: integer
           format: int64
           example: 73
-        date:
+        dateTime:
           type: string
-          format: date
-          example: '2020-08-17'
-        time:
-          type: string
-          format: time of day
-          example: '18:00'
+          format: date-time
+          example: '2020-08-17 18:00'
         event:
           $ref: '#/components/schemas/EventDTO'
         location:
