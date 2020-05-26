@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.config;
 
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.SpecialCorsFilter;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtAuthenticationFilter;
 import at.ac.tuwien.sepm.groupphase.backend.security.JwtAuthorizationFilter;
@@ -28,17 +27,15 @@ import java.util.stream.Collectors;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RequestMatcher whiteListedRequests;
     private final SecurityProperties securityProperties;
     private final JwtTokenizer jwtTokenizer;
 
     @Autowired
-    public SecurityConfig(UserService userService, UserRepository userRepository, PasswordEncoder passwordEncoder,
+    public SecurityConfig(UserService userService, PasswordEncoder passwordEncoder,
         SecurityProperties securityProperties, JwtTokenizer jwtTokenizer) {
         this.userService = userService;
-        this.userRepository = userRepository;
         this.securityProperties = securityProperties;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenizer = jwtTokenizer;
@@ -57,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .permitAll()
             .and()
-            .addFilter(new JwtAuthenticationFilter(authenticationManager(), securityProperties, jwtTokenizer, userRepository))
+            .addFilter(new JwtAuthenticationFilter(authenticationManager(), securityProperties, jwtTokenizer))
             .addFilter(new JwtAuthorizationFilter(authenticationManager(), securityProperties))
             .addFilterBefore(new SpecialCorsFilter(securityProperties), ChannelProcessingFilter.class)
             .sessionManagement()

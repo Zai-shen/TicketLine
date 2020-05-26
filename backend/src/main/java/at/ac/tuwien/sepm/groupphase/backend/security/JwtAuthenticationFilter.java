@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.security;
 
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.SecurityProperties;
 import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +26,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-    private UserRepository userRepository;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, SecurityProperties securityProperties,
-        JwtTokenizer jwtTokenizer, UserRepository userRepository) {
+        JwtTokenizer jwtTokenizer) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenizer = jwtTokenizer;
-        this.userRepository = userRepository;
         setFilterProcessesUrl(securityProperties.getLoginUri());
     }
 
@@ -42,15 +39,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         throws AuthenticationException {
         try {
             LoginDTO user = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
-            at.ac.tuwien.sepm.groupphase.backend.entity.User userInfo = userRepository.findUserByEmail(user.getEmail());
-            if (!userInfo.getLocked()) {
-                return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    user.getEmail(),
-                    user.getPassword()
-                ));
-            } else {
-                throw new BadCredentialsException("Bad credentials");
-            }
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                user.getPassword()
+            ));
         } catch (IOException e) {
             throw new BadCredentialsException("Wrong API request or JSON schema", e);
         }

@@ -2,13 +2,13 @@
   display: flex;
   align-items: center;
 }
-.flex-header {
+.flex-large {
   flex-basis: 30%;
 }
-.flex-value {
+.flex-small {
   flex-basis: 10%;
 }
-.flex-link {
+.flex-medium {
   flex-basis: 20%;
   text-align: center;
 }
@@ -28,9 +28,4 @@ mat-form-field {
 .add-user-button {
   flex-basis: 20%;
   margin-left: auto;
-}
-.users {
-  background-color: #ffffff;
-  margin-top: 5em;
-  padding: 5em;
 }

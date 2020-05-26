@@ -1,5 +1,5 @@
 <tl-error-message></tl-error-message>
-<div class="users mat-elevation-z4">
+<div class="main-content mat-elevation-z4">
   <form class="flex-container">
     <mat-form-field class="flex-header">
       <input [(ngModel)]="searchEmail" (change)="onSearchEmailChange()" matInput type="search" placeholder="E-Mail"
@@ -17,20 +17,20 @@
   </form>
 
   <div class="flex-container list-header">
-    <div class="flex-header">E-Mail</div>
-    <div class="flex-value">Rolle</div>
-    <div class="flex-link">Anmeldeversuche</div>
-    <div class="flex-value">Sperre</div>
+    <div class="flex-large">E-Mail</div>
+    <div class="flex-small">Rolle</div>
+    <div class="flex-medium">Anmeldeversuche</div>
+    <div class="flex-small">Sperre</div>
   </div>
   <mat-card *ngFor="let user of users" class="mat-elevation-z2">
     <mat-card-content class="flex-container">
-      <div class="flex-header">{{user.email}}</div>
-      <div class="flex-value">{{user.role}}</div>
-      <div class="flex-link">{{user.wrong_attempts}}</div>
-      <div class="flex-value locked-message">{{user.locked ? 'gesperrt' : ''}}</div>
-      <button *ngIf="user.locked" class="flex-value" mat-stroked-button (click)="unlockUser(user.id)">Entsperren</button>
-      <button *ngIf="!user.locked" class="flex-value" mat-stroked-button color="warn">Sperren</button>
-      <button class="flex-link" mat-stroked-button color="primary" (click)="openResetPasswordDialog(user)">
+      <div class="flex-large">{{user.email}}</div>
+      <div class="flex-small">{{user.role}}</div>
+      <div class="flex-medium">{{user.wrong_attempts}}</div>
+      <div class="flex-small locked-message">{{user.locked ? 'gesperrt' : ''}}</div>
+      <button *ngIf="user.locked" class="flex-small" mat-stroked-button (click)="unlockUser(user.id)">Entsperren</button>
+      <button *ngIf="!user.locked" class="flex-small" mat-stroked-button color="warn" (click)="lockUser(user.id)">Sperren</button>
+      <button class="flex-medium" mat-stroked-button color="primary" (click)="openResetPasswordDialog(user)">
         Passwort zurücksetzen
       </button>
     </mat-card-content>

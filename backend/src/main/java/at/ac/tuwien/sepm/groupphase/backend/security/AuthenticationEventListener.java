@@ -5,7 +5,9 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,6 +34,16 @@ public class AuthenticationEventListener {
                 user.setLocked(true);
             }
             userRepository.save(user);
+        }
+    }
+
+    @EventListener
+    public void authentificationSuccessfull(AuthenticationSuccessEvent event) {
+        String email = event.getAuthentication().getName();
+        User user = userRepository.findUserByEmail(email);
+
+        if (user.getLocked()) {
+            throw new BadCredentialsException("Bad credentials");
         }
     }
 }

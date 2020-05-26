@@ -23,6 +23,10 @@ export class UserService {
     return this.userApiService.getUsers(locked, email, page, 'response');
   }
 
+  lockUser(userId: number): Observable<any> {
+    return this.userApiService.lockUser(userId);
+  }
+
   unlockUser(userId: number): Observable<any> {
     return this.userApiService.unlockUser(userId);
   }

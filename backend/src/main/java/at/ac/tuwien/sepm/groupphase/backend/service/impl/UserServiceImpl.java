@@ -13,8 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,6 +62,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setRole(AuthorizationRole.USER);
         user.setLocked(false);
+        user.setWrongAttempts(0);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -104,6 +107,20 @@ public class UserServiceImpl implements UserService {
         user.setWrongAttempts(0);
         user.setLocked(false);
         userRepository.save(user);
+    }
+
+    @Override
+    public void lockUser(Long userId) {
+        LOGGER.debug("Lock user with id " + userId);
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userRepository.findUserByEmail(username);
+        User user = userRepository.findUserById(userId);
+        if (!currentUser.equals(user)) {
+            user.setLocked(true);
+            userRepository.save(user);
+        } else {
+            throw new AccessDeniedException("Der aktuelle Benutzer kann sich nicht selbst sperren");
+        }
     }
 
     private User findUserByEmail(String email) {

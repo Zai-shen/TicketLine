@@ -257,6 +257,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /user/{userId}/lock:
+    patch:
+      security:
+        - ticketline_auth: []
+      tags:
+      - user
+      summary: Lock a user independent of wrong login attempts - Admin task
+      operationId: lockUser
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+            format: int64
+          required: true
+          description: ID of the user to lock
+          example: 3
+      responses:
+        200:
+          description: Successfully locked user
+          content: {}
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: User to lock not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /news:
     get:
       tags:

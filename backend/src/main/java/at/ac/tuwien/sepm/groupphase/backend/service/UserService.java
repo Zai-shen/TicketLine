@@ -61,4 +61,10 @@ public interface UserService extends UserDetailsService {
      * @param userId id of the user to unlock
      */
     void unlockUser(Long userId);
+
+    /**
+     * Lock user independently of wrong attempts
+     * @param userId id of the user to lock
+     */
+    void lockUser(Long userId);
 }
