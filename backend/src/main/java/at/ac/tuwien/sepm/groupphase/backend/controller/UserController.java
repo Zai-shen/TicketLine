@@ -1,10 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.AddressMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.UserDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.UserUpdateDTO;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.UserInfoDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
@@ -31,12 +34,14 @@ public class UserController implements UserApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserMapper userMapper;
-    private final UserInfoMapper userInfoMapper;
+    private final AddressMapper addressMapper;
     private final UserService userService;
+    private final UserInfoMapper userInfoMapper;
 
     @Autowired
-    public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService) {
+    public UserController(UserMapper userMapper, AddressMapper addressMapper, UserInfoMapper userInfoMapper, UserService userService) {
         this.userMapper = userMapper;
+        this.addressMapper = addressMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
     }
@@ -55,6 +60,22 @@ public class UserController implements UserApi {
         LOGGER.info("Reset Password for ID={}", userId);
         userService.resetPassword(userId, loginDTO.getPassword());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<Void> updateUser(Long userId, @Valid UserUpdateDTO userUpdateDTO) {
+        LOGGER.info("updating user {}",userId);
+        userService.updateUser(userId, userMapper.toEntity(userUpdateDTO));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<UserDTO> getSelf() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User currentUser = userService.findUserByEmail(username);
+        return ResponseEntity.ok(userMapper.toDto(currentUser));
     }
 
     @Override

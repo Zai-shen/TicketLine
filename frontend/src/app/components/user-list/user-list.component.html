@@ -1,5 +1,6 @@
-<tl-error-message></tl-error-message>
 <div class="main-content mat-elevation-z4">
+  <tl-error-message></tl-error-message>
+
   <form class="flex-container">
     <mat-form-field class="flex-header">
       <input [(ngModel)]="searchEmail" (change)="onSearchEmailChange()" matInput type="search" placeholder="E-Mail"
@@ -36,11 +37,11 @@
     </mat-card-content>
   </mat-card>
 
+
   <mat-paginator [length]="amountOfPages"
                  [pageIndex]="currentPage"
                  [pageSize]="USER_LIST_PAGE_SIZE"
                  [pageSizeOptions]="[USER_LIST_PAGE_SIZE]"
                  (page)="onPaginationChange($event)">
   </mat-paginator>
-
 </div>

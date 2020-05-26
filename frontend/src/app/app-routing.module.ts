@@ -9,7 +9,10 @@ import { ArtistsComponent } from './components/artists/artists.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { AuthGuard } from './guards/auth.guard';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { CreateEventComponent } from './components/create-event/create-event.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,7 +23,9 @@ const routes: Routes = [
   { path: 'artists', component: ArtistsComponent },
   { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationComponent},
-  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent }
+  { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
+  { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
+  { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
 ];
 
 @NgModule({
