@@ -23,6 +23,50 @@ tags:
   description: Manage artists
 paths:
   /user:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - user
+      summary: Get all locked users - Admin task
+      operationId: getUsers
+      parameters:
+        - in: query
+          name: locked
+          required: false
+          schema:
+            type: boolean
+          description: If true, will return locked users only
+          example: true
+        - in: query
+          name: email
+          required: false
+          schema:
+            type: string
+          description: E-Mail to search for
+          example: max.mustermann@example.com
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfoDTO'
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
     post:
       tags:
       - user
@@ -176,29 +220,6 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         404:
           description: Cannot find user to remove
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-  /user/locked:
-    get:
-      security:
-        - ticketline_auth: []
-      tags:
-      - user
-      summary: Get all locked users - Admin task
-      operationId: getLockedUsers
-      responses:
-        200:
-          description: List of locked users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserDTO'
-        403:
-          description: Not logged in or insufficient permission
           content:
             application/json:
               schema:
@@ -498,6 +519,34 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         422:
           description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}:
+    get:
+      tags:
+        - event
+      summary: Get the details of a  specific event
+      operationId: getEvent
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to get the performances for
+          required: true
+          example: 73
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDTO'
+        404:
+          description: Couldn't find event entry with that id
           content:
             application/json:
               schema:
@@ -1037,12 +1086,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /artist:
+      get:
+        tags:
+        - artist
+        summary: Return a list of artists
+        operationId: getArtistList
+        parameters:
+          - in: query
+            name: page
+            required: false
+            schema:
+              type: integer
+            description: Pagination number
+            example: 0
+        responses:
+          200:
+            description: List of artists
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ArtistDTO'
   /artist/search:
     post:
       tags:
         - artist
       summary: Search for artists
       operationId: searchArtists
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameter
         content:
@@ -1125,6 +1205,28 @@ components:
         - lastname
         - login
         - address
+    UserInfoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        email:
+          type: string
+          format: email
+          example: max.mustermann@example.com
+        role:
+          type: string
+          example: USER
+        locked:
+          type: boolean
+          example: false
+      required:
+        - id
+        - email
+        - role
+        - locked
     AddressDTO:
       type: object
       properties:
