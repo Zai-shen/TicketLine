@@ -44,6 +44,9 @@ public class AuthenticationEventListener {
 
         if (user.getLocked()) {
             throw new BadCredentialsException("Bad credentials");
+        } else {
+            user.setWrongAttempts(0);
+            userRepository.save(user);
         }
     }
 }
