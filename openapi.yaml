@@ -1255,7 +1255,7 @@ components:
         locked:
           type: boolean
           example: false
-        wrong_attempts:
+        wrongAttempts:
           type: integer
           example: 4
       required:

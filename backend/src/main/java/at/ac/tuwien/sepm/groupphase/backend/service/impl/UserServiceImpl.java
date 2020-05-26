@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -101,6 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void unlockUser(Long userId) {
         LOGGER.debug("Unlock user with id " + userId);
         User user = userRepository.findUserById(userId);
@@ -113,9 +115,8 @@ public class UserServiceImpl implements UserService {
     public void lockUser(Long userId) {
         LOGGER.debug("Lock user with id " + userId);
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currentUser = userRepository.findUserByEmail(username);
         User user = userRepository.findUserById(userId);
-        if (!currentUser.equals(user)) {
+        if (!username.equals(user.getEmail())) {
             user.setLocked(true);
             userRepository.save(user);
         } else {

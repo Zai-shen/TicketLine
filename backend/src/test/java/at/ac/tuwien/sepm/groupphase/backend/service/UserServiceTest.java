@@ -116,6 +116,7 @@ public class UserServiceTest {
 
         userService.unlockUser(4L);
 
+        assertThat(user.getLocked()).isFalse();
         assertThat(user.getWrongAttempts()).isEqualTo(0);
         verify(userRepository, times(1)).save(user);
     }

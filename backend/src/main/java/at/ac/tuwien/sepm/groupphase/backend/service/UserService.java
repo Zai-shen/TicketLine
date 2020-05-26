@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,6 +66,7 @@ public interface UserService extends UserDetailsService {
     /**
      * Lock user independently of wrong attempts
      * @param userId id of the user to lock
+     * @throws AccessDeniedException if the user attempts to lock himself
      */
     void lockUser(Long userId);
 }

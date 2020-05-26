@@ -30,7 +30,7 @@ public class AuthenticationEventListener {
         User user = userRepository.findUserByEmail(email);
         if (user != null) {
             user.setWrongAttempts(user.getWrongAttempts() + 1);
-            if (user.getWrongAttempts() == 5) {
+            if (user.getWrongAttempts() >= 5) {
                 user.setLocked(true);
             }
             userRepository.save(user);
@@ -38,7 +38,7 @@ public class AuthenticationEventListener {
     }
 
     @EventListener
-    public void authentificationSuccessfull(AuthenticationSuccessEvent event) {
+    public void authenticationSuccessfull(AuthenticationSuccessEvent event) {
         String email = event.getAuthentication().getName();
         User user = userRepository.findUserByEmail(email);
 
