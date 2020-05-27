@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import {AuthService} from '../../services/auth.service';
-import {NewsApiService, NewsDTO} from '../../../generated';
+import {NewsApiService, NewsDTO, UserDTO} from '../../../generated';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'tl-create-news',
@@ -11,11 +12,12 @@ import {NewsApiService, NewsDTO} from '../../../generated';
 })
 export class CreateNewsComponent implements OnInit {
 
+  userName: string;
   submitted: boolean = false;
   newsForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private newsApiService: NewsApiService,
-              private authService: AuthService) { }
+              private authService: AuthService, private userService: UserService) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -27,6 +29,19 @@ export class CreateNewsComponent implements OnInit {
       content: ['', Validators.required],
       author: ['', Validators.required]
     });
+    this.getCurrentUsersName();
+  }
+
+  getCurrentUsersName() {
+    this.userService.getSelf().subscribe(
+      (user: UserDTO) => {
+        this.userName = user.firstname + ' ' + user.lastname;
+        this.newsForm.controls['author'].setValue(this.userName);
+      },
+      error => {
+        this.errorMessageComponent.defaultServiceErrorHandling(error);
+      }
+    );
   }
 
   /** Sends news creation request

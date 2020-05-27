@@ -32,7 +32,6 @@ export class NewsComponent implements OnInit {
     const days = Math.floor(duration / 86400000) % 31;
     const hours = Math.floor(duration / 3600000) % 24; // 1 Hour = 36000 Milliseconds
     const minutes = Math.floor((duration % 3600000) / 60000) % 60; // 1 Minute = 60000 Milliseconds
-    // const seconds = Math.floor(((duration % 360000) % 60000) / 1000) % 60; // 1 Second = 1000 Milliseconds
     let time;
     if (minutes <= 2) {
       time = 'gerade eben';
