@@ -37,22 +37,22 @@ export class NewsComponent implements OnInit {
       time = 'gerade eben';
     } else {
       if (months === 1) {
-        time += months + ' Monat ';
+        time += 'einem' + ' Monat ';
       } else if (months > 1) {
         time += months + ' Monaten ';
       }
       if (days === 1) {
-        time += days + ' Tag ';
+        time += 'einem' + ' Tag ';
       } else if (days > 1) {
         time += days + ' Tagen ';
       }
       if (hours === 1) {
-        time += hours + ' Stunde ';
+        time += 'einer' + ' Stunde ';
       } else if (hours > 1) {
         time += hours + ' Stunden ';
       }
       if (minutes === 1) {
-        time += minutes + ' Minute ';
+        time += 'einer' + ' Minute ';
       } else if (minutes > 1) {
         time += minutes + ' Minuten ';
       }
