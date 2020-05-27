@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(authRequest).subscribe(
       () => {
         console.log('Successfully logged in user: ' + authRequest.email);
-        this.router.navigate(['/']);
+        this.router.navigate(['/news']);
       },
       error => {
         if (error.error === 'Bad credentials') {
