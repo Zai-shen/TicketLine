@@ -33,7 +33,7 @@ export class NewsComponent implements OnInit {
     const hours = Math.floor(duration / 3600000) % 24; // 1 Hour = 36000 Milliseconds
     const minutes = Math.floor((duration % 3600000) / 60000) % 60; // 1 Minute = 60000 Milliseconds
     let time;
-    if (minutes <= 2) {
+    if (minutes <= 2 && hours === 0 && days === 0 && months === 0) {
       time = 'gerade eben';
     } else {
       time = 'vor ' + (months > 0 ? months + ' Monaten ' : '') + (days > 0 ? days + ' Tagen ' : '') +
