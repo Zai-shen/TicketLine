@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setRole(AuthorizationRole.USER);
         user.setLocked(false);
+        user.setWrongAttempts(0);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -102,6 +103,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void unlockUser(Long userId) {
+        LOGGER.debug("Unlock user with id " + userId);
+        User user = userRepository.findUserById(userId);
+        user.setWrongAttempts(0);
+        user.setLocked(false);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void lockUser(Long userId) {
+        LOGGER.debug("Lock user with id " + userId);
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findUserById(userId);
+        if (!username.equals(user.getEmail())) {
+            user.setLocked(true);
+            userRepository.save(user);
+        } else {
+            throw new AccessDeniedException("Der aktuelle Benutzer kann sich nicht selbst sperren");
+        }
+    }
+
     @Transactional(readOnly=true)
     public User findUserByEmail(String email) {
         LOGGER.debug("Find user by email");

@@ -94,4 +94,21 @@ public class UserController implements UserApi {
             .header("X-Total-Count", String.valueOf(users.getTotalElements()))
             .body(userInfoMapper.toDto(users.getContent()));
     }
+
+    @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
+    public ResponseEntity<Void> unlockUser(Long userId) {
+        LOGGER.info("Unlock user with id " + userId);
+        userService.unlockUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
+    public ResponseEntity<Void> lockUser(Long userId) {
+        LOGGER.info("Lock user with id " + userId);
+        userService.lockUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
