@@ -32,7 +32,7 @@ export class CreateNewsComponent implements OnInit {
     this.getCurrentUsersName();
   }
 
-  getCurrentUsersName() {
+  getCurrentUsersName(): void {
     this.userService.getSelf().subscribe(
       (user: UserDTO) => {
         this.userName = user.firstname + ' ' + user.lastname;
