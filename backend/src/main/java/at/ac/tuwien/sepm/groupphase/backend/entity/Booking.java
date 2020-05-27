@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,8 +15,11 @@ public class Booking {
     @Column(nullable = false)
     private Boolean isReservation;
 
-    @OneToMany
+    @ManyToOne
     private Performance performance;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
 
     public Long getId() {
         return id;
@@ -39,6 +43,14 @@ public class Booking {
 
     public void setPerformance(Performance performance) {
         this.performance = performance;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     @Override

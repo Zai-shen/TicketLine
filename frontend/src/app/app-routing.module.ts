@@ -13,6 +13,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
+import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
+  { path: 'tickets', component: TicketListComponent },
 ];
 
 @NgModule({

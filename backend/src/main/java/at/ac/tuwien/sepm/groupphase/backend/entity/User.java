@@ -36,7 +36,7 @@ public class User {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
     public User() {

@@ -1,11 +1,12 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.EventApi;
-import at.ac.tuwien.sepm.groupphase.backend.dto.CreateTicket;
-import at.ac.tuwien.sepm.groupphase.backend.dto.EventCategory;
-import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.EventMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
+import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -30,15 +32,20 @@ public class EventController implements EventApi {
     private final EventService eventService;
     private final PerformanceMapper performanceMapper;
     private final EventMapper eventMapper;
+    private final BookingService bookingService;
+    private final TicketMapper ticketMapper;
 
     private static final int PAGE_SIZE = 10;
 
     public EventController(PerformanceService performanceService, EventService eventService,
-        PerformanceMapper performanceMapper, EventMapper eventMapper) {
+        PerformanceMapper performanceMapper, EventMapper eventMapper, BookingService bookingService,
+        TicketMapper ticketMapper) {
         this.performanceService = performanceService;
         this.eventService = eventService;
         this.performanceMapper = performanceMapper;
         this.eventMapper = eventMapper;
+        this.bookingService = bookingService;
+        this.ticketMapper = ticketMapper;
     }
 
     @Override
@@ -57,6 +64,12 @@ public class EventController implements EventApi {
     }
 
     @Override
+    public ResponseEntity<List<PerformanceDTO>> getPerformances(Long eventId) {
+        LOGGER.info("Get performances for event {}", eventId);
+        return ResponseEntity.ok(performanceMapper.toDto(eventService.getPerformances(eventId)));
+    }
+
+    @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Long> createEvent(@Valid EventDTO eventDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -72,9 +85,9 @@ public class EventController implements EventApi {
 
     @Override
     public ResponseEntity<Long> createTicket(Long eventId, Long performanceId, @Valid Optional<Boolean> reserve,
-        @Valid List<CreateTicket> createTicket) {
-        LOGGER.info("Creat Ticket");
-        performanceService.createTicket(performanceId, reserve.orElse(false));
+        @Valid BookingDTO bookingDTO) {
+        LOGGER.info("Create ticket for performance {}", performanceId);
+        bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingDTO));
         return ResponseEntity.ok(0L);
     }
 }

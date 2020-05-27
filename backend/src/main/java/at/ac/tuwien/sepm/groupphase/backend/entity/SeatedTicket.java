@@ -1,40 +1,41 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import com.google.common.base.Objects;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
 public class SeatedTicket extends Ticket {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
 
-    public Long getId() {
-        return id;
+    @Column
+    private Long seatGroupId;
+
+    @Column
+    private Integer seatColumn;
+
+    @Column
+    private Integer seatRow;
+
+    public Long getSeatGroupId() {
+        return seatGroupId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setSeatGroupId(Long seatGroupId) {
+        this.seatGroupId = seatGroupId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        SeatedTicket location = (SeatedTicket) o;
-        return java.util.Objects.equals(id, location.id);
+    public Integer getSeatColumn() {
+        return seatColumn;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
+    public void setSeatColumn(Integer seatColumn) {
+        this.seatColumn = seatColumn;
+    }
+
+    public Integer getSeatRow() {
+        return seatRow;
+    }
+
+    public void setSeatRow(Integer seatRow) {
+        this.seatRow = seatRow;
     }
 }

@@ -2,14 +2,13 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.AddressMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
-import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.UserDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.UserUpdateDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
-import at.ac.tuwien.sepm.groupphase.backend.dto.UserInfoDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
+import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -37,13 +37,18 @@ public class UserController implements UserApi {
     private final AddressMapper addressMapper;
     private final UserService userService;
     private final UserInfoMapper userInfoMapper;
+    private final BookingService bookingService;
+    private final TicketMapper ticketMapper;
 
     @Autowired
-    public UserController(UserMapper userMapper, AddressMapper addressMapper, UserInfoMapper userInfoMapper, UserService userService) {
+    public UserController(UserMapper userMapper, AddressMapper addressMapper, UserInfoMapper userInfoMapper,
+        UserService userService, BookingService bookingService, TicketMapper ticketMapper) {
         this.userMapper = userMapper;
         this.addressMapper = addressMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
+        this.bookingService = bookingService;
+        this.ticketMapper = ticketMapper;
     }
 
     @Override
@@ -65,7 +70,7 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Void> updateUser(Long userId, @Valid UserUpdateDTO userUpdateDTO) {
-        LOGGER.info("updating user {}",userId);
+        LOGGER.info("updating user {}", userId);
         userService.updateUser(userId, userMapper.toEntity(userUpdateDTO));
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -93,5 +98,13 @@ public class UserController implements UserApi {
         return ResponseEntity.ok()
             .header("X-Total-Count", String.valueOf(users.getTotalElements()))
             .body(userInfoMapper.toDto(users.getContent()));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<TicketResponseDTO> getTicketsOfUser() {
+        LOGGER.info("Get all tickets for current user");
+        TicketResponseDTO ticketResponseDTO = ticketMapper.toDot(bookingService.getAllBookingsOfUser());
+        return ResponseEntity.ok(ticketResponseDTO);
     }
 }

@@ -1,0 +1,18 @@
+<div class="mat-elevation-z4 main-content">
+  <h2>Freie Tickets</h2>
+  <mat-card class="mdc-layout-grid" *ngFor="let ticket of tickets.freeTickets" mat-ripple>
+    <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{ticket.id}}</mat-card-title>
+    <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">
+      <span *ngIf="ticket.reserved">reserviert</span>
+    </mat-card-content>
+  </mat-card>
+
+  <h2>Sitzplätze</h2>
+  <mat-card class="mdc-layout-grid" *ngFor="let ticket of tickets.seatedTickets" mat-ripple>
+    <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{ticket.id}}</mat-card-title>
+    <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">Reihe: {{ticket.seat.x}} Platz: {{ticket.seat.y}}<br>
+      <span *ngIf="ticket.reserved">reserviert</span>
+    </mat-card-content>
+  </mat-card>
+
+</div>

@@ -633,7 +633,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PerformanceDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceDTO'
         404:
           description: Couldn't find event entry with that id
           content:
@@ -720,13 +722,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  oneOf:
-                    - $ref: '#/components/schemas/FreeSeatgroupOccupationDTO'
-                    - $ref: '#/components/schemas/FixedSeatgroupOccupationDTO'
-                  discriminator:
-                    propertyName: type
+                $ref: '#/components/schemas/BookingDTO'
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -770,13 +766,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
-                  - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
-                discriminator:
-                  propertyName: type
+              $ref: '#/components/schemas/BookingDTO'
       responses:
         201:
           description: Created Tickets
@@ -834,13 +824,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                oneOf:
-                  - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
-                  - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
-                discriminator:
-                  propertyName: type
+              $ref: '#/components/schemas/BookingDTO'
       responses:
         200:
           description: Canceled Tickets
@@ -868,7 +852,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /user/{userId}/tickets:
+  /user/tickets:
     get:
       security:
         - ticketline_auth: []
@@ -876,40 +860,13 @@ paths:
         - ticket
       summary: Get all booked and reserved tickets of a user
       operationId: getTicketsOfUser
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: ID of the user to display the booked tickets of
-          example: 3
       responses:
         200:
           description: Tickets of the user
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  reservedTickets:
-                    type: array
-                    items:
-                      oneOf:
-                        - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
-                        - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
-                      discriminator:
-                        propertyName: type
-                  bookedTickets:
-                    type: array
-                    items:
-                      oneOf:
-                        - $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
-                        - $ref: '#/components/schemas/FixedSeatgroupBookingDTO'
-                      discriminator:
-                        propertyName: type
-
+                $ref: '#/components/schemas/TicketResponseDTO'
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -1112,7 +1069,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PerformanceDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceDTO'
         404:
           description: Couldn't find location entry with that id
           content:
@@ -1557,33 +1516,47 @@ components:
         y:
           type: integer
           example: 3
-    SeatgroupBookingDTO:
-      type: object
-      properties:
         seatgroupId:
           type: integer
           format: int64
           example: 66
-        type:
-          type: string
-          example: FreeSeatgroupBookingDTO
     FreeSeatgroupBookingDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupBookingDTO'
-        - type: object
-          properties:
-            amount:
-              type: integer
-              example: 3
-    FixedSeatgroupBookingDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupBookingDTO'
-        - type: object
-          properties:
-            bookedSeats:
-              type: array
-              items:
-                $ref: '#/components/schemas/SeatgroupSeatDTO'
+        properties:
+          amount:
+            type: integer
+            example: 3
+    BookingDTO:
+      properties:
+        fixedSeats:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatgroupSeatDTO'
+        freeSeats:
+          $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+    SeatedTicketDTO:
+      properties:
+        seat:
+          $ref: '#/components/schemas/SeatgroupSeatDTO'
+        id:
+          type: integer
+        reserved:
+          type: boolean
+    FreeTicketDTO:
+      properties:
+        id:
+          type: integer
+        reserved:
+          type: boolean
+    TicketResponseDTO:
+      properties:
+        freeTickets:
+          type: array
+          items:
+            $ref: '#/components/schemas/FreeTicketDTO'
+        seatedTickets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatedTicketDTO'
   securitySchemes:
     ticketline_auth:
       type: http

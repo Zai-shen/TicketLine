@@ -71,4 +71,9 @@ public interface UserService extends UserDetailsService {
      */
     Page<User> getLockedUsers(Pageable pageable, @Nullable String email);
 
+    /**
+     * @return returns the currently logged in user
+     */
+    User getCurrentLoggedInUser();
+
 }

@@ -17,6 +17,7 @@ public class Performance {
     private OffsetDateTime dateTime;
 
     @ManyToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
 
     @ManyToOne()

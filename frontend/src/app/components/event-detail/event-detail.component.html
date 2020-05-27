@@ -12,6 +12,9 @@
   <mat-grid-list cols="8" rowHeight="1:1">
     <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>
   </mat-grid-list>
+
+  <button mat-raised-button (click)="buyTicket(false)">Kaufen</button>
+  <button mat-raised-button (click)="buyTicket(true)">Reservieren</button>
 </div>
 <mat-spinner *ngIf="!event && !errorMsg"></mat-spinner>
 <div class="error-msg" *ngIf="errorMsg">
