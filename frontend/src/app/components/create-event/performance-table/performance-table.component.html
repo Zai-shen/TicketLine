@@ -1,0 +1,35 @@
+<mat-table *ngIf="performances != null && performances.length > 0" [dataSource]="performances" class="mat-elevation-z8">
+
+  <!-- Location Column -->
+  <ng-container matColumnDef="location">
+    <mat-header-cell *matHeaderCellDef> Ort </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.location.description}} </mat-cell>
+  </ng-container>
+
+  <!-- Date/Time Column -->
+  <ng-container matColumnDef="datetime">
+    <mat-header-cell *matHeaderCellDef> Datum </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.dateTime | date: 'dd.MM.yyyy H:mm'}} </mat-cell>
+  </ng-container>
+
+  <!-- Edit Column -->
+  <ng-container matColumnDef="edit">
+    <mat-header-cell *matHeaderCellDef> Bearbeiten </mat-header-cell>
+    <mat-cell *matCellDef="let element"> <mat-icon class="clickable" aria-hidden="false" (click)="onEdit(element)">edit</mat-icon> </mat-cell>
+  </ng-container>
+
+  <!-- Delete Column -->
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef> Löschen </mat-header-cell>
+    <mat-cell *matCellDef="let element"> <mat-icon class="clickable" aria-hidden="false" (click)="onDelete(element)">delete</mat-icon> </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="performanceColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: performanceColumns;"></mat-row>
+</mat-table>
+
+<div *ngIf="performances == null || performances.length === 0">
+  Keine Aufführungen
+</div>
+
+<button mat-raised-button class="add-performance-button" (click)="addPerformance()">Aufführung hinzufügen</button>

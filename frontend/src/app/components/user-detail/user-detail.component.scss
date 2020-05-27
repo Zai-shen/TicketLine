@@ -1,0 +1,25 @@
+mat-grid-tile {
+  background-color: lightblue;
+}
+mat-spinner {
+  margin: 5em auto;
+}
+
+.error-msg {
+  margin-top: 5em;
+  text-align: center;
+}
+
+form {
+  .field-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    * {
+      flex: 1 1 auto;
+    }
+    mat-form-field {
+      margin: 3em;
+    }
+  }
+}

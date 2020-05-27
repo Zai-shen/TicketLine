@@ -5,8 +5,9 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
-
 import java.time.LocalDateTime;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import java.time.OffsetDateTime;
 
 public class DomainTestObjectFactory {
 
@@ -48,4 +49,24 @@ public class DomainTestObjectFactory {
         location.setAddress(getAddress());
         return location;
     }
+
+    public static Event getEvent() {
+        Event event = new Event();
+        event.setId(1L);
+        event.setTitle("Event-Title");
+        event.setCategory(CategoryEnum.FESTIVAL);
+        event.setDescription("description");
+        event.setDuration(10L);
+        return event;
+    }
+
+    public static Performance getPerformance() {
+        Performance performance = new Performance();
+        performance.setId(1L);
+        performance.setDateTime(OffsetDateTime.now().plusDays(1));
+        performance.setLocation(getLocation());;
+        performance.setEvent(getEvent());
+        return performance;
+    }
+
 }

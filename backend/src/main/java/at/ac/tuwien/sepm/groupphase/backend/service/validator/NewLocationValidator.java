@@ -8,6 +8,6 @@ public class NewLocationValidator extends Validator<Location> {
         notEmptyOrName(location.getDescription(),"Bezeichnung");
         validOrMessage(location.getDescription().length() <= 100, "Bezeichnung darf nicht größer als 100 Zeichen sein");
         notNullOrName(location.getAddress(),"Adresse");
-        callValidatorOnChild(new NewAddressValidator(), location.getAddress());
+        callValidatorOnChild(new AddressValidator(), location.getAddress());
     }
 }

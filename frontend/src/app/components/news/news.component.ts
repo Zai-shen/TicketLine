@@ -24,7 +24,7 @@ export class NewsComponent implements OnInit {
     return this.authService.isAdminLoggedIn();
   }
 
-  computeMinutes(date: string) {
+  computeMinutes(date: Date) {
     const eventStartTime = new Date(date);
     const eventEndTime = new Date();
     const duration = eventEndTime.valueOf() - eventStartTime.valueOf();

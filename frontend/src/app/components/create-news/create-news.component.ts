@@ -37,7 +37,7 @@ export class CreateNewsComponent implements OnInit {
     this.submitted = true;
     if (this.newsForm.valid) {
       const newsDTO: NewsDTO = Object.assign({}, this.newsForm.value);
-      newsDTO.publishedAt = new Date().toISOString();
+      newsDTO.publishedAt = new Date();
       this.newsApiService.createNews(newsDTO).subscribe(
         () => {
           console.log('News successfully created');

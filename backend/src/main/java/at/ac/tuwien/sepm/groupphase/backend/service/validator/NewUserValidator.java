@@ -12,6 +12,6 @@ public class NewUserValidator extends Validator<User> {
         notNullOrName(user.getAddress(), "Adresse");
         notEmptyOrName(user.getFirstname(), "Vorname");
         notEmptyOrName(user.getLastname(), "Nachname");
-        callValidatorOnChild(new NewAddressValidator(), user.getAddress());
+        callValidatorOnChild(new AddressValidator(), user.getAddress());
     }
 }
