@@ -1,10 +1,11 @@
 package at.ac.tuwien.sepm.groupphase.backend.util;
 
+import at.ac.tuwien.sepm.groupphase.backend.dto.*;
+import java.time.LocalDateTime;
 import at.ac.tuwien.sepm.groupphase.backend.dto.AddressDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.LoginDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.UserDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.UserUpdateDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 
 import java.time.OffsetDateTime;
 
@@ -44,6 +45,17 @@ public class DTOTestObjectFactory {
         addressDTO.setCity("St. Pölten");
         addressDTO.setCountry("Österreich");
         return addressDTO;
+    }
+
+    public static NewsDTO getNewsDTO() {
+        final NewsDTO newsDTO = new NewsDTO();
+        newsDTO.setId(16L);
+        newsDTO.setTitle("Breaking News!");
+        newsDTO.setSummary("In conclusion we can conclude alternative facts are in fact no facts.");
+        newsDTO.setContent("Today we discovered, that I am to lazy to write more content.");
+        newsDTO.setPublishedAt(LocalDateTime.of(2002, 1, 13, 12, 55, 59).atOffset(OffsetDateTime.now().getOffset()));
+        newsDTO.setAuthor("Doris Duftler");
+        return newsDTO;
     }
 
     public static LocationDTO getLocationDTO() {

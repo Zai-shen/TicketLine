@@ -26,6 +26,8 @@ import { ArtistsComponent } from './components/artists/artists.component';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import { NewsComponent } from './components/news/news.component';
+import { CreateNewsComponent } from './components/create-news/create-news.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
 import { CreatePerformanceModalComponent } from './components/create-event/create-performance-modal/create-performance-modal.component';
 import { MatTableModule } from '@angular/material/table';
@@ -62,6 +64,8 @@ import { DatePipe } from '@angular/common';
     EventDetailComponent,
     LocationComponent,
     CreateLocationComponent,
+    NewsComponent,
+    CreateNewsComponent,
     UserDetailComponent,
     ArtistsComponent,
     UserListComponent,

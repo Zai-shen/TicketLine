@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { LocationApiService, LocationDTO, SearchLocationDTO } from '../../../generated';
-import { AuthService } from '../../services/auth.service';
+import {LocationApiService} from '../../../generated/api/location.api.service';
+import {LocationDTO} from '../../../generated/model/locationDTO';
+import {SearchLocationDTO} from '../../../generated/model/searchLocationDTO';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'tl-location',
