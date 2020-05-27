@@ -32,12 +32,30 @@ export class NewsComponent implements OnInit {
     const days = Math.floor(duration / 86400000) % 31;
     const hours = Math.floor(duration / 3600000) % 24; // 1 Hour = 36000 Milliseconds
     const minutes = Math.floor((duration % 3600000) / 60000) % 60; // 1 Minute = 60000 Milliseconds
-    let time;
+    let time = 'vor ';
     if (minutes <= 2 && hours === 0 && days === 0 && months === 0) {
       time = 'gerade eben';
     } else {
-      time = 'vor ' + (months > 0 ? months + ' Monaten ' : '') + (days > 0 ? days + ' Tagen ' : '') +
-        (hours > 0 ? hours + ' Stunden ' : '') + (minutes > 0 ? minutes + ' Minuten' : '');
+      if (months === 1) {
+        time += months + ' Monat ';
+      } else if (months > 1) {
+        time += months + ' Monaten ';
+      }
+      if (days === 1) {
+        time += days + ' Tag ';
+      } else if (days > 1) {
+        time += days + ' Tagen ';
+      }
+      if (hours === 1) {
+        time += hours + ' Stunde ';
+      } else if (hours > 1) {
+        time += hours + ' Stunden ';
+      }
+      if (minutes === 1) {
+        time += minutes + ' Minute ';
+      } else if (minutes > 1) {
+        time += minutes + ' Minuten ';
+      }
     }
     return time;
   }
