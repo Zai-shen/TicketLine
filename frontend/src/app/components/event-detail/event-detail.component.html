@@ -12,9 +12,11 @@
   <mat-divider></mat-divider>
   <h2>Saalplan</h2>
 
-  <mat-card *ngFor="let performance of performances">
-    <mat-card-header><h3>{{performance.location.description}}</h3></mat-card-header>
-    <mat-card-content>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let performance of performances">
+      <mat-expansion-panel-header>
+        Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> am {{ performance.dateTime }}
+      </mat-expansion-panel-header>
       <mat-grid-list cols="8" rowHeight="1:1">
         <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>
       </mat-grid-list>
@@ -22,8 +24,8 @@
         <button mat-raised-button (click)="buyTicket(false, performance)">Kaufen</button>
         <button mat-raised-button (click)="buyTicket(true, performance)">Reservieren</button>
       </span>
-    </mat-card-content>
-  </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 <mat-spinner *ngIf="!event && !errorMsg"></mat-spinner>
 <div class="error-msg" *ngIf="errorMsg">

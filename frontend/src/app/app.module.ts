@@ -50,6 +50,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -75,37 +76,38 @@ import { TicketListComponent } from './components/ticket-list/ticket-list.compon
     PerformanceTableComponent,
     TicketListComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatPaginatorModule,
-    MatDividerModule,
-    MatGridListModule,
-    MatRippleModule,
-    MatProgressSpinnerModule,
-    MatChipsModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatButtonToggleModule,
-    MatDialogModule,
-    MatTableModule,
-    MatDialogModule,
-    MatAutocompleteModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    NgxMaterialTimepickerModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatDividerModule,
+        MatGridListModule,
+        MatRippleModule,
+        MatProgressSpinnerModule,
+        MatChipsModule,
+        MatToolbarModule,
+        MatMenuModule,
+        MatSnackBarModule,
+        MatButtonToggleModule,
+        MatDialogModule,
+        MatTableModule,
+        MatDialogModule,
+        MatAutocompleteModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        NgxMaterialTimepickerModule,
+        MatExpansionModule
+    ],
   providers: [
     {
       provide: MatPaginatorIntl,
