@@ -1,6 +1,6 @@
 <mat-card>
 <div class="results">
-  <p *ngIf="news"><b>{{news.length}} News gefunden</b></p>
+  <p *ngIf="news"><b>{{newsFound}} News gefunden</b></p>
   <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" class="btn btn-secondary btn-sm mr-4">News hinzufügen</button>
 </div>
 </mat-card>
@@ -13,3 +13,9 @@
     <p><mat-icon>perm_identity</mat-icon>von {{newsEntry.author}}</p>
   </mat-card-content>
 </mat-card>
+
+<mat-paginator [length]="amountOfPages"
+               [pageSize]="NEWS_LIST_PAGE_SIZE"
+               [pageSizeOptions]="[NEWS_LIST_PAGE_SIZE]"
+               (page)="onPaginationChange($event)">
+</mat-paginator>

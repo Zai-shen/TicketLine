@@ -39,16 +39,13 @@
         <label for="author">Author</label>
         <input type="text" name="author" formControlName="author" class="form-control"
                id="author" placeholder="Author">
-        <div *ngIf="submitted && newsForm.get('author').errors" class="error">
-          <small class="form-text text-warning" *ngIf="newsForm.get('author').errors.required">
-            Der Author ist ein Pflichtfeld!
-          </small>
-        </div>
       </div>
 
       </div>
 
-    <button type="submit" class="btn btn-success float-right">Speichern</button>
+    <button type="button" (click)="submitAndRedirect()" class="btn btn-outline-success float-right">Speichern und zur&uuml;ck</button>
+
+    <button type="submit" class="btn btn-success float-right mr-2">Speichern</button>
   </form>
-  <button routerLink="/news" type="button" class="btn btn-warning float-left">Zur&uuml;ck</button>
+  <button routerLink="/news" type="button" class="btn btn-warning float-left">Abbrechen</button>
 </div>

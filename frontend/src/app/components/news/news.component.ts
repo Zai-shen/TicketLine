@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { NewsApiService, NewsDTO } from '../../../generated';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NewsDTO} from '../../../generated';
 import {AuthService} from '../../services/auth.service';
+import {ErrorMessageComponent} from '../error-message/error-message.component';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {NewsService} from '../../services/news.service';
 
 @Component({
   selector: 'tl-news',
@@ -9,19 +12,32 @@ import {AuthService} from '../../services/auth.service';
 })
 export class NewsComponent implements OnInit {
 
-  constructor(private newsService: NewsApiService, private authService: AuthService) {
+  readonly NEWS_LIST_PAGE_SIZE = 25;
+  news: NewsDTO[];
+  newsFound: number;
+  amountOfPages = 1;
+  private currentPage = 0;
+
+  @ViewChild(ErrorMessageComponent)
+  private errorMessageComponent: ErrorMessageComponent;
+
+  @ViewChild(MatPaginator)
+  private paginator: MatPaginator;
+
+  constructor(private newsService: NewsService, private authService: AuthService) {
   }
 
-  public news: NewsDTO[];
-
   ngOnInit() {
-    this.newsService.getNewsList().subscribe(value => {
-      this.news = value;
-    });
+    this.getAllNews();
   }
 
   isAdmin(): boolean {
     return this.authService.isAdminLoggedIn();
+  }
+
+  onPaginationChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    this.getAllNews();
   }
 
   computeMinutes(date: Date) {
@@ -32,15 +48,42 @@ export class NewsComponent implements OnInit {
     const days = Math.floor(duration / 86400000) % 31;
     const hours = Math.floor(duration / 3600000) % 24; // 1 Hour = 36000 Milliseconds
     const minutes = Math.floor((duration % 3600000) / 60000) % 60; // 1 Minute = 60000 Milliseconds
-    // const seconds = Math.floor(((duration % 360000) % 60000) / 1000) % 60; // 1 Second = 1000 Milliseconds
-    let time;
-    if (minutes <= 2) {
+    let time = 'vor ';
+    if (minutes <= 2 && hours === 0 && days === 0 && months === 0) {
       time = 'gerade eben';
     } else {
-      time = 'vor ' + (months > 0 ? months + ' Monaten ' : '') + (days > 0 ? days + ' Tagen ' : '') +
-        (hours > 0 ? hours + ' Stunden ' : '') + (minutes > 0 ? minutes + ' Minuten' : '');
+      if (months === 1) {
+        time += 'einem' + ' Monat ';
+      } else if (months > 1) {
+        time += months + ' Monaten ';
+      }
+      if (days === 1) {
+        time += 'einem' + ' Tag ';
+      } else if (days > 1) {
+        time += days + ' Tagen ';
+      }
+      if (hours === 1) {
+        time += 'einer' + ' Stunde ';
+      } else if (hours > 1) {
+        time += hours + ' Stunden ';
+      }
+      if (minutes === 1) {
+        time += 'einer' + ' Minute ';
+      } else if (minutes > 1) {
+        time += minutes + ' Minuten ';
+      }
     }
     return time;
   }
 
+  private getAllNews(): void {
+    this.newsService.getNewsList(this.currentPage).subscribe(news => {
+        if (news.body !== null) {
+          this.news = news.body;
+          this.amountOfPages = Number(news.headers.get('X-Total-Count')) || 1;
+          this.newsFound = Number(news.headers.get('X-Total-Count')) || 0;
+        }
+      },
+      error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
 }
