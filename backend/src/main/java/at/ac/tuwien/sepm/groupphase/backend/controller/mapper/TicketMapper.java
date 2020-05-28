@@ -4,18 +4,21 @@ import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Mapper
-public interface TicketMapper {
+@Component
+public class TicketMapper {
 
-    default List<Ticket> fromDto(BookingDTO bookingDTO) {
+    public List<Ticket> fromDto(BookingDTO bookingDTO) {
         List<Ticket> tickets = new ArrayList<>();
 
-        for (int i = 0; i < bookingDTO.getFreeSeats().getAmount(); i++) {
+        int freeTicketAmount =
+            bookingDTO.getFreeSeats().getAmount() != null ? bookingDTO.getFreeSeats().getAmount() : 0;
+
+        for (int i = 0; i < freeTicketAmount; i++) {
             Ticket ticket = new Ticket();
             tickets.add(ticket);
         }
@@ -30,7 +33,7 @@ public interface TicketMapper {
         return tickets;
     }
 
-    default TicketResponseDTO toDot(List<Booking> bookings) {
+    public TicketResponseDTO toDto(List<Booking> bookings) {
         TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
 
         for (Booking booking : bookings) {
@@ -41,11 +44,11 @@ public interface TicketMapper {
                     SeatedTicketDTO seatedTicketDTO = new SeatedTicketDTO();
                     seatedTicketDTO.setSeat(seatgroupSeatDTO);
                     seatedTicketDTO.setReserved(booking.getReservation());
-                    seatedTicketDTO.setId((ticket.getId().intValue()));
+                    seatedTicketDTO.setId(ticket.getId());
                     ticketResponseDTO.addSeatedTicketsItem(seatedTicketDTO);
                 } else {
                     FreeTicketDTO freeTicketDTO = new FreeTicketDTO();
-                    freeTicketDTO.setId(ticket.getId().intValue());
+                    freeTicketDTO.setId(ticket.getId());
                     freeTicketDTO.setReserved(booking.getReservation());
                     ticketResponseDTO.addFreeTicketsItem(freeTicketDTO);
                 }
@@ -54,7 +57,7 @@ public interface TicketMapper {
         return ticketResponseDTO;
     }
 
-    default SeatgroupSeatDTO getSeatgroupSeatDTO(SeatedTicket seatedTicket) {
+    private SeatgroupSeatDTO getSeatgroupSeatDTO(SeatedTicket seatedTicket) {
         SeatgroupSeatDTO seatgroupSeatDTO = new SeatgroupSeatDTO();
         seatgroupSeatDTO.setSeatgroupId(seatedTicket.getSeatGroupId());
         seatgroupSeatDTO.setX(seatedTicket.getSeatColumn());

@@ -5,7 +5,7 @@ import com.google.common.base.Objects;
 import javax.persistence.*;
 
 @Entity
-public class Seatgroup {
+public class SeatGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -26,7 +26,7 @@ public class Seatgroup {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Seatgroup location = (Seatgroup) o;
+        SeatGroup location = (SeatGroup) o;
         return java.util.Objects.equals(id, location.id);
     }
 

@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User getCurrentLoggedInUser() {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.findUserByEmail(username);

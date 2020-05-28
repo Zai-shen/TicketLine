@@ -15,7 +15,7 @@ public class Location {
     private String description;
 
     @OneToMany
-    private List<Seatgroup> seatGroups;
+    private List<SeatGroup> seatGroups;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -37,11 +37,11 @@ public class Location {
         this.description = description;
     }
 
-    public List<Seatgroup> getSeatGroups() {
+    public List<SeatGroup> getSeatGroups() {
         return seatGroups;
     }
 
-    public void setSeatGroups(List<Seatgroup> seatGroups) {
+    public void setSeatGroups(List<SeatGroup> seatGroups) {
         this.seatGroups = seatGroups;
     }
 

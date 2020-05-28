@@ -1527,11 +1527,17 @@ components:
           type: integer
           format: int64
           example: 66
+      required:
+        - x
+        - y
+        - seatgroupId
     FreeSeatgroupBookingDTO:
         properties:
           amount:
             type: integer
             example: 3
+        required:
+          - amount
     BookingDTO:
       properties:
         fixedSeats:
@@ -1546,14 +1552,23 @@ components:
           $ref: '#/components/schemas/SeatgroupSeatDTO'
         id:
           type: integer
+          format: int64
         reserved:
           type: boolean
+      required:
+        - id
+        - reserved
+        - seat
     FreeTicketDTO:
       properties:
         id:
           type: integer
+          format: int64
         reserved:
           type: boolean
+      required:
+        - id
+        - reserved
     TicketResponseDTO:
       properties:
         freeTickets:

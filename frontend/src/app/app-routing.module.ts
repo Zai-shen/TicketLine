@@ -27,11 +27,11 @@ const routes: Routes = [
   { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
-  { path: 'news', component: NewsComponent },
+  { path: 'news', canActivate: [AuthGuard], component: NewsComponent },
   { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
-  { path: 'tickets', component: TicketListComponent },
+  { path: 'tickets', canActivate: [AuthGuard], component: TicketListComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 

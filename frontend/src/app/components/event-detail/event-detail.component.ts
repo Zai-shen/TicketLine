@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  BookingDTO,
-  EventApiService,
-  EventDTO,
-  FreeSeatgroupBookingDTO,
-  PerformanceDTO,
-  TicketApiService
-} from '../../../generated';
+import { BookingDTO, EventApiService, EventDTO, PerformanceDTO, TicketApiService } from '../../../generated';
 import { ActivatedRoute, Router } from '@angular/router';
-import { round } from 'lodash-es';
-import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -27,7 +18,8 @@ export class EventDetailComponent implements OnInit {
   public errorMsg?: string;
 
   constructor(private eventService: EventApiService, private ticketApiService: TicketApiService,
-    private route: ActivatedRoute, private router: Router, private authService: AuthService, private snackBar: MatSnackBar) {
+    private route: ActivatedRoute, private router: Router, private authService: AuthService,
+    private snackBar: MatSnackBar) {
   }
 
   public seats = Array.from(Array(32).keys());
@@ -61,13 +53,17 @@ export class EventDetailComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  buyTicket(reserve: boolean, performance: PerformanceDTO) {
+  buyTicket(reserve: boolean, performance: PerformanceDTO): void {
     const bookingDto: BookingDTO = {};
+    // TODO: raplace these tickets with the real tickets, once the seatmap gets implemented.
     bookingDto.freeSeats = { amount: 1 };
     bookingDto.fixedSeats = [{ seatgroupId: 1, x: 1, y: 1 }];
+
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
-          .subscribe(() => {this.snackBar.open('Kauf erfolgreich'); this.router.navigate(['/tickets']);
+          .subscribe(() => {
+            this.snackBar.open('Kauf erfolgreich');
+            this.router.navigate(['/tickets']);
           });
     }
   }

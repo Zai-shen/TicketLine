@@ -6,19 +6,16 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import org.junit.jupiter.api.Test;
 
-import java.awt.print.Book;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TicketMapperTest {
 
-    TicketMapper ticketMapper = new TicketMapperImpl();
+    private TicketMapper ticketMapper = new TicketMapper();
 
     @Test
     void fromDto() {
@@ -32,7 +29,6 @@ class TicketMapperTest {
 
         assertThat(ticketList.size()).isEqualTo(4);
         assertThat(ticketList).contains(seatedTicket);
-
     }
 
     private SeatedTicket getSeatedTicket() {
@@ -62,9 +58,9 @@ class TicketMapperTest {
         booking.setTickets(Collections.singletonList(getTicket()));
 
 
-        TicketResponseDTO ticketResponseDTO = ticketMapper.toDot(Arrays.asList(reservation, booking));
-        assertThat(ticketResponseDTO.getFreeTickets()).containsExactly(new FreeTicketDTO().id(2).reserved(false));
-        assertThat(ticketResponseDTO.getSeatedTickets()).containsExactly(new SeatedTicketDTO().id(1).seat(new SeatgroupSeatDTO().seatgroupId(1L).x(1).y(1)).reserved(true));
+        TicketResponseDTO ticketResponseDTO = ticketMapper.toDto(Arrays.asList(reservation, booking));
+        assertThat(ticketResponseDTO.getFreeTickets()).containsExactly(new FreeTicketDTO().id(2L).reserved(false));
+        assertThat(ticketResponseDTO.getSeatedTickets()).containsExactly(new SeatedTicketDTO().id(1L).seat(new SeatgroupSeatDTO().seatgroupId(1L).x(1).y(1)).reserved(true));
 
     }
 }

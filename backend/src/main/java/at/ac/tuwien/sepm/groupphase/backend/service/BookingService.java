@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface BookingService {
     /**
+     * Bookes a ticket for the current logged in user
      * @param performanceId Performance for which to book tickets
      * @param reserve should the tickets be reserved or bought
      * @param tickets a list of tickets to buy

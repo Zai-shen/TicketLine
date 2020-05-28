@@ -12,7 +12,7 @@ public class SeatGroupPerformance{
     private Long id;
 
     @ManyToOne
-    private Seatgroup seatGroup;
+    private SeatGroup seatGroup;
 
     @ManyToOne
     private Performance performance;
@@ -28,11 +28,11 @@ public class SeatGroupPerformance{
         this.id = id;
     }
 
-    public Seatgroup getSeatGroup() {
+    public SeatGroup getSeatGroup() {
         return seatGroup;
     }
 
-    public void setSeatGroup(Seatgroup seatGroup) {
+    public void setSeatGroup(SeatGroup seatGroup) {
         this.seatGroup = seatGroup;
     }
 

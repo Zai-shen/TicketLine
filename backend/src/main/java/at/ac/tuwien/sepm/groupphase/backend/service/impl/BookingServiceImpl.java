@@ -3,12 +3,9 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
-import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
-import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +24,8 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets) {
-        Performance performance = performanceRepository.getOne(performanceId);
+        Performance performance = performanceRepository.findById(performanceId).
+            orElseThrow(() -> new IllegalArgumentException("Performance not found"));
 
         Booking booking = new Booking();
         booking.setPerformance(performance);

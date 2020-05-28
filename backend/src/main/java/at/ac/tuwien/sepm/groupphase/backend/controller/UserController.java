@@ -101,17 +101,17 @@ public class UserController implements UserApi {
     }
 
     @Override
-    @Transactional
+    @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<TicketResponseDTO> getTicketsOfUser() {
         LOGGER.info("Get all tickets for current user");
-        TicketResponseDTO ticketResponseDTO = ticketMapper.toDot(bookingService.getAllBookingsOfUser());
+        TicketResponseDTO ticketResponseDTO = ticketMapper.toDto(bookingService.getAllBookingsOfUser());
         return ResponseEntity.ok(ticketResponseDTO);
     }
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Void> unlockUser(Long userId) {
-        LOGGER.info("Unlock user with id " + userId);
+        LOGGER.info("Unlock user with id {}", userId);
         userService.unlockUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -119,7 +119,7 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Void> lockUser(Long userId) {
-        LOGGER.info("Lock user with id " + userId);
+        LOGGER.info("Lock user with id {}", userId);
         userService.lockUser(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
