@@ -5,6 +5,8 @@ import {AuthService} from '../../services/auth.service';
 import {NewsApiService, NewsDTO, UserDTO} from '../../../generated';
 import {UserService} from '../../services/user.service';
 import { Router } from '@angular/router';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { Globals } from '../../global/globals';
 
 @Component({
   selector: 'tl-create-news',
@@ -19,7 +21,8 @@ export class CreateNewsComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private newsApiService: NewsApiService,
               private authService: AuthService, private userService: UserService,
-              private router: Router) { }
+              private router: Router, private snackBar: MatSnackBar,
+              private globals: Globals) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -64,14 +67,19 @@ export class CreateNewsComponent implements OnInit {
       newsDTO.publishedAt = new Date();
       this.newsApiService.createNews(newsDTO).subscribe(
         () => {
-          console.log('News successfully created');
-          alert('Erfolgreich gespeichert.');
+          this.newsForm.reset();
+          this.snackBar.open('Erfolgreich gespeichert.', 'OK', {
+            duration: this.globals.defaultSnackbarDuration,
+          });
         },
         error => () => {
           this.errorMessageComponent.defaultServiceErrorHandling(error);
-          alert('Fehler beim speichern:' + error.message);
+          this.snackBar.open('Fehler beim speichern:' + error.message, 'OK', {
+            duration: this.globals.defaultSnackbarDuration,
+          });
         }
       );
     }
+    this.submitted = false;
   }
 }

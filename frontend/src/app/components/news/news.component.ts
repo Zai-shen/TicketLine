@@ -82,7 +82,6 @@ export class NewsComponent implements OnInit {
           this.news = news.body;
           this.amountOfPages = Number(news.headers.get('X-Total-Count')) || 1;
           this.newsFound = Number(news.headers.get('X-Total-Count')) || 0;
-          console.log(this.newsFound);
         }
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
