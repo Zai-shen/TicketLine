@@ -63,6 +63,11 @@
                     <i>${data.performance.location.address.postalcode} ${data.performance.location.address.city}</i>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    ${data.getUUID()}
+                </td>
+            </tr>
         </table>
     </div>
 </div>

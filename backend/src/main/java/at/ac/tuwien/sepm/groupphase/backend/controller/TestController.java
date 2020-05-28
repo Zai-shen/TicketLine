@@ -2,7 +2,9 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
 import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PdfService;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayInputStream;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,8 +41,21 @@ public class TestController {
     @ApiOperation("Returns placeholder Pdf")
     public ResponseEntity<InputStreamResource> getPlaceholderPdf() {
         Event e = eventService.getEvent(1).get();
-        List<Performance> performances = eventService.getPerformances(e.getId());
-        TicketData td = new TicketData(e,"Row 1 Seat 4", performances.get(0), UUID.randomUUID());
+        e.setTitle("25 Jahre Rantanplan");
+        e.setDescription("Gitarre, Bass, Schlagzeug, Gesang, Trompete, Posaune, hier und da etwas Orgel, fertig. Wer da stillsitzen kann, muss mal zum Arzt. Der Titel Skapunk Band Nr.1 ist hiermit erfolgreich verteidigt. Das Treppchen wird vergoldet. Man wünscht sich mehr solche „Künstler“. Man wird an Ton Steine Scherben erinnert.");
+        Performance p = new Performance();
+        p.setDateTime(OffsetDateTime.of(2020,9,16,20,0,0,0, ZoneOffset.ofHours(2)));
+        Address arenaAddress = new Address();
+        arenaAddress.setCity("Wien");
+        arenaAddress.setCountry("Austria");
+        arenaAddress.setStreet("Baumgasse");
+        arenaAddress.setHousenr("80");
+        arenaAddress.setPostalcode("1030");
+        Location arena = new Location();
+        arena.setDescription("Arena Wien");
+        arena.setAddress(arenaAddress);
+        p.setLocation(arena);
+        TicketData td = new TicketData(e,"Reihe 1 Platz 14", p, UUID.randomUUID());
         ByteArrayFile pdf = pdfService.createPdfFromTemplate(td,"ticket.pdf","ticketTemplate.ftl");
 
         HttpHeaders headers = new HttpHeaders();
