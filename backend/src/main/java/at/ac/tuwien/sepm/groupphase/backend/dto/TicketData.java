@@ -12,6 +12,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Base64;
 import java.util.UUID;
 
@@ -20,12 +22,14 @@ public class TicketData {
     private final String seat;
     private final UUID uuid;
     private final Performance performance;
+    private final BigDecimal price;
 
-    public TicketData(Event event, String seat, Performance performance, UUID uuid) {
+    public TicketData(Event event, String seat, Performance performance, UUID uuid, BigDecimal price) {
         this.event = event;
         this.seat = seat;
         this.performance = performance;
         this.uuid = uuid;
+        this.price = price;
     }
 
     public Event getEvent() {
@@ -42,6 +46,10 @@ public class TicketData {
 
     public Performance getPerformance() {
         return performance;
+    }
+
+    public String formatPrice() {
+        return new DecimalFormat("0.00").format(this.price);
     }
 
     public String getBarcode() throws WriterException, IOException {

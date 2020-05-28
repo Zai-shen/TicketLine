@@ -7,8 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
-import at.ac.tuwien.sepm.groupphase.backend.service.PdfService;
-import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
+import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -19,22 +18,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 public class TestController {
 
-    private final PdfService pdfService;
     private final EventService eventService;
-    private final PerformanceService performanceService;
+    private final TicketService ticketService;
 
-    public TestController(PdfService pdfService, EventService eventService, PerformanceService performanceService) {
-        this.pdfService = pdfService;
+    public TestController(EventService eventService, TicketService ticketService) {
         this.eventService = eventService;
-        this.performanceService = performanceService;
+        this.ticketService = ticketService;
     }
 
     @PostMapping(path = "/pdf")
@@ -55,8 +55,11 @@ public class TestController {
         arena.setDescription("Arena Wien");
         arena.setAddress(arenaAddress);
         p.setLocation(arena);
-        TicketData td = new TicketData(e,"Reihe 1 Platz 14", p, UUID.randomUUID());
-        ByteArrayFile pdf = pdfService.createPdfFromTemplate(td,"ticket.pdf","ticketTemplate.ftl");
+
+        List<TicketData> tickets = new ArrayList<>();
+        tickets.add(new TicketData(e,"Reihe 1 Platz 14", p, UUID.randomUUID(), BigDecimal.valueOf(20.49)));
+        tickets.add(new TicketData(e,"Reihe 1 Platz 15", p, UUID.randomUUID(), BigDecimal.valueOf(20.49)));
+        ByteArrayFile pdf = ticketService.renderTickets(tickets);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
