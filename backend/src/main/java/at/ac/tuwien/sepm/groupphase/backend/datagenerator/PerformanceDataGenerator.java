@@ -55,8 +55,9 @@ public class PerformanceDataGenerator {
                 locaddr.setStreet(f.address().streetName());
                 locaddr.setHousenr(f.address().buildingNumber());
                 locaddr.setPostalcode(f.address().zipCode());
+
                 Location location = new Location();
-                location.setDescription(f.rickAndMorty().quote());
+                location.setDescription(f.lordOfTheRings().location());
                 location.setAddress(locaddr);
 
                 Performance performance = new Performance();
@@ -64,9 +65,15 @@ public class PerformanceDataGenerator {
                 performance.setEvent(event);
                 performance.setLocation(location);
 
+                Performance performance2 = new Performance();
+                performance2.setDateTime(OffsetDateTime.now().plusDays(i+1).plusHours(i));
+                performance2.setEvent(event);
+                performance2.setLocation(location);
+
                 eventRepository.save(event);
                 locationRepository.save(location);
                 performanceRepository.save(performance);
+                performanceRepository.save(performance2);
             }
         }
     }
