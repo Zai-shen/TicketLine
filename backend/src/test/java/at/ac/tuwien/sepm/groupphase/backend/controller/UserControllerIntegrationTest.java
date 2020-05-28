@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -97,5 +96,23 @@ public class UserControllerIntegrationTest {
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.header().exists("X-Total-Count"))
             .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void testUnlockUserWithInsufficientPermissions() throws Exception {
+        mockMvc.perform(securityHelper.withUserAuthentication(MockMvcRequestBuilders.patch("/user/2/unlock")
+            .contentType(MediaType.APPLICATION_JSON)))
+
+            .andExpect(MockMvcResultMatchers.status().isForbidden())
+            .andExpect(jsonPath("$.type").value("WARN"))
+            .andExpect(jsonPath("$.message").isNotEmpty());
+    }
+
+    @Test
+    public void testUnlockUserWithAdminPermissions() throws Exception {
+        mockMvc.perform(securityHelper.withAdminAuthentication(MockMvcRequestBuilders.patch("/user/2/unlock")
+            .contentType(MediaType.APPLICATION_JSON)))
+
+            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

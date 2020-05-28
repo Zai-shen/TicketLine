@@ -107,4 +107,21 @@ public class UserController implements UserApi {
         TicketResponseDTO ticketResponseDTO = ticketMapper.toDot(bookingService.getAllBookingsOfUser());
         return ResponseEntity.ok(ticketResponseDTO);
     }
+
+    @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
+    public ResponseEntity<Void> unlockUser(Long userId) {
+        LOGGER.info("Unlock user with id " + userId);
+        userService.unlockUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
+    public ResponseEntity<Void> lockUser(Long userId) {
+        LOGGER.info("Lock user with id " + userId);
+        userService.lockUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

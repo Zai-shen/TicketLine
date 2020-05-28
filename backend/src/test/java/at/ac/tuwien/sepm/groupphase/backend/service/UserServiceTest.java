@@ -108,4 +108,16 @@ public class UserServiceTest {
 
         verify(userRepository, times(1)).findAllByEmailContainingIgnoreCaseAndLockedIsTrue(pageable, searchEmail);
     }
+
+    @Test
+    public void testUnlockUser() {
+        final User user = new User();
+        when(userRepository.findUserById(any())).thenReturn(user);
+
+        userService.unlockUser(4L);
+
+        assertThat(user.getLocked()).isFalse();
+        assertThat(user.getWrongAttempts()).isEqualTo(0);
+        verify(userRepository, times(1)).save(user);
+    }
 }

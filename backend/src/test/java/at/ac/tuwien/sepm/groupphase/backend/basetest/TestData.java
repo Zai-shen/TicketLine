@@ -14,10 +14,9 @@ public interface TestData {
     Long ID = 1L;
     String TEST_NEWS_TITLE = "Title";
     String TEST_NEWS_SUMMARY = "Summary";
-    String TEST_NEWS_TEXT = "TestMessageText";
-    LocalDateTime TEST_NEWS_PUBLISHED_AT =
-        LocalDateTime.of(2019, 11, 13, 12, 15, 0, 0);
-
+    String TEST_NEWS_CONTENT = "TestMessageText";
+    LocalDateTime TEST_NEWS_PUBLISHED_AT = LocalDateTime.of(2019, 11, 13, 12, 15, 0, 0);
+    String TEST_NEWS_AUTHOR = "Doris Duftler";
     AddressDTO ADDRESS_DTO = new AddressDTO().city("city").country("country").housenr("123").postalcode("postalCode");
     LocationDTO LOCATION_DTO = new LocationDTO().id(0L).address(ADDRESS_DTO).description("Location123");
     EventDTO EVENT_DTO = new EventDTO().title("Event-Title")

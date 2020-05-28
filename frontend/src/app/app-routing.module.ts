@@ -9,6 +9,8 @@ import { ArtistsComponent } from './components/artists/artists.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
 import { LocationComponent } from './components/location/location.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
+import {NewsComponent} from './components/news/news.component';
+import {CreateNewsComponent} from './components/create-news/create-news.component';
 import { AuthGuard } from './guards/auth.guard';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserListComponent } from './components/user-list/user-list.component';
@@ -25,9 +27,12 @@ const routes: Routes = [
   { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
+  { path: 'news', component: NewsComponent },
+  { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
   { path: 'tickets', component: TicketListComponent },
+  { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 
 @NgModule({

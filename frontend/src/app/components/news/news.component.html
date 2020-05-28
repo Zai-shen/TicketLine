@@ -1,0 +1,15 @@
+<mat-card>
+<div class="results">
+  <p *ngIf="news"><b>{{news.length}} News gefunden</b></p>
+  <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" class="btn btn-secondary btn-sm mr-4">News hinzufügen</button>
+</div>
+</mat-card>
+
+<mat-card *ngFor="let newsEntry of news">
+  <mat-card-title>{{newsEntry.title}}</mat-card-title>
+  <mat-card-content>
+    <p>{{newsEntry.summary}}</p>
+    <p><mat-icon>history</mat-icon>{{ computeMinutes(newsEntry.publishedAt) }}</p>
+    <p><mat-icon>perm_identity</mat-icon>von {{newsEntry.author}}</p>
+  </mat-card-content>
+</mat-card>

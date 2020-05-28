@@ -60,6 +60,22 @@ export class UserListComponent implements OnInit {
     });
   }
 
+  lockUser(id: number): void {
+    this.userService.lockUser(id)
+      .subscribe(() => {
+        this.reload();
+      },
+      error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
+  unlockUser(id: number): void {
+    this.userService.unlockUser(id)
+      .subscribe(() => {
+        this.reload();
+      },
+      error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
   private reload(): void {
     this.userService.getUsers(this.showOnlyLockedUsers, this.searchEmail, this.currentPage)
         .subscribe(users => {
