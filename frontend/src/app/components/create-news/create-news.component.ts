@@ -4,6 +4,7 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 import {AuthService} from '../../services/auth.service';
 import {NewsApiService, NewsDTO, UserDTO} from '../../../generated';
 import {UserService} from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tl-create-news',
@@ -17,7 +18,8 @@ export class CreateNewsComponent implements OnInit {
   newsForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private newsApiService: NewsApiService,
-              private authService: AuthService, private userService: UserService) { }
+              private authService: AuthService, private userService: UserService,
+              private router: Router) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -27,10 +29,7 @@ export class CreateNewsComponent implements OnInit {
       title: ['', Validators.required],
       summary: ['', Validators.required],
       content: ['', Validators.required],
-      author: [{
-        value: '',
-        disabled: true},
-        Validators.required]
+      author: ['', Validators.required]
     });
     this.getCurrentUsersName();
   }
@@ -40,11 +39,17 @@ export class CreateNewsComponent implements OnInit {
       (user: UserDTO) => {
         this.userName = user.firstname + ' ' + user.lastname;
         this.newsForm.controls['author'].setValue(this.userName);
+        this.newsForm.controls['author'].disable();
       },
       error => {
         this.errorMessageComponent.defaultServiceErrorHandling(error);
       }
     );
+  }
+
+  submitAndRedirect() {
+    this.createNews();
+    this.router.navigate(['/news']);
   }
 
   /** Sends news creation request
@@ -55,12 +60,18 @@ export class CreateNewsComponent implements OnInit {
     this.submitted = true;
     if (this.newsForm.valid) {
       const newsDTO: NewsDTO = Object.assign({}, this.newsForm.value);
+      newsDTO.author = this.userName;
       newsDTO.publishedAt = new Date();
       this.newsApiService.createNews(newsDTO).subscribe(
         () => {
           console.log('News successfully created');
+          alert('Erfolgreich gespeichert.');
         },
-        error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+        error => () => {
+          this.errorMessageComponent.defaultServiceErrorHandling(error);
+          alert('Fehler beim speichern:' + error.message);
+        }
+      );
     }
   }
 }
