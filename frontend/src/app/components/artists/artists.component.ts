@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ErrorType, ArtistDTO, SearchArtistDTO } from '../../../generated';
+import { ArtistDTO, SearchArtistDTO } from '../../../generated';
 import { ArtistService } from '../../services/artist.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 
 @Component({
@@ -47,7 +47,7 @@ export class ArtistsComponent implements OnInit {
     }
   }
 
-  clearSearch() {
+  clearSearch(): void {
     this.searched = false;
     this.artistForm.reset();
     this.currentPage = 0;
@@ -55,13 +55,13 @@ export class ArtistsComponent implements OnInit {
     this.getAllArtists();
   }
 
-  newSearch() {
+  newSearch(): void {
     this.currentPage = 0;
     this.paginator.pageIndex = 0;
     this.searchArtists();
   }
 
-  searchArtists() {
+  searchArtists(): void {
     const searchArtistDTO: SearchArtistDTO = Object.assign({}, this.artistForm.value);
     if (!searchArtistDTO.firstname && !searchArtistDTO.lastname) {
     } else {

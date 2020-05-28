@@ -13,8 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.OffsetDateTime;
 
 @Profile("generateData")
 @Component
@@ -48,7 +47,7 @@ public class PerformanceDataGenerator {
                 event.setTitle(f.book().title());
                 event.setDescription(f.hitchhikersGuideToTheGalaxy().quote());
                 event.setCategory(CategoryEnum.ADVENTURE);
-                event.setDuration(f.random().nextInt(20,200));
+                event.setDuration(f.random().nextLong(180)+20);
 
                 Address locaddr = new Address();
                 locaddr.setCity(f.pokemon().location());
@@ -56,19 +55,25 @@ public class PerformanceDataGenerator {
                 locaddr.setStreet(f.address().streetName());
                 locaddr.setHousenr(f.address().buildingNumber());
                 locaddr.setPostalcode(f.address().zipCode());
+
                 Location location = new Location();
                 location.setDescription(f.lordOfTheRings().location());
                 location.setAddress(locaddr);
 
                 Performance performance = new Performance();
-                performance.setDate(LocalDate.now().plusDays(i));
-                performance.setLocalTime(LocalTime.NOON.plusHours(i));
+                performance.setDateTime(OffsetDateTime.now().plusDays(i).plusHours(i));
                 performance.setEvent(event);
                 performance.setLocation(location);
+
+                Performance performance2 = new Performance();
+                performance2.setDateTime(OffsetDateTime.now().plusDays(i+1).plusHours(i));
+                performance2.setEvent(event);
+                performance2.setLocation(location);
 
                 eventRepository.save(event);
                 locationRepository.save(location);
                 performanceRepository.save(performance);
+                performanceRepository.save(performance2);
             }
         }
     }

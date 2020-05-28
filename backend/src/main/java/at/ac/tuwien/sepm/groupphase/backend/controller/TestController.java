@@ -37,7 +37,7 @@ public class TestController {
     @ApiOperation("Returns placeholder Pdf")
     public ResponseEntity<InputStreamResource> getPlaceholderPdf() {
         Event e = eventService.getEvent(1).get();
-        List<Performance> performances = performanceService.getPerformancesForEvent(e);
+        List<Performance> performances = eventService.getPerformances(e.getId());
         TicketData td = new TicketData(e,"Row 1 Seat 4", performances.get(0), UUID.randomUUID());
         ByteArrayFile pdf = pdfService.createPdfFromTemplate(td,"ticket.pdf","ticketTemplate.ftl");
 

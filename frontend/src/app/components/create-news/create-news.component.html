@@ -1,0 +1,52 @@
+<div class="news-body">
+
+  <h1>News hinzuf&uuml;gen</h1>
+
+  <form [formGroup]="newsForm" (ngSubmit)="createNews()">
+    <div class="formCreate">
+
+      <div class="form-group">
+        <label for="title">Titel</label>
+        <input type="text" name="title" formControlName="title" class="form-control" id="title"
+               placeholder="Titel">
+        <div *ngIf="submitted && newsForm.get('title').errors" class="error">
+          <small class="form-text text-warning" *ngIf="newsForm.get('title').errors.required">
+            Der Titel ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="summary">Kurzfassung</label>
+        <textarea rows="2" cols="50" name="summary" formControlName="summary" class="form-control"
+                  id="summary" placeholder="Kurzfassung"></textarea>
+        <div *ngIf="submitted && newsForm.get('summary').errors" class="error">
+          <small class="form-text text-warning" *ngIf="newsForm.get('summary').errors.required">
+            Die Kurzfassung ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="content">Content</label>
+        <textarea rows="5" cols="50" name="content" formControlName="content" class="form-control"
+                  id="content" placeholder="Content"></textarea>
+        <div *ngIf="submitted && newsForm.get('content').errors" class="error">
+          <small class="form-text text-warning" *ngIf="newsForm.get('content').errors.required">
+            Der Content ist ein Pflichtfeld!
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="author">Author</label>
+        <input type="text" name="author" formControlName="author" class="form-control"
+               id="author" placeholder="Author">
+      </div>
+
+      </div>
+
+    <button routerLink="/news" type="button" mat-raised-button color="warn" class="float-left">Abbrechen</button>
+    <div class="float-right buttons">
+      <button type="button" (click)="submitAndRedirect()" mat-raised-button>Speichern und zurück</button>
+      <button mat-raised-button type="submit" color="primary">Speichern</button>
+    </div>
+  </form>
+</div>

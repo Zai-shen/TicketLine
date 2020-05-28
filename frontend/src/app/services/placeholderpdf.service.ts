@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { LoginDTO, UserApiService, UserDTO } from '../../generated';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Globals } from '../global/globals';
 
@@ -26,14 +24,17 @@ export class PlaceholderpdfService {
 
   parseFilenameFromHeader(result: HttpResponse<Blob>): string {
     const header = result.headers.get('content-disposition');
-    const filename = header == null ? 'download.pdf' : header.split('=')[1];
+    let filename = 'ticketline.pdf';
+    if (header !== null && header.length >= 2) {
+      filename = header.split('=')[1];
+    }
     return decodeURI(filename.replace(/"/g, ''));
   }
 
   downloadFile(response: HttpResponse<Blob>) {
     const filename: string = this.parseFilenameFromHeader(response);
-    const binaryData = [];
-    if (response.body != null) {
+    const binaryData: Blob[] = [];
+    if (response.body !== null) {
       binaryData.push(response.body);
     }
     const downloadLink = document.createElement('a');

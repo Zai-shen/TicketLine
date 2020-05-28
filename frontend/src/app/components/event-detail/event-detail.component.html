@@ -1,17 +1,31 @@
 <div class="details mat-elevation-z4" *ngIf="event">
-    <h1 class="mat-title">{{ event.title }}</h1>
+  <h1 class="mat-title">{{ event.title }}</h1>
   <div class="facts">
-    <h3 class="mat-card-subtitle"><span><mat-icon [inline]="true">av_timer</mat-icon>{{ event.duration }} Minutes</span></h3>
-    <h3 class="mat-card-subtitle"><span><mat-icon [inline]="true">list</mat-icon>{{ event.category }}</span></h3>
+    <h3 class="mat-card-subtitle"><span><mat-icon [inline]="true">av_timer</mat-icon>
+      {{ event.duration }} Minuten</span></h3>
+    <h3 class="mat-card-subtitle"><span><mat-icon [inline]="true">list</mat-icon>
+      {{ event.category }}</span></h3>
   </div>
   <mat-divider></mat-divider>
-    <p class="mat-body-2">{{ event.description }}</p>
+  <p class="mat-body-2">{{ event.description }}</p>
 
-    <mat-divider></mat-divider>
-    <h2>Saalplan</h2>
-    <mat-grid-list cols="8" rowHeight="1:1">
-      <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>
-    </mat-grid-list>
+  <mat-divider></mat-divider>
+  <h2>Saalplan</h2>
+
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let performance of performances">
+      <mat-expansion-panel-header>
+        Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> am {{ performance.dateTime }}
+      </mat-expansion-panel-header>
+      <mat-grid-list cols="8" rowHeight="1:1">
+        <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>
+      </mat-grid-list>
+      <span *ngIf="isUserLoggedIn()">
+        <button mat-raised-button (click)="buyTicket(false, performance)">Kaufen</button>
+        <button mat-raised-button (click)="buyTicket(true, performance)">Reservieren</button>
+      </span>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 <mat-spinner *ngIf="!event && !errorMsg"></mat-spinner>
 <div class="error-msg" *ngIf="errorMsg">

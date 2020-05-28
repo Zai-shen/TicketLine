@@ -1,0 +1,41 @@
+<div class="details mat-elevation-z4 main-content" *ngIf="user">
+  <h1 class="mat-title">Persönliche Daten</h1>
+  <mat-divider></mat-divider>
+  <form #userForm="ngForm">
+    <div class="field-group">
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Vorname</mat-label>
+        <input matInput placeholder="Max" name="firstname" [(ngModel)]="user.firstname" required>
+      </mat-form-field>
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Nachname</mat-label>
+        <input matInput placeholder="Mustermann" name="lastname" [(ngModel)]="user.lastname" required>
+      </mat-form-field>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="field-group">
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Straße</mat-label>
+        <input matInput placeholder="Wallaby Way" name="street" [(ngModel)]="user.address.street" required>
+      </mat-form-field>
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Hausnummer</mat-label>
+        <input matInput placeholder="42" name="housenr" [(ngModel)]="user.address.housenr" required>
+      </mat-form-field>
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>PLZ</mat-label>
+        <input matInput placeholder="2000" name="postalcode" [(ngModel)]="user.address.postalcode" required>
+      </mat-form-field>
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Ort</mat-label>
+        <input matInput placeholder="Sydney" name="city" [(ngModel)]="user.address.city" required>
+      </mat-form-field>
+      <mat-form-field appearance="standard" floatLabel="always">
+        <mat-label>Land</mat-label>
+        <input matInput placeholder="Australien" name="country" [(ngModel)]="user.address.country" required>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="saveUser()" [disabled]="!userForm.valid">Speichern</button>
+  </form>
+</div>
+<mat-spinner *ngIf="!user && !errorMsg"></mat-spinner>

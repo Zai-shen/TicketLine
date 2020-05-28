@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PerformanceRepository extends JpaRepository<Performance, Integer> {
-    List<Performance> findPerformancesByEvent(Event e);
+public interface PerformanceRepository extends JpaRepository<Performance, Long> {
+    List<Performance> findByEvent(Event event);
 }

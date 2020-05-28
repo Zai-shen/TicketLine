@@ -205,6 +205,7 @@
                                 at.ac.tuwien.sepm.groupphase.backend.dto
                             </modelPackage>
                             <configOptions>
+                                <dateLibrary>java8-offsetdatetime</dateLibrary>
                                 <useOptional>true</useOptional>
                                 <interfaceOnly>true</interfaceOnly>
                                 <basePackage>

@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.List;
 
 @Entity
 public class Location {
@@ -12,6 +13,9 @@ public class Location {
 
     @Column(nullable=false,length = 1024)
     private String description;
+
+    @OneToMany
+    private List<SeatGroup> seatGroups;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -31,6 +35,14 @@ public class Location {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<SeatGroup> getSeatGroups() {
+        return seatGroups;
+    }
+
+    public void setSeatGroups(List<SeatGroup> seatGroups) {
+        this.seatGroups = seatGroups;
     }
 
     public Address getAddress() {

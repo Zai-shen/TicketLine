@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,12 +26,21 @@ public class User {
     private String lastname;
 
     @Column(nullable = false)
+    private Boolean locked;
+
+    @Column(nullable = false)
+    private Integer wrongAttempts;
+
+    @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private AuthorizationRole role;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER   )
+    private List<Booking> bookings;
 
     public User() {
     }
@@ -97,6 +107,30 @@ public class User {
         this.address = address;
     }
 
+    public Boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
+    }
+
+    public Integer getWrongAttempts() {
+        return wrongAttempts;
+    }
+
+    public void setWrongAttempts(Integer wrongAttempts) {
+        this.wrongAttempts = wrongAttempts;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,20 +140,11 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) &&
-            Objects.equals(password, user.password) && Objects.equals(firstname, user.firstname) &&
-            Objects.equals(lastname, user.lastname) && role == user.role && Objects.equals(address, user.address);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, firstname, lastname, role, address);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", email='" + email + '\'' + ", password set: " +
-            (password == null ? "no" : "yes") + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' +
-            ", role=" + role + ", address=" + address + '}';
+        return Objects.hashCode(id);
     }
 }

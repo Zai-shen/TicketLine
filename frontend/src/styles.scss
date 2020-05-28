@@ -7,4 +7,20 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.timepicker-overlay {
+  z-index: 1100 !important;
+}
 
+.timepicker-backdrop-overlay {
+  z-index: 1100 !important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.main-content {
+  background-color: #ffffff;
+  margin-top: 5em;
+  padding: 5em;
+}

@@ -1,9 +1,13 @@
 package at.ac.tuwien.sepm.groupphase.backend.util;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
+import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
+import java.time.LocalDateTime;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import java.time.OffsetDateTime;
 
 public class DomainTestObjectFactory {
 
@@ -27,10 +31,42 @@ public class DomainTestObjectFactory {
         address.setCountry("Österreich");
         return address;
     }
+
+    public static News getNews(){
+        final News news = new News();
+        news.setId(16L);
+        news.setTitle("Breaking News!");
+        news.setSummary("In conclusion we can conclude alternative facts are in fact no facts.");
+        news.setContent("Today we discovered, that I am to lazy to write more content.");
+        news.setPublishedAt(LocalDateTime.of(2002,1,13,12,55,59));
+        news.setAuthor("Doris Duftler");
+        return news;
+    }
+
     public static Location getLocation() {
         final Location location = new Location();
         location.setDescription("Veranstaltunsort");
         location.setAddress(getAddress());
         return location;
     }
+
+    public static Event getEvent() {
+        Event event = new Event();
+        event.setId(1L);
+        event.setTitle("Event-Title");
+        event.setCategory(CategoryEnum.FESTIVAL);
+        event.setDescription("description");
+        event.setDuration(10L);
+        return event;
+    }
+
+    public static Performance getPerformance() {
+        Performance performance = new Performance();
+        performance.setId(1L);
+        performance.setDateTime(OffsetDateTime.now().plusDays(1));
+        performance.setLocation(getLocation());;
+        performance.setEvent(getEvent());
+        return performance;
+    }
+
 }
