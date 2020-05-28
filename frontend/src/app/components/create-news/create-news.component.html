@@ -43,9 +43,10 @@
 
       </div>
 
-    <button type="button" (click)="submitAndRedirect()" class="btn btn-outline-success float-right">Speichern und zur&uuml;ck</button>
-
-    <button type="submit" class="btn btn-success float-right mr-2">Speichern</button>
+    <button routerLink="/news" type="button" mat-raised-button color="warn" class="float-left">Abbrechen</button>
+    <div class="float-right buttons">
+      <button type="button" (click)="submitAndRedirect()" mat-raised-button>Speichern und zurück</button>
+      <button mat-raised-button type="submit" color="primary">Speichern</button>
+    </div>
   </form>
-  <button routerLink="/news" type="button" class="btn btn-warning float-left">Abbrechen</button>
 </div>
