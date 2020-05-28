@@ -27,7 +27,10 @@ export class CreateNewsComponent implements OnInit {
       title: ['', Validators.required],
       summary: ['', Validators.required],
       content: ['', Validators.required],
-      author: ['', Validators.required]
+      author: [{
+        value: '',
+        disabled: true},
+        Validators.required]
     });
     this.getCurrentUsersName();
   }

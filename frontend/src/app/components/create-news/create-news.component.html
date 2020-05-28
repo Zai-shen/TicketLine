@@ -38,7 +38,7 @@
       <div class="form-group">
         <label for="author">Author</label>
         <input type="text" name="author" formControlName="author" class="form-control"
-               id="author" placeholder="Author" disabled>
+               id="author" placeholder="Author">
         <div *ngIf="submitted && newsForm.get('author').errors" class="error">
           <small class="form-text text-warning" *ngIf="newsForm.get('author').errors.required">
             Der Author ist ein Pflichtfeld!
