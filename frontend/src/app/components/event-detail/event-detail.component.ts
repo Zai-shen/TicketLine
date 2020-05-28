@@ -9,6 +9,9 @@ import {
 } from '../../../generated';
 import { ActivatedRoute, Router } from '@angular/router';
 import { round } from 'lodash-es';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'tl-home',
@@ -17,14 +20,14 @@ import { round } from 'lodash-es';
 })
 export class EventDetailComponent implements OnInit {
 
-  public event: EventDTO;
+  event: EventDTO;
 
-  public performances: PerformanceDTO[];
+  performances: PerformanceDTO[];
 
   public errorMsg?: string;
 
   constructor(private eventService: EventApiService, private ticketApiService: TicketApiService,
-    private route: ActivatedRoute, private router: Router) {
+    private route: ActivatedRoute, private router: Router, private authService: AuthService, private snackBar: MatSnackBar) {
   }
 
   public seats = Array.from(Array(32).keys());
@@ -54,13 +57,18 @@ export class EventDetailComponent implements OnInit {
     });
   }
 
-  buyTicket(reserve: boolean) {
+  isUserLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  buyTicket(reserve: boolean, performance: PerformanceDTO) {
     const bookingDto: BookingDTO = {};
     bookingDto.freeSeats = { amount: 1 };
     bookingDto.fixedSeats = [{ seatgroupId: 1, x: 1, y: 1 }];
-    if (!!this.event.id && !!this.performances[0].id) {
-      this.ticketApiService.createTicket(this.event.id, this.performances[0].id, reserve, bookingDto)
-          .subscribe(() => this.router.navigate(['/tickets']));
+    if (!!this.event.id && !!performance.id) {
+      this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
+          .subscribe(() => {this.snackBar.open('Kauf erfolgreich'); this.router.navigate(['/tickets']);
+          });
     }
   }
 }
