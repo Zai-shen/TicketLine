@@ -49,6 +49,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
+import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { DatePipe } from '@angular/common';
     CreateEventComponent,
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
+    TicketListComponent
   ],
   imports: [
     BrowserModule,

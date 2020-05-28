@@ -157,4 +157,11 @@ public class UserServiceImpl implements UserService {
         new UpdateUserValidator().build(currentUser).validate();
         return userRepository.saveAndFlush(currentUser);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getCurrentLoggedInUser() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.findUserByEmail(username);
+    }
 }

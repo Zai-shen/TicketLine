@@ -84,4 +84,10 @@ public interface UserService extends UserDetailsService {
      * @throws AccessDeniedException if the user attempts to lock himself
      */
     void lockUser(Long userId);
+
+    /**
+     * @return returns the currently logged in user
+     */
+    User getCurrentLoggedInUser();
+
 }

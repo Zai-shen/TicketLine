@@ -15,6 +15,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
+import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -26,9 +27,11 @@ const routes: Routes = [
   { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
-  { path: 'news', component: NewsComponent },
+  { path: 'news', canActivate: [AuthGuard], component: NewsComponent },
   { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
+  { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
+  { path: 'tickets', canActivate: [AuthGuard], component: TicketListComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 
