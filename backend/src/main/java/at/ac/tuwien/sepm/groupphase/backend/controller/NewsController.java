@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class NewsController implements NewsApi {
     private final NewsMapper newsMapper;
     private final NewsService newsService;
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 25;
 
     @Autowired
     public NewsController(NewsMapper newsMapper, NewsService newsService) {
@@ -48,7 +49,12 @@ public class NewsController implements NewsApi {
     public ResponseEntity<List<NewsDTO>> getNewsList(@Valid Optional<Long> unreadBy,
         @Valid Optional<Integer> page) {
         LOGGER.info("Get all news");
-        return ResponseEntity.ok(newsMapper.toDtoList(newsService.findAll(PageRequest.of(page.orElse(0), PAGE_SIZE)).getContent()));
+
+        Page<News> news = newsService.findAll(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(news.getTotalElements()))
+            .body(newsMapper.toDtoList(news.getContent()));
+        //return ResponseEntity.ok(newsMapper.toDtoList(newsService.findAll(PageRequest.of(page.orElse(0), PAGE_SIZE)).getContent()));
     }
 
     @Override

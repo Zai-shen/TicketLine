@@ -29,7 +29,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Page<News> findAll(Pageable pageable) {
-        LOGGER.debug("Find all news");
+        LOGGER.debug("Find all news with page {}", pageable.getPageNumber());
         return newsRepository.findAllByOrderByPublishedAtDesc(pageable);
     }
 
