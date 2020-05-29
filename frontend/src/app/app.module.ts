@@ -53,6 +53,7 @@ import { TicketListComponent } from './components/ticket-list/ticket-list.compon
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CreateEventComponent,
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
-    TicketListComponent
+    TicketListComponent,
+    RelativeTimestampComponent
   ],
   imports: [
     BrowserModule,
