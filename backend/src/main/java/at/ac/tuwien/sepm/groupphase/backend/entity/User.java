@@ -39,7 +39,7 @@ public class User {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER   )
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private List<Booking> bookings;
 
     public User() {

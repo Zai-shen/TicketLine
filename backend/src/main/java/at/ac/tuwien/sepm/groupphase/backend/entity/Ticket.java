@@ -10,12 +10,23 @@ public class Ticket {
     @Id
     private Long id;
 
+    @ManyToOne
+    private Booking booking;
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     @Override
