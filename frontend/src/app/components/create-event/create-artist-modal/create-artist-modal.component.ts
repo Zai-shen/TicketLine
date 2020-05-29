@@ -42,12 +42,16 @@ export class CreateArtistModalComponent implements OnInit {
       this.artistService.createArtist(this.artistForm.value).subscribe(
         (_success: any) => {
           this.snackBar.open('Künstler gespeichert', 'OK');
+          this.dialogRef.close();
         },
-        error => {
-          this.errorMessageComponent.defaultServiceErrorHandling(error);
+        (error: any) => {
+          if (error.status === 409) {
+            this.snackBar.open('Künstler existiert bereits', 'OK');
+          } else {
+            this.errorMessageComponent.defaultServiceErrorHandling(error);
+          }
         }
       );
-      this.dialogRef.close();
     }
   }
 }

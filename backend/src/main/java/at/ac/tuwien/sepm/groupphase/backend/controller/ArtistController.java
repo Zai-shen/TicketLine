@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.ArtistMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.ArtistDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.SearchArtistDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -52,6 +54,7 @@ public class ArtistController implements ArtistApi {
     }
 
     @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Void> createArtist(@Valid ArtistDTO artistDTO) {
         LOGGER.info("create artist");
         artistService.createArtist(artistMapper.fromDto(artistDTO));
