@@ -6,11 +6,15 @@ import at.ac.tuwien.sepm.groupphase.backend.service.PdfService;
 import com.lowagie.text.DocumentException;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 
 @Service
@@ -18,6 +22,7 @@ public class PdfServiceImpl implements PdfService {
 
     private final Configuration freemarkerConfiguration;
     private final String PLACEHOLDER_TEMPLATE_FILENAME = "placeholderTemplate.ftl";
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 
     public PdfServiceImpl(Configuration freemarkerConfiguration) {
@@ -51,7 +56,13 @@ public class PdfServiceImpl implements PdfService {
 
     private ByteArrayFile createPdfFromHtml(String html, String filename) {
         ITextRenderer renderer = new ITextRenderer();
-        ByteArrayOutputStream outputStream =  new ByteArrayOutputStream();
+        try {
+            renderer.getFontResolver().addFont("Roboto-Regular.ttf",false);
+        } catch (DocumentException e) {
+            LOGGER.warn("Could not inject font, using fallback");
+        } catch (IOException e) {
+            LOGGER.warn("Font file not found, using fallback");
+        } ByteArrayOutputStream outputStream =  new ByteArrayOutputStream();
         renderer.setDocumentFromString(html);
         renderer.layout();
         try {

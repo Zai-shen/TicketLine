@@ -42,7 +42,6 @@ public class TestController {
     public ResponseEntity<InputStreamResource> getPlaceholderPdf() {
         Event e = eventService.getEvent(1).get();
         e.setTitle("25 Jahre Rantanplan");
-        e.setDescription("Gitarre, Bass, Schlagzeug, Gesang, Trompete, Posaune, hier und da etwas Orgel, fertig. Wer da stillsitzen kann, muss mal zum Arzt. Der Titel Skapunk Band Nr.1 ist hiermit erfolgreich verteidigt. Das Treppchen wird vergoldet. Man wünscht sich mehr solche „Künstler“. Man wird an Ton Steine Scherben erinnert.");
         Performance p = new Performance();
         p.setDateTime(OffsetDateTime.of(2020,9,16,20,0,0,0, ZoneOffset.ofHours(2)));
         Address arenaAddress = new Address();

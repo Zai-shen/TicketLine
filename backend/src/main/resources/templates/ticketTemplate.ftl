@@ -1,11 +1,15 @@
 <#setting locale='de_AT'>
-<!DOCTYPE html>
-<html>
+<#setting output_encoding='UTF-8'>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <Title>Digitales Ticket</Title>
     <style>
         * {
-            font-family: sans-serif;
+            font-family: 'Roboto', serif;
         }
         .hero {
             width: 100%;
@@ -70,9 +74,9 @@
                     <td>
                         <b>${ticket.performance.location.description}</b>
                         <br/>
-                        <i>${ticket.performance.location.address.street} ${ticket.performance.location.address.housenr}</i>
+                        ${ticket.performance.location.address.street}&nbsp;${ticket.performance.location.address.housenr}
                         <br/>
-                        <i>${ticket.performance.location.address.postalcode} ${ticket.performance.location.address.city}</i>
+                        ${ticket.performance.location.address.postalcode} ${ticket.performance.location.address.city}
                     </td>
                 </tr>
                 <tr>
