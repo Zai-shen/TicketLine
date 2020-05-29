@@ -9,7 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PerformanceRepository extends JpaRepository<Performance, Long> {
-
     List<Performance> findByEvent(Event event);
-
 }
