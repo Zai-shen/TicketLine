@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ArtistApiService } from '../../../../generated';
+import { ArtistApiService, ErrorType } from '../../../../generated';
 import { ErrorMessageComponent } from '../../error-message/error-message.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -46,7 +46,8 @@ export class CreateArtistModalComponent implements OnInit {
         },
         (error: any) => {
           if (error.status === 409) {
-            this.snackBar.open('Künstler existiert bereits', 'OK');
+            this.errorMessageComponent.defaultServiceErrorHandling(
+              { error: { message: 'Künstler existiert bereits', type: ErrorType.INFO } });
           } else {
             this.errorMessageComponent.defaultServiceErrorHandling(error);
           }
