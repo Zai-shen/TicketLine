@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated/api/location.api.service';
-import {LocationDTO} from '../../../generated/model/locationDTO';
+import { LocationApiService, LocationDTO } from '../../../generated';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tl-create-location',
@@ -14,7 +14,8 @@ export class CreateLocationComponent implements OnInit {
   submitted: boolean = false;
   locationForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService) { }
+  constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService,
+    private router: Router) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -39,6 +40,7 @@ export class CreateLocationComponent implements OnInit {
       this.locationApiService.createLocation(locationDTO).subscribe(
         () => {
           console.log('Location successfully created');
+          this.router.navigate(['/location']);
         },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
     }
