@@ -7,7 +7,7 @@
   </mat-button-toggle-group>
   <mat-card *ngFor="let booking of filteredBookings">
     <mat-card-title >{{booking.performance.event.title}}</mat-card-title>
-    <mat-card-subtitle><mat-icon>access_time</mat-icon>{{ booking.performance.dateTime }}</mat-card-subtitle>
+    <mat-card-subtitle><span [matTooltip]="formatAbsolute(booking.performance.dateTime)" matTooltipPosition="right"><mat-icon>access_time</mat-icon>{{ formatTimestamp(booking.performance.dateTime) }}</span></mat-card-subtitle>
     <mat-card-subtitle><mat-icon>location_on</mat-icon>{{ booking.performance.location.description }}</mat-card-subtitle>
     <mat-card-content>
       <mat-list>
