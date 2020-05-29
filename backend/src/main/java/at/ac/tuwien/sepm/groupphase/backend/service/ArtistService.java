@@ -21,4 +21,9 @@ public interface ArtistService {
      * @return List of Artists that fit search object of specified size by pagination
      */
     Page<Artist> searchArtists(Artist artist, Pageable pageable);
+
+    /**
+     * @param artist the Artist to be created
+     */
+    void createArtist(Artist artist);
 }

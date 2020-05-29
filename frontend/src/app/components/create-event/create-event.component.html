@@ -43,6 +43,8 @@
         </div>
       </mat-error>
     </mat-form-field>
+    <button mat-raised-button color="primary" (click)="createArtist()">Künstler erstellen</button>
+
     <h2>Aufführungen</h2>
     <tl-performance-table [performances]="performances" (performancesChanged)="performancesUpdated($event)"></tl-performance-table>
     <mat-error *ngIf="submitted && (performances == null || performances.length === 0)">
