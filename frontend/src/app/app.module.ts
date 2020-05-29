@@ -51,6 +51,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
         MatDatepickerModule,
         MatNativeDateModule,
         NgxMaterialTimepickerModule,
-        MatExpansionModule
+        MatExpansionModule,
+        MatListModule
     ],
   providers: [
     {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TicketApiService, TicketResponseDTO } from '../../../generated';
-import { AuthService } from '../../services/auth.service';
+import { TicketApiService, BookingDTO } from '../../../generated';
 
 @Component({
   selector: 'tl-bookings',
@@ -12,11 +11,19 @@ export class TicketListComponent implements OnInit {
   constructor(private readonly ticketService: TicketApiService) {
   }
 
-  public tickets: TicketResponseDTO;
+  public bookings: BookingDTO[] = [];
+  public reserved: boolean = false;
+
+  get filteredBookings(): BookingDTO[] {
+    if (!this.bookings) {
+      return [];
+    }
+    return this.bookings.filter(b => b.reservation === this.reserved);
+  }
 
   ngOnInit() {
     this.ticketService.getTicketsOfUser().subscribe(value => {
-      this.tickets = value;
+      this.bookings = value;
     });
   }
 }

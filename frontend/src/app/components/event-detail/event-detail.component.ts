@@ -63,7 +63,7 @@ export class EventDetailComponent implements OnInit {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
           .subscribe(() => {
             this.snackBar.open('Kauf erfolgreich');
-            this.router.navigate(['/tickets']);
+            this.router.navigate(['/user/tickets']);
           });
     }
   }

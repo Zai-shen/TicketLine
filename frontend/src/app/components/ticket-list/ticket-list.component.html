@@ -1,19 +1,22 @@
 <div class="mat-elevation-z4 main-content">
-  <h1>Ticketübersicht</h1>
-  <h2>Freie Tickets</h2>
-  <mat-card *ngFor="let ticket of tickets.freeTickets">
-    <mat-card-title >{{ticket.id}}</mat-card-title>
+  <h1 class="mat-title">Meine Bestellungen</h1>
+  <mat-divider></mat-divider>
+  <mat-button-toggle-group #group="matButtonToggleGroup">
+    <mat-button-toggle (click)="reserved = false" [checked]="true">Gekauft</mat-button-toggle>
+    <mat-button-toggle (click)="reserved = true">Reserviert</mat-button-toggle>
+  </mat-button-toggle-group>
+  <mat-card *ngFor="let booking of filteredBookings">
+    <mat-card-title >{{booking.performance.event.title}}</mat-card-title>
     <mat-card-content>
-      <span *ngIf="ticket.reserved">reserviert</span>
+      <mat-list>
+        <mat-list-item *ngIf="booking.fixedSeats.length > 0">Fixplätze: {{ booking.fixedSeats.length }}</mat-list-item>
+        <mat-list-item *ngIf="booking.freeSeats.amount > 0">Personen: {{ booking.freeSeats.amount }}</mat-list-item>
+      </mat-list>
     </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="warn">Stornieren</button>
+      <button mat-button *ngIf="!booking.reservation">Ticket Download</button>
+      <button mat-button *ngIf="booking.reservation" color="primary">Ticket Kaufen</button>
+    </mat-card-actions>
   </mat-card>
-
-  <h2>Sitzplätze</h2>
-  <mat-card  *ngFor="let ticket of tickets.seatedTickets">
-    <mat-card-title >{{ticket.id}}</mat-card-title>
-    <mat-card-content>Reihe: {{ticket.seat.x}} Platz: {{ticket.seat.y}}<br>
-      <span *ngIf="ticket.reserved">reserviert</span>
-    </mat-card-content>
-  </mat-card>
-
 </div>

@@ -14,6 +14,7 @@
       </mat-menu>
       <button mat-button [matMenuTriggerFor]="userMenu">User</button>
       <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/user/tickets">Bestellübersicht</button>
         <button mat-menu-item routerLink="/user/settings">Meine Daten</button>
         <mat-divider></mat-divider>
         <button mat-menu-item (click)="logout()">Abmelden</button>
