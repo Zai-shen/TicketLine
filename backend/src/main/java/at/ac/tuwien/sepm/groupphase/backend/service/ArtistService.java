@@ -23,6 +23,7 @@ public interface ArtistService {
     Page<Artist> searchArtists(Artist artist, Pageable pageable);
 
     /**
+     * Creates a new artist
      * @param artist the Artist to be created
      */
     void createArtist(Artist artist);

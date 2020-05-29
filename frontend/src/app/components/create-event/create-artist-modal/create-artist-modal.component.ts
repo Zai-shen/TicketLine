@@ -35,8 +35,7 @@ export class CreateArtistModalComponent implements OnInit {
     });
   }
 
-  createArtist() {
-    console.log(this.artistForm.value)
+  createArtist(): void {
     this.submitted = true;
     if (this.artistForm.valid) {
       this.artistService.createArtist(this.artistForm.value).subscribe(
@@ -46,8 +45,7 @@ export class CreateArtistModalComponent implements OnInit {
         },
         (error: any) => {
           if (error.status === 409) {
-            this.errorMessageComponent.defaultServiceErrorHandling(
-              { error: { message: 'Künstler existiert bereits', type: ErrorType.INFO } });
+            this.errorMessageComponent.throwCustomError('Künstler existiert bereits', ErrorType.INFO);
           } else {
             this.errorMessageComponent.defaultServiceErrorHandling(error);
           }
