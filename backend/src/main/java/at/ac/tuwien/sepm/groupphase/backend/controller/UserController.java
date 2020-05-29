@@ -1,11 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.AddressMapper;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.*;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
@@ -20,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,21 +30,19 @@ public class UserController implements UserApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserMapper userMapper;
-    private final AddressMapper addressMapper;
     private final UserService userService;
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
-    private final TicketMapper ticketMapper;
+    private final BookingMapper bookingMapper;
 
     @Autowired
-    public UserController(UserMapper userMapper, AddressMapper addressMapper, UserInfoMapper userInfoMapper,
-        UserService userService, BookingService bookingService, TicketMapper ticketMapper) {
+    public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper,
+        UserService userService, BookingService bookingService,  BookingMapper bookingMapper) {
         this.userMapper = userMapper;
-        this.addressMapper = addressMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
-        this.ticketMapper = ticketMapper;
+        this.bookingMapper = bookingMapper;
     }
 
     @Override
@@ -102,10 +96,10 @@ public class UserController implements UserApi {
 
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
-    public ResponseEntity<TicketResponseDTO> getTicketsOfUser() {
+    public ResponseEntity<List<BookingDTO>> getTicketsOfUser() {
         LOGGER.info("Get all tickets for current user");
-        TicketResponseDTO ticketResponseDTO = ticketMapper.toDto(bookingService.getAllBookingsOfUser());
-        return ResponseEntity.ok(ticketResponseDTO);
+        List<BookingDTO> bookings = bookingMapper.fromEntity(bookingService.getAllBookingsOfUser());
+        return ResponseEntity.ok(bookings);
     }
 
     @Override

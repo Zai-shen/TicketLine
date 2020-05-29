@@ -899,7 +899,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TicketResponseDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingDTO'
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -1540,6 +1542,10 @@ components:
           - amount
     BookingDTO:
       properties:
+        performance:
+          $ref: '#/components/schemas/PerformanceDTO'
+        reservation:
+          type: boolean
         fixedSeats:
           type: array
           items:
@@ -1569,16 +1575,6 @@ components:
       required:
         - id
         - reserved
-    TicketResponseDTO:
-      properties:
-        freeTickets:
-          type: array
-          items:
-            $ref: '#/components/schemas/FreeTicketDTO'
-        seatedTickets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SeatedTicketDTO'
   securitySchemes:
     ticketline_auth:
       type: http
