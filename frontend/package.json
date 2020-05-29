@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "generate": "npm run clean && openapi-generator generate --type-mappings=DateTime=Date -c openapi-generator-config.json -g typescript-angular -i ../openapi.yaml -o src/generated/ && node hack/patch_generated.js",
+    "generate": "npm run clean && openapi-generator generate -c openapi-generator-config.json -g typescript-angular -i ../openapi.yaml -o src/generated/ && node hack/patch_generated.js",
     "clean": "node hack/clean_generated.js"
   },
   "private": true,
