@@ -6,5 +6,11 @@ import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
 import java.util.List;
 
 public interface TicketService {
+    /**
+     * render a list of tickets to a pdf file
+     * @param tickets list of tickets to be rendered. Each ticket will be placed on its own page
+     * @return File containing the PDF as a byte Array
+     * @see ByteArrayFile
+     */
     ByteArrayFile renderTickets(List<TicketData> tickets);
 }
