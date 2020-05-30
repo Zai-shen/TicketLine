@@ -3,24 +3,36 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.*;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
+import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
+import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class UserController implements UserApi {
@@ -34,15 +46,17 @@ public class UserController implements UserApi {
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
     private final BookingMapper bookingMapper;
+    private final TicketService ticketService;
 
     @Autowired
-    public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper,
-        UserService userService, BookingService bookingService,  BookingMapper bookingMapper) {
+    public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService, BookingService bookingService,
+        BookingMapper bookingMapper, TicketService ticketService) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
         this.bookingMapper = bookingMapper;
+        this.ticketService = ticketService;
     }
 
     @Override
@@ -118,4 +132,32 @@ public class UserController implements UserApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<Resource> getTicket(Long userId, Long bookingId) {
+        List<TicketData> tickets = new LinkedList<>();
+
+        Booking b = bookingService.getBooking(bookingId);
+        for(Ticket ticket : b.getTickets()) {
+            String seat = "Freie Platzwahl";
+            if (ticket instanceof SeatedTicket) {
+                seat = String.format("Reihe %d Platz %d",((SeatedTicket) ticket).getSeatRow(),((SeatedTicket) ticket).getSeatColumn());
+            }
+            tickets.add(new TicketData(
+                b.getPerformance().getEvent(),
+                seat,
+                b.getPerformance(),
+                UUID.randomUUID(),
+                BigDecimal.valueOf(3.50)));
+        }
+        ByteArrayFile pdf = ticketService.renderTickets(tickets);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        headers.add("Content-Disposition", "filename=" + pdf.getName());
+        headers.add("Access-Control-Expose-Headers", "Content-Disposition");
+        headers.setContentLength(pdf.getContent().length);
+
+        return new ResponseEntity<>(
+            new InputStreamResource(new ByteArrayInputStream(pdf.getContent())), headers, HttpStatus.OK);
+    }
 }

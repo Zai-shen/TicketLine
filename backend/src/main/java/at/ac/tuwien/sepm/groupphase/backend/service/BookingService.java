@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 
@@ -18,5 +19,12 @@ public interface BookingService {
      * @return list of all bookings of a user
      */
     List<Booking> getAllBookingsOfUser();
+
+    /**
+     * Searches for a specific booking
+     * @param bookingId id of the booking to fetch
+     * @return booking made by the current user
+     */
+    Booking getBooking(Long bookingId) throws AccessDeniedException;
 
 }

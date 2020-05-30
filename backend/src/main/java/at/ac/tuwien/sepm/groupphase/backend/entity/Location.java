@@ -14,7 +14,7 @@ public class Location {
     @Column(nullable=false,length = 1024)
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "location")
     private List<SeatGroup> seatGroups;
 
     @OneToOne(cascade = CascadeType.ALL)

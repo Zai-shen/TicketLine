@@ -960,6 +960,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /user/{userId}/ticket/{bookingId}/ticket:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Get the print ticket for a booking
+      operationId: getTicket
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the User that has booked the ticket
+          example: 3
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the booking to generate the invoice for
+          example: 254
+      responses:
+        200:
+          description: Printable PDF Ticket
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: file
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find user or booking entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /location:
     get:
       tags:
