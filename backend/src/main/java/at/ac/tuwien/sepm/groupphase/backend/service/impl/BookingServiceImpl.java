@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.repository.BookingRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
@@ -15,10 +16,13 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
     private final PerformanceRepository performanceRepository;
     private final UserService userService;
+    private final BookingRepository bookingRepository;
 
-    public BookingServiceImpl(PerformanceRepository performanceRepository, UserService userService) {
+    public BookingServiceImpl(PerformanceRepository performanceRepository, UserService userService,
+        BookingRepository bookingRepository) {
         this.performanceRepository = performanceRepository;
         this.userService = userService;
+        this.bookingRepository = bookingRepository;
     }
 
     @Override
@@ -37,5 +41,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Booking> getAllBookingsOfUser() {
         return userService.getCurrentLoggedInUser().getBookings();
+    }
+
+    @Override
+    public Booking getBookingById(Long bookingId) {
+        return bookingRepository.findBookingById(bookingId);
     }
 }

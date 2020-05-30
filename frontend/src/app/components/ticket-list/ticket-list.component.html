@@ -13,6 +13,7 @@
     <mat-card-title >{{ticket.id}}</mat-card-title>
     <mat-card-content>Reihe: {{ticket.seat.x}} Platz: {{ticket.seat.y}}<br>
       <span *ngIf="ticket.reserved">reserviert</span>
+      <button mat-stroked-button color="primary" (click)="getInvoice(ticket.id)">Rechnung</button>
     </mat-card-content>
   </mat-card>
 

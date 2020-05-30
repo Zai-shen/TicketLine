@@ -19,4 +19,10 @@ public interface BookingService {
      */
     List<Booking> getAllBookingsOfUser();
 
+    /**
+     * TODO:
+     * @param bookingId
+     * @return
+     */
+    Booking getBookingById(Long bookingId);
 }

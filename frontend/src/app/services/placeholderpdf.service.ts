@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Globals } from '../global/globals';
+import { TicketApiService } from '../../generated';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceholderpdfService {
 
-  constructor(private httpClient: HttpClient, private globals: Globals) {
+  constructor(private httpClient: HttpClient, private globals: Globals,
+              private readonly ticketService: TicketApiService) {
   }
 
   downloadPlaceholderPdf() {
@@ -15,6 +17,17 @@ export class PlaceholderpdfService {
     headers = headers.set('Accept', 'application/pdf');
     this.httpClient.post(this.globals.backendUri + '/pdf',
       null,
+      { headers: headers, responseType: 'blob', observe: 'response' })
+        .subscribe(
+          (result: HttpResponse<Blob>) => {
+                   this.downloadFile(result);
+    });
+  }
+
+  downloadInvoicePdf(ticketId: Number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    this.httpClient.get(this.globals.backendUri + '/user/1/ticket/' + ticketId + '/invoice',
       { headers: headers, responseType: 'blob', observe: 'response' })
         .subscribe(
           (result: HttpResponse<Blob>) => {

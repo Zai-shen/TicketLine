@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
+import at.ac.tuwien.sepm.groupphase.backend.dto.InvoiceData;
 import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
 import at.ac.tuwien.sepm.groupphase.backend.service.PdfService;
 import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
@@ -20,5 +21,10 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public ByteArrayFile renderTickets(List<TicketData> tickets) {
         return pdfService.createPdfFromTemplate(tickets,"ticket.pdf","ticketTemplate.ftl");
+    }
+
+    @Override
+    public ByteArrayFile renderInvoice(InvoiceData invoice) {
+        return pdfService.createPdfFromTemplate(invoice, "invoice.pdf", "invoiceTemplate.ftl");
     }
 }
