@@ -22,6 +22,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -133,23 +134,16 @@ public class UserController implements UserApi {
     }
 
     @Override
+    @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Resource> getTicket(Long userId, Long bookingId) {
-        List<TicketData> tickets = new LinkedList<>();
-
-        Booking b = bookingService.getBooking(bookingId);
-        for(Ticket ticket : b.getTickets()) {
-            String seat = "Freie Platzwahl";
-            if (ticket instanceof SeatedTicket) {
-                seat = String.format("Reihe %d Platz %d",((SeatedTicket) ticket).getSeatRow(),((SeatedTicket) ticket).getSeatColumn());
-            }
-            tickets.add(new TicketData(
-                b.getPerformance().getEvent(),
-                seat,
-                b.getPerformance(),
-                UUID.randomUUID(),
-                BigDecimal.valueOf(3.50)));
+        if(!userService.getCurrentLoggedInUser().getId().equals(userId)){
+            throw new AccessDeniedException("Zugriff nur auf eigene tickets möglich");
         }
-        ByteArrayFile pdf = ticketService.renderTickets(tickets);
+        Booking b = bookingService.getBooking(bookingId);
+        if(b == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ByteArrayFile pdf = bookingService.renderBooking(b);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
