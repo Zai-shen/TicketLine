@@ -1,15 +1,14 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.*;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.BookingMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
-import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
-import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,11 +28,8 @@ import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
-import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 public class UserController implements UserApi {
@@ -47,17 +43,15 @@ public class UserController implements UserApi {
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
     private final BookingMapper bookingMapper;
-    private final TicketService ticketService;
 
     @Autowired
     public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService, BookingService bookingService,
-        BookingMapper bookingMapper, TicketService ticketService) {
+        BookingMapper bookingMapper) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
         this.bookingMapper = bookingMapper;
-        this.ticketService = ticketService;
     }
 
     @Override
@@ -135,10 +129,7 @@ public class UserController implements UserApi {
 
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
-    public ResponseEntity<Resource> getTicket(Long userId, Long bookingId) {
-        if(!userService.getCurrentLoggedInUser().getId().equals(userId)){
-            throw new AccessDeniedException("Zugriff nur auf eigene tickets möglich");
-        }
+    public ResponseEntity<Resource> getTicket(Long bookingId) {
         Booking b = bookingService.getBooking(bookingId);
         if(b == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

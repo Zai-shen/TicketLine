@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TicketApiService, BookingDTO } from '../../../generated';
 import { format, formatDistanceToNow } from 'date-fns';
 import { de } from 'date-fns/locale';
+import { BookingService } from '../../services/booking.service';
 
 @Component({
   selector: 'tl-bookings',
@@ -10,7 +11,7 @@ import { de } from 'date-fns/locale';
 })
 export class TicketListComponent implements OnInit {
 
-  constructor(private readonly ticketService: TicketApiService) {
+  constructor(private readonly ticketService: TicketApiService, private readonly bookingService: BookingService) {
   }
 
   public bookings: BookingDTO[] = [];
@@ -35,5 +36,9 @@ export class TicketListComponent implements OnInit {
     this.ticketService.getTicketsOfUser().subscribe(value => {
       this.bookings = value;
     });
+  }
+
+  downloadTicket(booking: BookingDTO) {
+    this.bookingService.renderTicket(booking.id!!);
   }
 }
