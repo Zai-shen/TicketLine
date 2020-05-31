@@ -3,6 +3,8 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +29,12 @@ public interface EventService {
      * @throws BusinessValidationException thrown when validation fails
      */
     Long createEvent(Event event) throws BusinessValidationException;
+
+    /**
+     * Search for persisted events
+     * @param searchEvent containing data to filter for
+     * @param pageRequest pagination info
+     * @return page of events that match the filter criteria
+     */
+    Page<Event> searchEvents(Event searchEvent, PageRequest pageRequest);
 }

@@ -20,7 +20,7 @@ import java.time.OffsetDateTime;
 public class PerformanceDataGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final int NUMBER_OF_EVENTS_TO_GENERATE = 20;
+    private static final int NUMBER_OF_EVENTS_TO_GENERATE = 30;
 
     private final PerformanceRepository performanceRepository;
     private final EventRepository eventRepository;
