@@ -10,6 +10,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -35,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setPerformance(performance);
         booking.setReservation(reserve);
         booking.setTickets(tickets);
+        booking.setDate(LocalDate.now());
         userService.getCurrentLoggedInUser().getBookings().add(booking);
     }
 
