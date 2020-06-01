@@ -27,6 +27,10 @@ public class InvoiceData {
         return booking;
     }
 
+    public List<Ticket> getTickets() {
+        return booking.getTickets();
+    }
+
     public int getSeatedAmount() {
         List<Ticket> tickets = new ArrayList<>();
         for (Ticket ticket : booking.getTickets()) {

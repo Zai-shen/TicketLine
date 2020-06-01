@@ -61,28 +61,28 @@
             <th>Menge</th>
             <th>Beschreibung</th>
             <th class="align-right">Preis (netto)</th>
-            <th class="align-right">Summe</th>
         </tr>
-        <tr>
-            <td>${data.getAmount()}</td>
-            <td>${data.booking.performance.event.title}</td>
-            <td class="align-right">Preis (netto)</td>
-            <td class="align-right">Summe</td>
-        </tr>
+        <#list data.booking.tickets as ticket>
+            <tr>
+                <td>1</td>
+                <td>${data.booking.performance.event.title}></td>
+                <td class="align-right">${ticket.price} €</td>
+            </tr>
+        </#list>
     </table>
 
     <table class="sum">
         <tr>
             <td>Summe netto</td>
-            <td class="align-right">${data.formatPrice()}</td>
+            <td class="align-right">${data.formatPrice()} €</td>
         </tr>
         <tr>
             <td>zzgl. USt. 13,00 %</td>
-            <td class="align-right">${data.formatVAT()}</td>
+            <td class="align-right">${data.formatVAT()} €</td>
         </tr>
         <tr>
             <td class="total-sum">Gesamtsumme brutto</td>
-            <td class="total-sum align-right">${data.getTotalPrice()}</td>
+            <td class="total-sum align-right">${data.getTotalPrice()} €</td>
         </tr>
     </table>
     <p>Leistungsdatum ist gleich dem Rechnungsdatum</p>
