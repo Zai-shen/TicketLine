@@ -29,7 +29,6 @@ import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -139,7 +138,7 @@ public class UserController implements UserApi {
     public ResponseEntity<Resource> getInvoice(Long userId, Long bookingId, @Valid Optional<Boolean> cancel) {
         User user = userService.getCurrentLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
-        InvoiceData invoice = new InvoiceData(booking, user, BigDecimal.valueOf(20.49), BigDecimal.valueOf(20.49), 12L, "UID");
+        InvoiceData invoice = new InvoiceData(booking, user);
         ByteArrayFile pdf = ticketService.renderInvoice(invoice);
 
         HttpHeaders headers = new HttpHeaders();

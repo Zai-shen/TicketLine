@@ -25,6 +25,6 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ByteArrayFile renderInvoice(InvoiceData invoice) {
-        return pdfService.createPdfFromTemplate(invoice, "invoice.pdf", "invoiceTemplate.ftl");
+        return pdfService.createPdfFromTemplate(invoice, "rechnung.pdf", "invoiceTemplate.ftl");
     }
 }
