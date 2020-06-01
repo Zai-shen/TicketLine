@@ -138,7 +138,7 @@ public class UserController implements UserApi {
     public ResponseEntity<Resource> getInvoice(Long userId, Long bookingId, @Valid Optional<Boolean> cancel) {
         User user = userService.getCurrentLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
-        InvoiceData invoice = new InvoiceData(booking, user);
+        InvoiceData invoice = new InvoiceData(booking, user, cancel.orElse(false));
         ByteArrayFile pdf = ticketService.renderInvoice(invoice);
 
         HttpHeaders headers = new HttpHeaders();

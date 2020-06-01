@@ -13,10 +13,16 @@ import java.util.List;
 public class InvoiceData {
     private final Booking booking;
     private final User buyer;
+    private final boolean cancelled;
 
-    public InvoiceData(Booking booking, User buyer) {
+    public InvoiceData(Booking booking, User buyer, boolean cancelled) {
         this.booking = booking;
         this.buyer = buyer;
+        this.cancelled = cancelled;
+    }
+
+    public boolean getCancelled() {
+        return cancelled;
     }
 
     public int getAmount() {

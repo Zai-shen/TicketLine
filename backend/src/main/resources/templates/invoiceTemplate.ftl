@@ -29,6 +29,7 @@
             width: 100%;
         }
         .sum {
+            border-top: 1px solid black;
             margin-left: auto;
             margin-bottom: 6em;
         }
@@ -55,7 +56,7 @@
     <div class="date">
         <p>${data.booking.date}</p>
     </div>
-    <b>Rechnung Nr. ${data.booking.id}</b>
+    <b><#if data.cancelled>Stornierung für Rechnung Nr.<#else>Rechnung Nr.</#if> ${data.booking.id}</b>
     <table class="content">
         <tr>
             <th>Menge</th>
@@ -65,7 +66,7 @@
         <#list data.booking.tickets as ticket>
             <tr>
                 <td>1</td>
-                <td>${data.booking.performance.event.title}></td>
+                <td>${data.booking.performance.event.title}</td>
                 <td class="align-right">${ticket.price} €</td>
             </tr>
         </#list>
@@ -74,15 +75,15 @@
     <table class="sum">
         <tr>
             <td>Summe netto</td>
-            <td class="align-right">${data.formatPrice()} €</td>
+            <td class="align-right"><#if data.cancelled>- </#if>${data.formatPrice()} €</td>
         </tr>
         <tr>
             <td>zzgl. USt. 13,00 %</td>
-            <td class="align-right">${data.formatVAT()} €</td>
+            <td class="align-right"><#if data.cancelled>- </#if>${data.formatVAT()} €</td>
         </tr>
         <tr>
             <td class="total-sum">Gesamtsumme brutto</td>
-            <td class="total-sum align-right">${data.getTotalPrice()} €</td>
+            <td class="total-sum align-right"><#if data.cancelled>- </#if>${data.getTotalPrice()} €</td>
         </tr>
     </table>
     <p>Leistungsdatum ist gleich dem Rechnungsdatum</p>
