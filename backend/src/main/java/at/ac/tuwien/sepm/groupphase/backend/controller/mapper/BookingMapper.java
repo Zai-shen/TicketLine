@@ -12,12 +12,12 @@ import java.util.List;
 
 @Mapper
 public interface BookingMapper {
-    BookingDTO fromEntity(Booking booking);
+    BookingDTO toDto(Booking booking);
 
-    default List<BookingDTO> fromEntity(List<Booking> bookings) {
-        List<BookingDTO> outlist = new ArrayList<>();
+    default List<BookingDTO> toDto(List<Booking> bookings) {
+        List<BookingDTO> outlist = new ArrayList<>(bookings.size());
         for (Booking booking : bookings) {
-            BookingDTO outbooking = fromEntity(booking);
+            BookingDTO outbooking = toDto(booking);
             outbooking.setFixedSeats(new LinkedList<>());
             int amount = 0;
             for (Ticket ticket : booking.getTickets()) {

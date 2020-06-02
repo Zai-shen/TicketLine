@@ -21,7 +21,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -107,7 +106,7 @@ public class UserController implements UserApi {
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<List<BookingDTO>> getTicketsOfUser() {
         LOGGER.info("Get all tickets for current user");
-        List<BookingDTO> bookings = bookingMapper.fromEntity(bookingService.getAllBookingsOfUser());
+        List<BookingDTO> bookings = bookingMapper.toDto(bookingService.getAllBookingsOfUser());
         return ResponseEntity.ok(bookings);
     }
 
@@ -130,10 +129,7 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Resource> getTicket(Long bookingId) {
-        Booking b = bookingService.getBooking(bookingId);
-        if(b == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Booking b = bookingService.getBookingOfCurrentUser(bookingId);
         ByteArrayFile pdf = bookingService.renderBooking(b);
 
         HttpHeaders headers = new HttpHeaders();

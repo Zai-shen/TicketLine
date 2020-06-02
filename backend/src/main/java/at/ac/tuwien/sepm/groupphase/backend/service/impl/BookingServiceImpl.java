@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
 import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.BookingRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
@@ -56,8 +57,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking getBooking(Long bookingId) throws AccessDeniedException {
-        var b = bookingRepository.findById(bookingId).orElse(null);
+    @Transactional(readOnly = true)
+    public Booking getBookingOfCurrentUser(Long bookingId) throws AccessDeniedException,NotFoundException {
+        var b = bookingRepository.findById(bookingId).orElseThrow(NotFoundException::new);
         if(b != null && !userService.getCurrentLoggedInUser().getId().equals(b.getUser().getId()))
             throw new AccessDeniedException("Nur eigene Buchungen können abgerufen werden");
         return b;

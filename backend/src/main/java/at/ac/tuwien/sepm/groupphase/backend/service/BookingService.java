@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface BookingService {
      * @param bookingId id of the booking to fetch
      * @return booking made by the current user
      */
-    Booking getBooking(Long bookingId) throws AccessDeniedException;
+    Booking getBookingOfCurrentUser(Long bookingId) throws AccessDeniedException, NotFoundException;
 
     /**
      * Utilizes the ticket rendering engine to produce a pdf from all the tickets of a booking
