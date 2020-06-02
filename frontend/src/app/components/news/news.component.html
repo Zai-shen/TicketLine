@@ -5,7 +5,7 @@
 </div>
 </mat-card>
 
-<mat-card *ngFor="let newsEntry of news">
+<mat-card *ngFor="let newsEntry of news" [routerLink]="['/news', newsEntry.id]">
   <mat-card-title>{{newsEntry.title}}</mat-card-title>
   <mat-card-content>
     <p>{{newsEntry.summary}}</p>
