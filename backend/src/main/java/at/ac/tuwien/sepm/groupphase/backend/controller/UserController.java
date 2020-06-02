@@ -3,9 +3,9 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.AddressMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,17 +33,15 @@ public class UserController implements UserApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserMapper userMapper;
-    private final AddressMapper addressMapper;
     private final UserService userService;
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
     private final TicketMapper ticketMapper;
 
     @Autowired
-    public UserController(UserMapper userMapper, AddressMapper addressMapper, UserInfoMapper userInfoMapper,
+    public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper,
         UserService userService, BookingService bookingService, TicketMapper ticketMapper) {
         this.userMapper = userMapper;
-        this.addressMapper = addressMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
