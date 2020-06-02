@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { LocationApiService, LocationDTO, SearchLocationDTO } from '../../../generated';
 import { AuthService } from '../../services/auth.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { LocationPerformancesSheetComponent } from './location-performances-sheet/location-performances-sheet.component';
 
 @Component({
   selector: 'tl-location',
@@ -15,7 +17,7 @@ export class LocationListComponent implements OnInit {
   searchForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService,
-              private authService: AuthService) { }
+              private authService: AuthService, private bottomSheet: MatBottomSheet) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -54,6 +56,12 @@ export class LocationListComponent implements OnInit {
         this.locations = locationDTO;
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
+  openDetails(location: LocationDTO): void {
+    this.bottomSheet.open(LocationPerformancesSheetComponent,{
+      data: location
+    });
   }
 
 
