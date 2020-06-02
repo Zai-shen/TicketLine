@@ -11,8 +11,8 @@
     <mat-card-subtitle><mat-icon>location_on</mat-icon>{{ booking.performance.location.description }}</mat-card-subtitle>
     <mat-card-content>
       <mat-list>
-        <mat-list-item *ngIf="booking.fixedSeats.length > 0">Fixplätze: {{ booking.fixedSeats.length }}</mat-list-item>
-        <mat-list-item *ngIf="booking.freeSeats.amount > 0">Personen: {{ booking.freeSeats.amount }}</mat-list-item>
+        <mat-list-item *ngIf="booking.fixedSeats.length > 0">Sitzplätze: {{ booking.fixedSeats.length }}</mat-list-item>
+        <mat-list-item *ngIf="booking.freeSeats.amount > 0">Stehplätze: {{ booking.freeSeats.amount }}</mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
