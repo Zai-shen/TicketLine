@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { ArtistsComponent } from './components/artists/artists.component';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
-import { LocationComponent } from './components/location/location.component';
+import { LocationListComponent } from './components/location-list/location-list.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { NewsComponent } from './components/news/news.component';
 import { CreateNewsComponent } from './components/create-news/create-news.component';
@@ -64,7 +64,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ErrorMessageComponent,
     ChangePasswordComponent,
     EventDetailComponent,
-    LocationComponent,
+    LocationListComponent,
     CreateLocationComponent,
     NewsComponent,
     CreateNewsComponent,
@@ -74,7 +74,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CreateEventComponent,
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
-    TicketListComponent
+    TicketListComponent,
   ],
     imports: [
         BrowserModule,

@@ -6,10 +6,10 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'tl-location',
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css']
+  templateUrl: './location-list.component.html',
+  styleUrls: ['./location-list.component.css']
 })
-export class LocationComponent implements OnInit {
+export class LocationListComponent implements OnInit {
 
   locations: LocationDTO[] = [];
   searchForm: FormGroup;
