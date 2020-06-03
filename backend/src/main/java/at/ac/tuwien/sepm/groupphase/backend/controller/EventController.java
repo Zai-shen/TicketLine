@@ -5,7 +5,6 @@ import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
