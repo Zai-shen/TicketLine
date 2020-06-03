@@ -14,6 +14,9 @@ public class Ticket {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @ManyToOne
+    private Booking booking;
+
     public Long getId() {
         return id;
     }
@@ -30,6 +33,13 @@ public class Ticket {
         this.price = price;
     }
 
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
 
     @Override
     public boolean equals(Object o) {

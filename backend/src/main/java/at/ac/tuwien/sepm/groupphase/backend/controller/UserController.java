@@ -1,8 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.AddressMapper;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.BookingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
@@ -40,24 +39,21 @@ public class UserController implements UserApi {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserMapper userMapper;
-    private final AddressMapper addressMapper;
     private final UserService userService;
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
-    private final TicketMapper ticketMapper;
     private final TicketService ticketService;
-
+    private final BookingMapper bookingMapper;
 
     @Autowired
-    public UserController(UserMapper userMapper, AddressMapper addressMapper, UserInfoMapper userInfoMapper,
-        UserService userService, BookingService bookingService, TicketMapper ticketMapper, TicketService ticketService) {
+    public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService,
+        BookingService bookingService, TicketService ticketService, BookingMapper bookingMapper) {
         this.userMapper = userMapper;
-        this.addressMapper = addressMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
-        this.ticketMapper = ticketMapper;
         this.ticketService = ticketService;
+        this.bookingMapper = bookingMapper;
     }
 
     @Override
@@ -111,10 +107,10 @@ public class UserController implements UserApi {
 
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
-    public ResponseEntity<TicketResponseDTO> getTicketsOfUser() {
+    public ResponseEntity<List<BookingDTO>> getTicketsOfUser() {
         LOGGER.info("Get all tickets for current user");
-        TicketResponseDTO ticketResponseDTO = ticketMapper.toDto(bookingService.getAllBookingsOfUser());
-        return ResponseEntity.ok(ticketResponseDTO);
+        List<BookingDTO> bookings = bookingMapper.toDto(bookingService.getAllBookingsOfUser());
+        return ResponseEntity.ok(bookings);
     }
 
     @Override
@@ -135,11 +131,25 @@ public class UserController implements UserApi {
 
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
-    public ResponseEntity<Resource> getInvoice(Long userId, Long bookingId, @Valid Optional<Boolean> cancel) {
-        User user = userService.getCurrentLoggedInUser();
-        Booking booking = bookingService.getBookingById(bookingId);
-        InvoiceData invoice = new InvoiceData(booking, user, cancel.orElse(false));
-        ByteArrayFile pdf = ticketService.renderInvoice(invoice);
+    public ResponseEntity<Resource> getInvoice(Long bookingId, @Valid Optional<Boolean> cancel) {
+        Booking booking = bookingService.getBookingOfCurrentUser(bookingId);
+        ByteArrayFile pdf = bookingService.renderInvoice(booking, cancel.orElse(false));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        headers.add("Content-Disposition", "filename=" + pdf.getName());
+        headers.add("Access-Control-Expose-Headers", "Content-Disposition");
+        headers.setContentLength(pdf.getContent().length);
+
+        return new ResponseEntity<>(
+            new InputStreamResource(new ByteArrayInputStream(pdf.getContent())), headers, HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<Resource> getTicket(Long bookingId) {
+        Booking b = bookingService.getBookingOfCurrentUser(bookingId);
+        ByteArrayFile pdf = bookingService.renderBooking(b);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));

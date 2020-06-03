@@ -64,7 +64,7 @@ export class CreateNewsComponent implements OnInit {
     if (this.newsForm.valid) {
       const newsDTO: NewsDTO = Object.assign({}, this.newsForm.value);
       newsDTO.author = this.userName;
-      newsDTO.publishedAt = new Date();
+      newsDTO.publishedAt = new Date().toISOString();
       this.newsApiService.createNews(newsDTO).subscribe(
         () => {
           this.newsForm.reset();

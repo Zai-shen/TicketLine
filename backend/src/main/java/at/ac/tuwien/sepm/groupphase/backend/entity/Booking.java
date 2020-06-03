@@ -18,11 +18,14 @@ public class Booking {
     @ManyToOne
     private Performance performance;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
     private List<Ticket> tickets;
 
     @Column(nullable = false)
     private LocalDate date;
+
+    @ManyToOne
+    private User user;
 
     public Long getId() {
         return id;
@@ -62,6 +65,14 @@ public class Booking {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
