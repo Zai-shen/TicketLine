@@ -24,3 +24,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-top: 5em;
   padding: 5em;
 }
+
+@media only screen and (max-width: 767px) {
+  .main-content {
+    background-color: #ffffff;
+    margin-top: 1em;
+    padding: 1em;
+  }
+}
