@@ -51,6 +51,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { PerformanceListComponent } from './components/performance-list/performance-list.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CreateEventComponent,
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
-    TicketListComponent
+    TicketListComponent,
+    PerformanceListComponent
   ],
     imports: [
         BrowserModule,

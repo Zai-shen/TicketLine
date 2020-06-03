@@ -1,0 +1,26 @@
+<div class="main-content mat-elevation-z4">
+  <form [formGroup]="performanceSearch" (ngSubmit)="getAllPerformances()">
+    <mat-form-field appearance="standard">
+      <mat-label>Datum</mat-label>
+      <input matInput type="text" name="date" formControlName="date"
+             id="date" placeholder="Bezeichnung">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+  </form>
+
+  <h3 class="mat-h3">{{performancesFound}} Aufführungen gefunden</h3>
+
+  <mat-card *ngFor="let performance of performances">
+    <mat-card-title>{{performance.event.title}}</mat-card-title>
+    <mat-card-content class="card-body" >
+    </mat-card-content>
+  </mat-card>
+
+  <mat-paginator [length]="amountOfPages"
+                 [pageSize]="LIST_PAGE_SIZE"
+                 [pageSizeOptions]="[LIST_PAGE_SIZE]"
+                 (page)="onPaginationChange($event)">
+  </mat-paginator>
+</div>
+

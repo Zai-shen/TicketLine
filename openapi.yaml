@@ -885,6 +885,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /performance:
+    get:
+      tags:
+        - event
+      summary: Get all performances
+      operationId: getAllPerformances
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceDTO'
+        404:
+          description: Couldn't find event entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /performance/search:
+    post:
+      tags:
+        - event
+      summary: Search for performances
+      operationId: searchPerformances
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchPerformanceDTO'
+        required: true
+      responses:
+        200:
+          description: Search performed without errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceDTO'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Search parameter don't validate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /user/tickets:
     get:
       security:
@@ -1380,6 +1443,18 @@ components:
           $ref: '#/components/schemas/EventDTO'
         location:
           $ref: '#/components/schemas/LocationDTO'
+    SearchPerformanceDTO:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+          example: '2020-08-17 18:00'
+        price:
+          type: number
+          example: 29.99
+        event:
+          $ref: '#/components/schemas/EventDTO'
     SearchEventDTO:
       type: object
       properties:
