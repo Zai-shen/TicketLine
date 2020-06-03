@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class LocationPerformancesSheetComponent implements OnInit {
   private performances: PerformanceDTO[] = [];
+  private loading = true;
   constructor(
     @Inject(MAT_BOTTOM_SHEET_DATA) public location: LocationDTO,
     private locationApiService: LocationApiService,
@@ -19,12 +20,18 @@ export class LocationPerformancesSheetComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.location.id) {
+      this.loading = true;
       this.locationApiService.getPerformancesOfLocation(this.location.id).subscribe(
         (performances: PerformanceDTO[]) => {
           this.performances = performances;
+          this.loading = false;
         }
       );
     }
+  }
+
+  get performancesAvailable(): boolean {
+    return this.performances.length > 0;
   }
 
   public navigateTo(target: EventDTO): void {
