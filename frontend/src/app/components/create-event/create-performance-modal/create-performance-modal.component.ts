@@ -30,6 +30,7 @@ export class CreatePerformanceModalComponent implements OnInit {
   locations: LocationDTO[];
   filteredLocations: Observable<LocationDTO[]>;
   minDate = new Date();
+  wipDateTime: Date | undefined = new Date();
 
   constructor(@Inject(MAT_DIALOG_DATA) private readonly inputPerformance: PerformanceDTO,
     private readonly formBuilder: FormBuilder,
@@ -77,7 +78,8 @@ export class CreatePerformanceModalComponent implements OnInit {
   }
 
   dateChange(event: MatDatepickerInputEvent<Date>) {
-    this.performance.dateTime = event.value ? event.value : undefined;
+    this.wipDateTime = event.value ? event.value : undefined;
+    this.performance.dateTime = event.value ? event.value.toISOString() : undefined;
     if (this.selectedTime != null) {
       this.setTimeOnDate(this.selectedTime);
     }
@@ -89,12 +91,12 @@ export class CreatePerformanceModalComponent implements OnInit {
   }
 
   setTimeOnDate(time: string) {
-    if (this.performance.dateTime != null) {
+    if (this.wipDateTime != null) {
       const splitTime = time.split(':');
       const hours = parseInt(splitTime[0], 10);
       const minutes = parseInt(splitTime[1], 10);
-      if (this.performance.dateTime != null && !isNaN(hours) && !isNaN(minutes)) {
-        this.performance.dateTime.setHours(hours, minutes);
+      if (this.wipDateTime != null && !isNaN(hours) && !isNaN(minutes)) {
+        this.wipDateTime.setHours(hours, minutes);
       }
     }
   }
@@ -108,6 +110,7 @@ export class CreatePerformanceModalComponent implements OnInit {
   }
 
   createPerformance() {
+    this.performance.dateTime = this.wipDateTime?.toISOString();
     this.submitted = true;
     if (this.performanceForm.valid) {
       this.dialogRef.close(this.performance);
