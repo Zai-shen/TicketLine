@@ -36,7 +36,8 @@ export class EventsComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       title: [''],
       category: [null],
-      duration: ['']
+      duration: [''],
+      description: ['']
     });
   }
 
