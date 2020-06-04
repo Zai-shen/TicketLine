@@ -885,7 +885,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /performance:
+  /event/performances:
     get:
       tags:
         - event
@@ -914,12 +914,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /performance/search:
+  /event/performances/search:
     post:
       tags:
         - event
       summary: Search for performances
       operationId: searchPerformances
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameters
         content:

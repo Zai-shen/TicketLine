@@ -2,21 +2,21 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.EventApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.EventMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
-import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
-import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -90,5 +90,23 @@ public class EventController implements EventApi {
         LOGGER.info("Create ticket for performance {}", performanceId);
         bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingDTO));
         return ResponseEntity.ok(0L);
+    }
+
+    @Override
+    public ResponseEntity<List<PerformanceDTO>> getAllPerformances(@Valid Optional<Integer> page) {
+        LOGGER.info("get all performances");
+        Page<Performance> performances = performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
+            .body(performanceMapper.toDto(performances.getContent()));
+    }
+
+    @Override
+    public ResponseEntity<List<PerformanceDTO>> searchPerformances(@Valid SearchPerformanceDTO searchPerformanceDTO, @Valid Optional<Integer> page) {
+        LOGGER.info("search for performances");
+        Page<Performance> performances = performanceService.searchPerformances(performanceMapper.fromDto(searchPerformanceDTO), PageRequest.of(page.orElse(0), PAGE_SIZE));
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
+            .body(performanceMapper.toDto(performances.getContent()));
     }
 }

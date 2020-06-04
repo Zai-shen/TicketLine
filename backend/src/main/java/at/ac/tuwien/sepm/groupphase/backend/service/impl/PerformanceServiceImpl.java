@@ -12,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PerformanceServiceImpl implements PerformanceService {
     private final PerformanceRepository performanceRepository;
@@ -39,5 +37,10 @@ public class PerformanceServiceImpl implements PerformanceService {
         }
         new NewPerformanceValidator().build(performance).validate();
         return performanceRepository.saveAndFlush(performance).getId();
+    }
+
+    @Override
+    public Page<Performance> searchPerformances(Performance performance, Pageable pageable) {
+        return null;
     }
 }
