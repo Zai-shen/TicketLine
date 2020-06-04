@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.datagenerator;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
-import at.ac.tuwien.sepm.groupphase.backend.repository.AddressRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 import java.time.OffsetDateTime;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Profile("generateData")
 @Component
@@ -25,14 +26,12 @@ public class PerformanceDataGenerator {
     private final PerformanceRepository performanceRepository;
     private final EventRepository eventRepository;
     private final LocationRepository locationRepository;
-    private final AddressRepository addressRepository;
 
     public PerformanceDataGenerator(PerformanceRepository performanceRepository, EventRepository eventRepository,
-        LocationRepository locationRepository, AddressRepository addressRepository) {
+        LocationRepository locationRepository) {
         this.performanceRepository = performanceRepository;
         this.eventRepository = eventRepository;
         this.locationRepository = locationRepository;
-        this.addressRepository = addressRepository;
     }
 
     @PostConstruct
@@ -42,11 +41,14 @@ public class PerformanceDataGenerator {
             LOGGER.debug("message already generated");
         } else {
             LOGGER.debug("generating {} message entries", NUMBER_OF_EVENTS_TO_GENERATE);
+
+            final Random random = ThreadLocalRandom.current();
+
             for (int i = 0; i < NUMBER_OF_EVENTS_TO_GENERATE; i++) {
                 Event event = new Event();
                 event.setTitle(f.book().title());
                 event.setDescription(f.hitchhikersGuideToTheGalaxy().quote());
-                event.setCategory(CategoryEnum.ADVENTURE);
+                event.setCategory(CategoryEnum.values()[random.nextInt(CategoryEnum.values().length)]);
                 event.setDuration(f.random().nextLong(180)+20);
 
                 Address locaddr = new Address();
