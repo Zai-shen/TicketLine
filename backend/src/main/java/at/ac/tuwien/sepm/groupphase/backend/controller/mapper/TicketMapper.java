@@ -33,36 +33,5 @@ public class TicketMapper {
         return tickets;
     }
 
-    public TicketResponseDTO toDto(List<Booking> bookings) {
-        TicketResponseDTO ticketResponseDTO = new TicketResponseDTO();
-
-        for (Booking booking : bookings) {
-            for (Ticket ticket : booking.getTickets()) {
-                if (ticket instanceof SeatedTicket) {
-                    SeatedTicket seatedTicket = (SeatedTicket) ticket;
-                    SeatgroupSeatDTO seatgroupSeatDTO = getSeatgroupSeatDTO(seatedTicket);
-                    SeatedTicketDTO seatedTicketDTO = new SeatedTicketDTO();
-                    seatedTicketDTO.setSeat(seatgroupSeatDTO);
-                    seatedTicketDTO.setReserved(booking.getReservation());
-                    seatedTicketDTO.setId(ticket.getId());
-                    ticketResponseDTO.addSeatedTicketsItem(seatedTicketDTO);
-                } else {
-                    FreeTicketDTO freeTicketDTO = new FreeTicketDTO();
-                    freeTicketDTO.setId(ticket.getId());
-                    freeTicketDTO.setReserved(booking.getReservation());
-                    ticketResponseDTO.addFreeTicketsItem(freeTicketDTO);
-                }
-            }
-        }
-        return ticketResponseDTO;
-    }
-
-    private SeatgroupSeatDTO getSeatgroupSeatDTO(SeatedTicket seatedTicket) {
-        SeatgroupSeatDTO seatgroupSeatDTO = new SeatgroupSeatDTO();
-        seatgroupSeatDTO.setSeatgroupId(seatedTicket.getSeatGroupId());
-        seatgroupSeatDTO.setX(seatedTicket.getSeatColumn());
-        seatgroupSeatDTO.setY(seatedTicket.getSeatColumn());
-        return seatgroupSeatDTO;
-    }
 
 }

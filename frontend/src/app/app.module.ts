@@ -54,6 +54,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { LocationPerformancesSheetComponent } from './components/location-list/location-performances-sheet/location-performances-sheet.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,7 @@ import { MatListModule } from '@angular/material/list';
     PerformanceTableComponent,
     TicketListComponent,
     LocationPerformancesSheetComponent,
+    RelativeTimestampComponent
   ],
   imports: [
     BrowserModule,
@@ -113,6 +116,7 @@ import { MatListModule } from '@angular/material/list';
     MatExpansionModule,
     MatBottomSheetModule,
     MatListModule,
+    MatTooltipModule
   ],
   providers: [
     {
