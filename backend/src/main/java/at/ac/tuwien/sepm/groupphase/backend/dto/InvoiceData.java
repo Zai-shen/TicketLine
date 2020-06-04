@@ -1,63 +1,60 @@
 package at.ac.tuwien.sepm.groupphase.backend.dto;
 
+import at.ac.tuwien.sepm.groupphase.backend.config.properties.CompanyProperties;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
-import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Properties;
 
+@ConfigurationProperties(prefix="ticketline")
 public class InvoiceData {
     private final Booking booking;
     private final User buyer;
     private final boolean cancelled;
-    private Properties appProps;
 
-    public InvoiceData(Booking booking, User buyer, boolean cancelled) {
+    private final CompanyProperties companyProperties;
+
+    @Autowired
+    public InvoiceData(Booking booking, User buyer, boolean cancelled, CompanyProperties companyProperties) {
         this.booking = booking;
         this.buyer = buyer;
         this.cancelled = cancelled;
-        String appProperties = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "application.properties";
-        appProps = new Properties();
-        try {
-            appProps.load(new FileInputStream(appProperties));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.companyProperties = companyProperties;
     }
 
     public String getName() {
-        return appProps.getProperty("name");
+        return companyProperties.getName();
     }
 
     public String getStreet() {
-        return appProps.getProperty("street");
+        return companyProperties.getStreet();
     }
 
     public String getHousenr() {
-        return appProps.getProperty("housenr");
+        return companyProperties.getHousenr();
     }
 
     public String getPostalcode() {
-        return appProps.getProperty("postalcode");
+        return companyProperties.getPostalcode();
     }
 
     public String getCity() {
-        return appProps.getProperty("city");
+        return companyProperties.getCity();
     }
 
     public String getCountry() {
-        return appProps.getProperty("country");
+        return companyProperties.getCountry();
     }
 
     public String getUID() {
-        return appProps.getProperty("UID");
+        return companyProperties.getUID();
     }
 
     public boolean getCancelled() {
@@ -76,14 +73,8 @@ public class InvoiceData {
         return booking.getTickets();
     }
 
-    public int getSeatedAmount() {
-        List<Ticket> tickets = new ArrayList<>();
-        for (Ticket ticket : booking.getTickets()) {
-            if (ticket instanceof SeatedTicket) {
-                tickets.add(ticket);
-            }
-        }
-        return tickets.size();
+    public String formatDate() {
+        return booking.getDate().format(DateTimeFormatter.ofPattern("dd.MM.YYYY"));
     }
 
     public User getBuyer() {
@@ -97,7 +88,7 @@ public class InvoiceData {
     public BigDecimal getPrice() {
         BigDecimal sum = BigDecimal.valueOf(0);
         for (Ticket ticket : booking.getTickets()) {
-            sum = sum.add(ticket.getPrice());
+            sum = sum.add(ticket.getPrice().divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
         }
         return sum;
     }

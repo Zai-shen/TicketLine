@@ -54,7 +54,7 @@
         <p>${data.buyer.address.postalcode} ${data.buyer.address.city}, ${data.buyer.address.country}</p>
     </div>
     <div class="date">
-        <p>${data.booking.date}</p>
+        <p>${data.formatDate()}</p>
     </div>
     <b><#if data.cancelled>Stornierung für Rechnung Nr.<#else>Rechnung Nr.</#if> ${data.booking.id}</b>
     <table class="content">
@@ -67,7 +67,7 @@
             <tr>
                 <td>1</td>
                 <td>${data.booking.performance.event.title}</td>
-                <td class="align-right">${ticket.price} €</td>
+                <td class="align-right">${ticket.formatPriceExclVAT()} €</td>
             </tr>
         </#list>
     </table>

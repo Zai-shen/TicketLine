@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.config.properties.CompanyProperties;
 import at.ac.tuwien.sepm.groupphase.backend.dto.InvoiceData;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
@@ -29,13 +30,15 @@ public class BookingServiceImpl implements BookingService {
     private final UserService userService;
     private final BookingRepository bookingRepository;
     private final TicketService ticketService;
+    private CompanyProperties companyProperties;
 
     public BookingServiceImpl(PerformanceRepository performanceRepository, UserService userService,
-        BookingRepository bookingRepository, TicketService ticketService) {
+        BookingRepository bookingRepository, TicketService ticketService, CompanyProperties companyProperties) {
         this.performanceRepository = performanceRepository;
         this.userService = userService;
         this.bookingRepository = bookingRepository;
         this.ticketService = ticketService;
+        this.companyProperties = companyProperties;
     }
 
     @Override
@@ -92,7 +95,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public ByteArrayFile renderInvoice(Booking booking, boolean cancel) {
         User user = userService.getCurrentLoggedInUser();
-        InvoiceData invoice = new InvoiceData(booking, user, cancel);
+        InvoiceData invoice = new InvoiceData(booking, user, cancel, companyProperties);
         return ticketService.renderInvoice(invoice);
     }
 }

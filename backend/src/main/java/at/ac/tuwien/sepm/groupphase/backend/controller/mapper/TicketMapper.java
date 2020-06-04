@@ -1,7 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
-import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
+import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.SeatgroupSeatDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class TicketMapper {
 
         for (int i = 0; i < freeTicketAmount; i++) {
             Ticket ticket = new Ticket();
-            ticket.setPrice(BigDecimal.valueOf(23.50));
+            ticket.setPrice(BigDecimal.valueOf(23.50)); // TODO: get price from SeatgroupPerformance
             tickets.add(ticket);
         }
 
@@ -30,7 +30,7 @@ public class TicketMapper {
             seatedTicket.setSeatGroupId(fixedSeatgroupBookingDTO.getSeatgroupId());
             seatedTicket.setSeatColumn(fixedSeatgroupBookingDTO.getY());
             seatedTicket.setSeatRow(fixedSeatgroupBookingDTO.getX());
-            seatedTicket.setPrice(BigDecimal.valueOf(31.70));
+            seatedTicket.setPrice(BigDecimal.valueOf(31.70)); // TODO: get price from SeatgroupPerformance
             tickets.add(seatedTicket);
         }
         return tickets;
