@@ -13,6 +13,8 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -57,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
     public List<Performance> performancesForLocation(Long locationId) {
         LOGGER.debug("get performances for location {}",locationId);
         Location l = locationRepository.findById(locationId).orElse(null);
-        return performanceRepository.findByLocation(l);
+        return performanceRepository.findByLocationAndDateTimeIsAfter(l, OffsetDateTime.now());
     }
 
 }
