@@ -2,7 +2,7 @@
 <mat-nav-list>
   <a mat-list-item *ngFor="let performance of performances" (click)="navigateTo(performance.event)">
     <span mat-line>{{ performance.event.title }}</span>
-    <span mat-line>{{ performance.dateTime }}</span>
+    <span mat-line><tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp></span>
   </a>
 </mat-nav-list>
 <p *ngIf="!loading && !performancesAvailable" class="mat-h2">Uns sind zurzeit keine Aufführungen in dieser Location bekannt.</p>
