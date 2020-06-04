@@ -25,3 +25,8 @@ mat-spinner {
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
+img {
+  border-radius: 25% 25% 25% 25%;
+  margin-bottom: 3rem;
+}

@@ -1,7 +1,7 @@
 <mat-card>
 <div class="results">
   <p *ngIf="news"><b>{{newsFound}} News gefunden</b></p>
-  <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" class="btn btn-secondary btn-sm mr-4">News hinzufügen</button>
+  <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" mat-stroked-button color="primary">News hinzufügen</button>
 </div>
 </mat-card>
 
