@@ -24,17 +24,6 @@ export class PlaceholderpdfService {
     });
   }
 
-  downloadInvoicePdf(ticketId: Number) {
-    let headers = new HttpHeaders();
-    headers = headers.set('Accept', 'application/pdf');
-    this.httpClient.get(this.globals.backendUri + '/user/1/ticket/' + ticketId + '/invoice',
-      { headers: headers, responseType: 'blob', observe: 'response' })
-        .subscribe(
-          (result: HttpResponse<Blob>) => {
-                   this.downloadFile(result);
-    });
-  }
-
   parseFilenameFromHeader(result: HttpResponse<Blob>): string {
     const header = result.headers.get('content-disposition');
     let filename = 'ticketline.pdf';

@@ -44,9 +44,9 @@
 </head>
 <body>
     <div class="seller">
-        <p>Ticketline</p>
-        <p>Musterstraße 1</p>
-        <p>1040 Wien, AT</p>
+        <p>${data.getName()}</p>
+        <p>${data.getStreet()} ${data.getHousenr()}</p>
+        <p>${data.getPostalcode()} ${data.getCity()}, ${data.getCountry()}</p>
     </div>
     <div class="buyer">
         <p>${data.buyer.firstname} ${data.buyer.lastname}</p>
@@ -87,6 +87,6 @@
         </tr>
     </table>
     <p>Leistungsdatum ist gleich dem Rechnungsdatum</p>
-    <p>UID: ATU12345678</p>
+    <p>UID: ${data.getUID()}</p>
 </body>
 </html>

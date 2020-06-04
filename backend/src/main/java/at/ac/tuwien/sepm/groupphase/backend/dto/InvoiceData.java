@@ -5,20 +5,59 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class InvoiceData {
     private final Booking booking;
     private final User buyer;
     private final boolean cancelled;
+    private Properties appProps;
 
     public InvoiceData(Booking booking, User buyer, boolean cancelled) {
         this.booking = booking;
         this.buyer = buyer;
         this.cancelled = cancelled;
+        String appProperties = Thread.currentThread().getContextClassLoader().getResource("").getPath() + "application.properties";
+        appProps = new Properties();
+        try {
+            appProps.load(new FileInputStream(appProperties));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getName() {
+        return appProps.getProperty("name");
+    }
+
+    public String getStreet() {
+        return appProps.getProperty("street");
+    }
+
+    public String getHousenr() {
+        return appProps.getProperty("housenr");
+    }
+
+    public String getPostalcode() {
+        return appProps.getProperty("postalcode");
+    }
+
+    public String getCity() {
+        return appProps.getProperty("city");
+    }
+
+    public String getCountry() {
+        return appProps.getProperty("country");
+    }
+
+    public String getUID() {
+        return appProps.getProperty("UID");
     }
 
     public boolean getCancelled() {
