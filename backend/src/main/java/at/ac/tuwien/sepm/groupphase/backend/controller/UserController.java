@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.BookingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;

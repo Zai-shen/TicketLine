@@ -1,20 +1,58 @@
 <div class="mat-elevation-z4 main-content">
-  <form>
-    <mat-form-field>
-      <input matInput type="search" placeholder="Veranstaltungen" aria-label="Search"/>
+  <tl-error-message></tl-error-message>
+
+  <form [formGroup]="searchForm" (ngSubmit)="searchEvents()">
+    <mat-form-field appearance="standard">
+      <mat-label>Titel</mat-label>
+      <input matInput type="text" name="title" formControlName="title"
+             id="title" placeholder="Titel"/>
     </mat-form-field>
+
     <mat-form-field>
-      <mat-select class="form-control form-control-sm w-10">
-        <mat-option *ngFor="let categories of eventCategories">{{categories}}</mat-option>
+      <mat-label>Kategorie</mat-label>
+      <mat-select id="event-category" formControlName="category">
+        <mat-option [value]="null">Kein Filter</mat-option>
+        <mat-option *ngFor="let category of eventCategories" [value]="category">{{category}}</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Dauer</mat-label>
+      <input matInput type="number" name="duration" formControlName="duration"
+             id="duration" placeholder="Dauer"/>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Inhalt</mat-label>
+      <input matInput type="text" name="description" formControlName="description"
+             id="description" placeholder="Inhalt"/>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
   </form>
-  <button mat-raised-button *ngIf="isAdminLoggedIn()" class="new-event-button" routerLink="/event/newEvent" type="button">Event erstellen</button>
-  <mat-card class="mdc-layout-grid" *ngFor="let performance of performances" [routerLink]="['/events',performance.event.id]"
+
+  <button mat-raised-button *ngIf="isAdminLoggedIn()" class="new-event-button" routerLink="/event/newEvent"
+          type="button">Event erstellen
+  </button>
+  <mat-card class="mdc-layout-grid" *ngFor="let event of events" [routerLink]="['/events', event.id]"
             mat-ripple>
-    <mat-card-title>{{performance.event.title}}</mat-card-title>
-    <mat-card-subtitle><mat-icon>access_time</mat-icon><tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp></mat-card-subtitle>
-    <mat-card-subtitle><mat-icon>av_timer</mat-icon>{{performance.event.duration}} minuten</mat-card-subtitle>
-    <mat-card-subtitle><mat-icon>location_on</mat-icon>{{performance.location.description}}</mat-card-subtitle>
+    <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{event.title}}</mat-card-title>
+    <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">
+      <p>
+        <mat-icon>av_timer</mat-icon>
+        {{event.duration}} minuten
+      </p>
+      <p>
+        <mat-icon>list</mat-icon>
+        {{event.category}}
+      </p>
+    </mat-card-content>
   </mat-card>
+
+  <mat-paginator [length]="amountOfPages"
+                 [pageIndex]="currentPage"
+                 [pageSize]="EVENT_LIST_PAGE_SIZE"
+                 [pageSizeOptions]="[EVENT_LIST_PAGE_SIZE]"
+                 (page)="onPaginationChange($event)">
+  </mat-paginator>
 </div>

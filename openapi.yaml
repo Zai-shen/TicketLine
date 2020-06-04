@@ -617,6 +617,14 @@ paths:
         - event
       summary: Search for events
       operationId: searchEvents
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameters
         content:
@@ -1400,6 +1408,12 @@ components:
         description:
           type: string
           example: Awesome concert of the best band in the best location!
+      required:
+        - id
+        - title
+        - category
+        - duration
+        - description
     EventCategory:
       type: string
       enum: [CONCERT, FESTIVAL, THEATRE, OPERA, PARTY, LITERATURE, MUSICAL, SHOW, CIRCUS, COMEDY, WELLNESS, ADVENTURE, OTHER]
