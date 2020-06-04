@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.EventRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.SearchEventSpecification;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewEventValidator;
 import org.slf4j.Logger;
@@ -14,11 +15,14 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -54,12 +58,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<Event> searchEvents(Event searchEvent, PageRequest pageRequest) throws BusinessValidationException {
         LOGGER.debug("search events");
-        ExampleMatcher matcher = ExampleMatcher
-            .matchingAll()
-            .withIgnoreCase()
-            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-        Example<Event> probe = Example.of(searchEvent, matcher);
 
-        return eventRepository.findAll(probe, pageRequest);
+        Specification<Event> specification = new SearchEventSpecification(searchEvent);
+        return eventRepository.findAll(specification, pageRequest);
     }
 }

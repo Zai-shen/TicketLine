@@ -7,13 +7,12 @@ import at.ac.tuwien.sepm.groupphase.backend.service.impl.EventServiceImpl;
 import at.ac.tuwien.sepm.groupphase.backend.util.DomainTestObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -48,14 +47,10 @@ public class EventServiceTest {
         final Event searchEvent = DomainTestObjectFactory.getEvent();
         final PageRequest pageRequest = PageRequest.of(0, 20);
         final Page<Event> returnPage = Page.empty();
-        when(eventRepository.findAll(any(), eq(pageRequest))).thenReturn(returnPage);
+        when(eventRepository.findAll(any(Specification.class), eq(pageRequest))).thenReturn(returnPage);
 
         Page<Event> result = eventService.searchEvents(searchEvent, pageRequest);
 
         assertThat(result).isEqualTo(returnPage);
-        var captor = ArgumentCaptor.forClass(Example.class);
-        verify(eventRepository, times(1)).findAll(captor.capture(), eq(pageRequest));
-        Example<Event> example = captor.getValue();
-        assertThat(example.getProbe()).isEqualTo(searchEvent);
     }
 }
