@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.LocationService;
@@ -58,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<Performance> performancesForLocation(Long locationId) {
         LOGGER.debug("get performances for location {}",locationId);
-        Location l = locationRepository.findById(locationId).orElse(null);
+        Location l = locationRepository.findById(locationId).orElseThrow(NotFoundException::new);
         return performanceRepository.findByLocationAndDateTimeIsAfter(l, OffsetDateTime.now());
     }
 
