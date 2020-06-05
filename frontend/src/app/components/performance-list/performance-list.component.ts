@@ -4,6 +4,7 @@ import { PerformanceService } from '../../services/performance.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'tl-performance-list',
@@ -39,6 +40,15 @@ export class PerformanceListComponent implements OnInit {
       });
   }
 
+  onPaginationChange(event: PageEvent): void {
+    this.currentPage = event.pageIndex;
+    if (this.searched) {
+      this.searchPerformances();
+    } else {
+      this.getAllPerformances();
+    }
+  }
+
   private getAllPerformances(): void {
     this.performanceService.getAllPerformances(this.currentPage).subscribe(performances => {
         if (performances.body !== null) {
@@ -48,6 +58,11 @@ export class PerformanceListComponent implements OnInit {
         }
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
+  searchPerformances(): void {
+    const searchPerformanceDTO: SearchPerformanceDTO = Object.assign({}, this.performanceSearch.value);
+
   }
 
 }
