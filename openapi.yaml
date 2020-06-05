@@ -617,6 +617,14 @@ paths:
         - event
       summary: Search for events
       operationId: searchEvents
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameters
         content:
@@ -970,7 +978,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TicketResponseDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingDTO'
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -1012,6 +1022,43 @@ paths:
       responses:
         200:
           description: Invoice of the booking
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: file
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find user or booking entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/ticket/{bookingId}/ticket:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Get the print ticket for a booking
+      operationId: getTicket
+      parameters:
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the booking to generate the invoice for
+          example: 254
+      responses:
+        200:
+          description: Printable PDF Ticket
           content:
             application/pdf:
               schema:
@@ -1432,6 +1479,12 @@ components:
         description:
           type: string
           example: Awesome concert of the best band in the best location!
+      required:
+        - id
+        - title
+        - category
+        - duration
+        - description
     EventCategory:
       type: string
       enum: [CONCERT, FESTIVAL, THEATRE, OPERA, PARTY, LITERATURE, MUSICAL, SHOW, CIRCUS, COMEDY, WELLNESS, ADVENTURE, OTHER]
@@ -1623,6 +1676,13 @@ components:
           - amount
     BookingDTO:
       properties:
+        id:
+          type: integer
+          format: int64
+        performance:
+          $ref: '#/components/schemas/PerformanceDTO'
+        reservation:
+          type: boolean
         fixedSeats:
           type: array
           items:
@@ -1652,16 +1712,6 @@ components:
       required:
         - id
         - reserved
-    TicketResponseDTO:
-      properties:
-        freeTickets:
-          type: array
-          items:
-            $ref: '#/components/schemas/FreeTicketDTO'
-        seatedTickets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SeatedTicketDTO'
   securitySchemes:
     ticketline_auth:
       type: http

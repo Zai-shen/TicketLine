@@ -15,7 +15,7 @@
   <mat-accordion>
     <mat-expansion-panel *ngFor="let performance of performances">
       <mat-expansion-panel-header>
-        Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> am {{ performance.dateTime }}
+        Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> <tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp>
       </mat-expansion-panel-header>
       <mat-grid-list cols="8" rowHeight="1:1">
         <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>

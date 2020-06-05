@@ -6,6 +6,11 @@ import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.SearchEventDTO;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
@@ -35,7 +40,7 @@ public class EventController implements EventApi {
     private final BookingService bookingService;
     private final TicketMapper ticketMapper;
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 25;
 
     public EventController(PerformanceService performanceService, EventService eventService,
         PerformanceMapper performanceMapper, EventMapper eventMapper, BookingService bookingService,
@@ -49,11 +54,17 @@ public class EventController implements EventApi {
     }
 
     @Override
-    public ResponseEntity<List<PerformanceDTO>> getTopTenEvents(@Valid Optional<Integer> page,
-        @Valid Optional<EventCategory> category) {
-        LOGGER.info("Show top events");
-        return ResponseEntity.ok(performanceMapper.toDto(
-            performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE)).getContent()));
+    public ResponseEntity<List<EventDTO>> searchEvents(@Valid SearchEventDTO searchEventDTO,
+        @Valid Optional<Integer> page) {
+        LOGGER.info("Search for events by {}", searchEventDTO);
+        PageRequest pageRequest = PageRequest.of(page.orElse(0), PAGE_SIZE);
+        Event searchEvent = eventMapper.fromSearchDto(searchEventDTO);
+
+        Page<Event> events = eventService.searchEvents(searchEvent, pageRequest);
+
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(events.getTotalElements()))
+            .body(eventMapper.toDto(events.getContent()));
     }
 
     @Override
