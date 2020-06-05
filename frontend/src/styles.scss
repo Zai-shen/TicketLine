@@ -24,3 +24,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-top: 5em;
   padding: 5em;
 }
+
+.aligned-icons {
+  display: flex;
+  align-items: center;
+}
+
+mat-icon {
+  margin-right: 5px;
+}

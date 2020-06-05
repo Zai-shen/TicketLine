@@ -48,6 +48,14 @@
   <mat-card *ngFor="let performance of performances" [routerLink]="['/events',performance.event.id]">
     <mat-card-title>{{performance.event.title}}</mat-card-title>
     <mat-card-content class="card-body" >
+      <p class="aligned-icons">
+        <mat-icon>av_timer</mat-icon>
+        <tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp>
+      </p>
+      <p class="aligned-icons">
+        <mat-icon>place</mat-icon>
+        {{performance.location.description}}
+      </p>
     </mat-card-content>
   </mat-card>
 

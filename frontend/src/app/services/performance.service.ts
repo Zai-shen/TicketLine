@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventApiService, EventDTO, PerformanceDTO } from '../../generated';
+import { EventApiService, EventDTO, PerformanceDTO, SearchPerformanceDTO } from '../../generated';
 import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -15,5 +15,9 @@ export class PerformanceService {
 
   getAllPerformances(page: number): Observable<HttpResponse<Array<PerformanceDTO>>> {
     return this.eventApiService.getAllPerformances(page, 'response');
+  }
+
+  searchPerformances(searchPerformanceDTO: SearchPerformanceDTO, page: number): Observable<HttpResponse<Array<PerformanceDTO>>> {
+    return this.eventApiService.searchPerformances(searchPerformanceDTO, page, 'response');
   }
 }

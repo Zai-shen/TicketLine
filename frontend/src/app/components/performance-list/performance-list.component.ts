@@ -63,6 +63,14 @@ export class PerformanceListComponent implements OnInit {
   searchPerformances(): void {
     const searchPerformanceDTO: SearchPerformanceDTO = Object.assign({}, this.performanceSearch.value);
 
+    this.performanceService.searchPerformances(searchPerformanceDTO, this.currentPage).subscribe(performances => {
+        if (performances.body !== null) {
+          this.performances = performances.body;
+          this.amountOfPages = Number(performances.headers.get('X-Total-Count')) || 1;
+          this.performancesFound = Number(performances.headers.get('X-Total-Count')) || 0;
+        }
+      },
+      error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
 
 }
