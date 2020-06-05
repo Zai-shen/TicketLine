@@ -15,8 +15,6 @@ public interface LocationMapper {
 
     Location locationCreationDtoToLocation(LocationCreationDTO locationCreationDTO);
 
-    // Location locationDtoToLocation(LocationDTO locationDTO);
-
     Location searchLocationDtoToLocation(SearchLocationDTO searchLocationDTO);
 
     LocationDTO locationToLocationDto(Location location);

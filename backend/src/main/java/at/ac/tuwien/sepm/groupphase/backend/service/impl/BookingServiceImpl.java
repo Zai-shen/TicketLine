@@ -1,5 +1,10 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.config.properties.CompanyProperties;
+import at.ac.tuwien.sepm.groupphase.backend.dto.InvoiceData;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
 import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
@@ -13,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -22,13 +28,15 @@ public class BookingServiceImpl implements BookingService {
     private final UserService userService;
     private final BookingRepository bookingRepository;
     private final TicketService ticketService;
+    private CompanyProperties companyProperties;
 
     public BookingServiceImpl(PerformanceRepository performanceRepository, UserService userService,
-        BookingRepository bookingRepository, TicketService ticketService) {
+        BookingRepository bookingRepository, TicketService ticketService, CompanyProperties companyProperties) {
         this.performanceRepository = performanceRepository;
         this.userService = userService;
         this.bookingRepository = bookingRepository;
         this.ticketService = ticketService;
+        this.companyProperties = companyProperties;
     }
 
     @Override
@@ -41,6 +49,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setPerformance(performance);
         booking.setReservation(reserve);
         booking.setTickets(tickets);
+        booking.setDate(LocalDate.now());
         for (Ticket t : tickets) {
             t.setBooking(booking);
         }
@@ -79,5 +88,12 @@ public class BookingServiceImpl implements BookingService {
                 BigDecimal.valueOf(3.50)));
         }
         return ticketService.renderTickets(tickets);
+    }
+
+    @Override
+    public ByteArrayFile renderInvoice(Booking booking, boolean cancel) {
+        User user = userService.getCurrentLoggedInUser();
+        InvoiceData invoice = new InvoiceData(booking, user, cancel, companyProperties);
+        return ticketService.renderInvoice(invoice);
     }
 }
