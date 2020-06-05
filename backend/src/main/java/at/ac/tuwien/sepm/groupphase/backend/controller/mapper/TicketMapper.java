@@ -7,13 +7,15 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class TicketMapper {
 
-    public List<Ticket> fromDto(BookingDTO bookingDTO) {
-        List<Ticket> tickets = new ArrayList<>();
+    public Set<Ticket> fromDto(BookingDTO bookingDTO) {
+        Set<Ticket> tickets = new HashSet<>();
 
         int freeTicketAmount =
             bookingDTO.getFreeSeats().getAmount() != null ? bookingDTO.getFreeSeats().getAmount() : 0;

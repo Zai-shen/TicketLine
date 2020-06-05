@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -25,7 +26,7 @@ class TicketMapperTest {
 
         SeatedTicket seatedTicket = getSeatedTicket();
 
-        List<Ticket> ticketList = ticketMapper.fromDto(bookingDTO);
+        Set<Ticket> ticketList = ticketMapper.fromDto(bookingDTO);
 
         assertThat(ticketList.size()).isEqualTo(4);
         assertThat(ticketList).contains(seatedTicket);

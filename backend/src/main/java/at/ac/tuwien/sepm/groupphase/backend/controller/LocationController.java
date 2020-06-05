@@ -35,8 +35,8 @@ public class LocationController implements LocationApi {
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
-    public ResponseEntity<Void> createLocation(@Valid LocationDTO locationDTO) {
-        locationService.createLocation(locationMapper.locationDtoToLocation(locationDTO));
+    public ResponseEntity<Void> createLocation(@Valid LocationCreationDTO locationCreationDTO) {
+        locationService.createLocation(locationMapper.locationCreationDtoToLocation(locationCreationDTO));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

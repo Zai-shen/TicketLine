@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -35,7 +33,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets) {
+    public void bookTickets(Long performanceId, boolean reserve, Set<Ticket> tickets) {
         Performance performance = performanceRepository.findById(performanceId).
             orElseThrow(() -> new IllegalArgumentException("Performance not found"));
 

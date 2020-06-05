@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Booking {
@@ -19,7 +20,7 @@ public class Booking {
     private Performance performance;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
-    private List<Ticket> tickets;
+    private Set<Ticket> tickets;
 
     @ManyToOne
     private User user;
@@ -48,11 +49,11 @@ public class Booking {
         this.performance = performance;
     }
 
-    public List<Ticket> getTickets() {
+    public Set<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
 

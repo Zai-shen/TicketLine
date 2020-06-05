@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface BookingService {
     /**
@@ -15,7 +16,7 @@ public interface BookingService {
      * @param reserve should the tickets be reserved or bought
      * @param tickets a list of tickets to buy
      */
-    void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets);
+    void bookTickets(Long performanceId, boolean reserve, Set<Ticket> tickets);
 
     /**
      * @return list of all bookings of a user

@@ -1,0 +1,30 @@
+#seatplanner {
+  height: 500px;
+  margin-bottom: 20px;
+  touch-action: none;
+  user-select: none;
+  align-self: flex-start;
+}
+
+.seatplanner-properties {
+  width: 400px;
+  margin-left: 20px;
+  align-self: flex-start;
+}
+.seatplanner-wrapper {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.add-area-button {
+  margin-bottom: 5px;
+}
+
+.seatmap-hint {
+  width: 100%;
+}
+
+.form-group.form-group {
+  margin-bottom: 0;
+}

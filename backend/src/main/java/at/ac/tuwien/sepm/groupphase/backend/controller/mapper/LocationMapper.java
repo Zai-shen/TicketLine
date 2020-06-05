@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
+import at.ac.tuwien.sepm.groupphase.backend.dto.LocationCreationDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.LocationDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.SearchLocationDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
@@ -12,7 +13,9 @@ import java.util.List;
 @Mapper
 public interface LocationMapper {
 
-    Location locationDtoToLocation(LocationDTO locationDTO);
+    Location locationCreationDtoToLocation(LocationCreationDTO locationCreationDTO);
+
+    // Location locationDtoToLocation(LocationDTO locationDTO);
 
     Location searchLocationDtoToLocation(SearchLocationDTO searchLocationDTO);
 

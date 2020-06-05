@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -62,13 +63,13 @@ class BookingServiceTest {
     @Test
     void testPerformanceNotFound() {
         when(performanceRepository.findById(1L)).thenReturn(java.util.Optional.empty());
-        assertThatThrownBy(() -> bookingService.bookTickets(1L,true, Collections.emptyList())).isExactlyInstanceOf(
+        assertThatThrownBy(() -> bookingService.bookTickets(1L,true, Collections.emptySet())).isExactlyInstanceOf(
             IllegalArgumentException.class);    }
 
-    private List<Ticket> getTickets() {
+    private Set<Ticket> getTickets() {
         Ticket ticket = new Ticket();
         ticket.setId(1L);
-        return Collections.singletonList(ticket);
+        return Collections.singleton(ticket);
     }
 
     private List<Booking> getBookings() {

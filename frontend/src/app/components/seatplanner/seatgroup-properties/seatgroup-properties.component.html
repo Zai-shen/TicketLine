@@ -1,0 +1,48 @@
+<mat-card>
+  <mat-card-title>Eigenschaften</mat-card-title>
+  <mat-card-content>
+  <div *ngIf="seatGroup">
+    <div class="form-group">
+      <label for="nameInput">Name</label>
+      <input  type="text" class="form-control" id="nameInput" [(ngModel)]="seatGroup.name">
+    </div>
+    <div class="form-group">
+      <label for="priceInput">Preis</label>
+      <input matprefix="€"  type="number" class="form-control" id="priceInput" [(ngModel)]="seatGroup.price">
+    </div>
+    <mat-tab-group animationDuration="0ms" [(selectedIndex)]="seatGroupPropertiesSelectedIndex">
+      <mat-tab label="Sitzplätze">
+        <div class="mat-tab-content">
+          <div class="form-group">
+            <label for="radius">Radius</label>
+            <input  type="number" class="form-control" id="radius" [(ngModel)]="seatRadius">
+          </div>
+          <div class="form-group">
+            <label for="seatColDistance">Spaltenabstand</label>
+            <input   type="number" class="form-control" id="seatColDistance" [(ngModel)]="seatColDistance">
+          </div>
+          <div class="form-group">
+            <label for="seatRowDistance">Reihenabstand</label>
+            <input  type="number" class="form-control" id="seatRowDistance" [(ngModel)]="seatRowDistance">
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Stehplätze">
+        <div class="mat-tab-content">
+          <div class="form-group">
+            <label for="standingPlacesInput">Stehplätze</label>
+            <input  type="number" class="form-control" id="standingPlacesInput" [(ngModel)]="seatGroup.standingPlaceCount">
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <div class="form-group button-container">
+      <button type="button" *ngIf="!seatGroup.isStandingArea" mat-button class="mat-raised-button" color="primary" (click)="updateSeatgroup()">Übernehmen</button>
+      <button type="button" mat-button class="mat-raised-button delete-button" color="warn" (click)="removeSeatgroup()">Löschen</button>
+    </div>
+  </div>
+    <div *ngIf="seatGroup == null">
+      Element erstellen oder auswählen um Eigenschaften zu bearbeiten
+    </div>
+  </mat-card-content>
+</mat-card>

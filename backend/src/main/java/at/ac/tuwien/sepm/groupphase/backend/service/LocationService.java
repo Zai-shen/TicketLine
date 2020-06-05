@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.dto.LocationCreationWithSeatmap;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ public interface LocationService {
 
     /**
      * Create a new Location
-     * @param location the location object containing the address
+     * @param location the location object containing the address and seatmap
      * @throws BusinessValidationException if location doesn't comply with business validation
      */
     void createLocation(Location location) throws BusinessValidationException;
@@ -24,7 +25,6 @@ public interface LocationService {
      * @return list of locations at requested page number
      */
     Page<Location> getLocationList(Pageable page);
-
     /**
      * Search locations base on description and address.
      *
