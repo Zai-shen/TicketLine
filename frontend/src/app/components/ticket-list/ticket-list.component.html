@@ -19,6 +19,8 @@
       <button mat-button color="warn">Stornieren</button>
       <button mat-button *ngIf="!booking.reservation" (click)="downloadTicket(booking)">Ticket Download</button>
       <button mat-button *ngIf="booking.reservation" color="primary">Ticket Kaufen</button>
+      <button mat-button *ngIf="!booking.reservation" (click)="downloadInvoice(booking.id)">Rechnung Download</button>
     </mat-card-actions>
   </mat-card>
+
 </div>

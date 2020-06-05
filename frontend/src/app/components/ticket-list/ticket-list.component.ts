@@ -12,6 +12,7 @@ import { BookingService } from '../../services/booking.service';
 export class TicketListComponent implements OnInit {
 
   constructor(private readonly ticketService: TicketApiService, private readonly bookingService: BookingService) {
+
   }
 
   public bookings: BookingDTO[] = [];
@@ -36,6 +37,10 @@ export class TicketListComponent implements OnInit {
     this.ticketService.getTicketsOfUser().subscribe(value => {
       this.bookings = value;
     });
+  }
+
+  downloadInvoice(ticketId: Number): void {
+    this.bookingService.renderInvoice(ticketId);
   }
 
   downloadTicket(booking: BookingDTO) {

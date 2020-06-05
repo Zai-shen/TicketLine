@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Globals } from '../global/globals';
+import { TicketApiService } from '../../generated';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceholderpdfService {
 
-  constructor(private httpClient: HttpClient, private globals: Globals) {
+  constructor(private httpClient: HttpClient, private globals: Globals,
+              private readonly ticketService: TicketApiService) {
   }
 
   downloadPlaceholderPdf() {
