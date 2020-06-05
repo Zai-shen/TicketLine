@@ -22,6 +22,9 @@ public class Event {
     @Column(nullable = false, length = 1024)
     private String description;
 
+    @ManyToOne
+    private Artist artist;
+
     public Long getId() {
         return id;
     }
@@ -62,6 +65,14 @@ public class Event {
         this.description = description;
     }
 
+    public Artist getArtist() {
+        return artist;
+    }
+
+    public void setArtist(Artist artist) {
+        this.artist = artist;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -78,4 +89,5 @@ public class Event {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }

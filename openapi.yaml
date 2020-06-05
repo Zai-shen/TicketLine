@@ -1400,6 +1400,8 @@ components:
         description:
           type: string
           example: Awesome concert of the best band in the best location!
+        artist:
+          $ref: '#/components/schemas/ArtistDTO'
       required:
         - id
         - title

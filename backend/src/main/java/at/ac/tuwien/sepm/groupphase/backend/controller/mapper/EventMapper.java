@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = ArtistMapper.class)
 public interface EventMapper {
     EventDTO toDto(Event event);
 
