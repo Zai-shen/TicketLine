@@ -51,6 +51,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
@@ -70,6 +71,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     LocationComponent,
     CreateLocationComponent,
     NewsComponent,
+    NewsDetailComponent,
     CreateNewsComponent,
     UserDetailComponent,
     ArtistsComponent,
