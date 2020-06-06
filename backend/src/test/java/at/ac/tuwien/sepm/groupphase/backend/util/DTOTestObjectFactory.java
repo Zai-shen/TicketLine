@@ -66,6 +66,14 @@ public class DTOTestObjectFactory {
         return new EventDTO().title("Event-Title")
             .category(EventCategory.FESTIVAL)
             .description("description")
+            .duration(10L)
+            .id(1L);
+    }
+
+    public static SearchEventDTO getSearchEventDTO() {
+        return new SearchEventDTO().title("Event-Title")
+            .category(EventCategory.FESTIVAL)
+            .description("description")
             .duration(10L);
     }
 

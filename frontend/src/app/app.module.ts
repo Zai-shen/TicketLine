@@ -52,6 +52,9 @@ import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +71,7 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
     LocationComponent,
     CreateLocationComponent,
     NewsComponent,
+    NewsDetailComponent,
     CreateNewsComponent,
     UserDetailComponent,
     ArtistsComponent,
@@ -76,40 +80,42 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
     TicketListComponent,
-    NewsDetailComponent
+    RelativeTimestampComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatPaginatorModule,
-        MatDividerModule,
-        MatGridListModule,
-        MatRippleModule,
-        MatProgressSpinnerModule,
-        MatChipsModule,
-        MatToolbarModule,
-        MatMenuModule,
-        MatSnackBarModule,
-        MatButtonToggleModule,
-        MatDialogModule,
-        MatTableModule,
-        MatDialogModule,
-        MatAutocompleteModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        NgxMaterialTimepickerModule,
-        MatExpansionModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatDividerModule,
+    MatGridListModule,
+    MatRippleModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatButtonToggleModule,
+    MatDialogModule,
+    MatTableModule,
+    MatDialogModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    NgxMaterialTimepickerModule,
+    MatExpansionModule,
+    MatListModule,
+    MatTooltipModule
+  ],
   providers: [
     {
       provide: MatPaginatorIntl,

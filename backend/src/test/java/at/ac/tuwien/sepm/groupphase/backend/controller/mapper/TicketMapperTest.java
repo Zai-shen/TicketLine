@@ -44,23 +44,4 @@ class TicketMapperTest {
         ticket.setId(2L);
         return ticket;
     }
-
-    @Test
-    void toDot() {
-        Booking reservation = new Booking();
-        reservation.setReservation(true);
-        SeatedTicket seatedTicket = getSeatedTicket();
-        seatedTicket.setId(1L);
-        reservation.setTickets(Collections.singletonList(seatedTicket));
-
-        Booking booking = new Booking();
-        booking.setReservation(false);
-        booking.setTickets(Collections.singletonList(getTicket()));
-
-
-        TicketResponseDTO ticketResponseDTO = ticketMapper.toDto(Arrays.asList(reservation, booking));
-        assertThat(ticketResponseDTO.getFreeTickets()).containsExactly(new FreeTicketDTO().id(2L).reserved(false));
-        assertThat(ticketResponseDTO.getSeatedTickets()).containsExactly(new SeatedTicketDTO().id(1L).seat(new SeatgroupSeatDTO().seatgroupId(1L).x(1).y(1)).reserved(true));
-
-    }
 }

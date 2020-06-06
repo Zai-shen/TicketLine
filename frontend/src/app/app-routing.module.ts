@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
-  { path: 'tickets', canActivate: [AuthGuard], component: TicketListComponent },
+  { path: 'user/tickets', canActivate: [AuthGuard], component: TicketListComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 

@@ -13,7 +13,7 @@ public class Event {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private CategoryEnum category;
 
     @Column(nullable = false)
