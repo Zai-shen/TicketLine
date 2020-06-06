@@ -7,6 +7,8 @@ public class StandingAreaValidator extends Validator<StandingArea> {
     protected void doValidation(StandingArea standingArea) {
         notNullOrName(standingArea.getX(),"Stehplätze X-Koordinate");
         notNullOrName(standingArea.getY(),"Stehplätze Y-Koordinate");
+        notNullOrName(standingArea.getWidth(),"Stehplätze Höhe");
+        notNullOrName(standingArea.getHeight(),"Stehplätze Breite");
         notNullOrName(standingArea.getName(),"Stehplätze Name");
         notNullOrName(standingArea.getPrice(),"Stehplätze Preis");
         notNullOrName(standingArea.getMaxPeople(),"Stehplätze Personenanzahl");

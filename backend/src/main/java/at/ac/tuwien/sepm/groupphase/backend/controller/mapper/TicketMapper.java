@@ -15,8 +15,8 @@ import java.util.Set;
 @Component
 public class TicketMapper {
 
-    public Set<Ticket> fromDto(BookingDTO bookingDTO) {
-        Set<Ticket> tickets = new HashSet<>();
+    public List<Ticket> fromDto(BookingDTO bookingDTO) {
+        List<Ticket> tickets = new ArrayList<>();
 
         int freeTicketAmount =
             bookingDTO.getFreeSeats().getAmount() != null ? bookingDTO.getFreeSeats().getAmount() : 0;

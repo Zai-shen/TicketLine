@@ -16,7 +16,7 @@ public interface BookingService {
      * @param reserve should the tickets be reserved or bought
      * @param tickets a list of tickets to buy
      */
-    void bookTickets(Long performanceId, boolean reserve, Set<Ticket> tickets);
+    void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets);
 
     /**
      * @return list of all bookings of a user

@@ -16,13 +16,13 @@ public class NewLocationValidatorTest {
     }
 
     @Test
-    public void testLocationWithoutAddress() {
+    public void testLocationWithoutAddressAndWithoutSeatmap() {
         final Location location = new Location();
         location.setDescription("Veranstaltungsort");
         Throwable thrown = catchThrowable(() -> new NewLocationValidator().build(location).validate());
 
         assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
         BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
-        assertThat(businessValidationException.getValidationMessages()).containsExactly("Adresse ist nicht gesetzt");
+        assertThat(businessValidationException.getValidationMessages()).containsExactly("Adresse ist nicht gesetzt", "Saalplan ist nicht gesetzt");
     }
 }

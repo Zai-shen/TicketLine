@@ -7,6 +7,8 @@ import { SeatgroupDTO, StandingAreaDTO } from '../../../generated';
 export class SeatgroupElement {
 
   position = { x: 0, y: 0 };
+  width: number;
+  height: number;
   id: string;
   private svgRect: Selection<any, any, any, any>;
   private group: Selection<any, any, any, any>;
@@ -40,6 +42,8 @@ export class SeatgroupElement {
     selectionChangedCallback: (selected: SeatgroupElement) => void,
     seatgroupRemoveCallback: (remove: SeatgroupElement) => void) {
     this.position = { x: x, y: y };
+    this.width = width;
+    this.height = height;
     this.id = id;
     this.name = name;
     this.restrictElement = restrictElement;
@@ -93,8 +97,8 @@ export class SeatgroupElement {
                      .attr('id', this.id)
                      .attr('class', 'resize-drag');
     this.rect = this.group.append('rect')
-                    .attr('x', 1)
-                    .attr('y', 1)
+                    .attr('x', x)
+                    .attr('y', y)
                     .attr('width', width)
                     .attr('height', height)
                     .attr('stroke-width', 2)
@@ -146,6 +150,10 @@ export class SeatgroupElement {
           v += event.deltaRect[attr];
           this.svgRect.attr(a, v);
         }
+        this.position.x = Number(this.svgRect.attr('x'));
+        this.position.y = Number(this.svgRect.attr('y'));
+        this.width = Number(this.rect.attr('width'));
+        this.height = Number(this.rect.attr('height'));
         this.updateSeats();
       })
       .on('down', (event) => {
@@ -158,8 +166,8 @@ export class SeatgroupElement {
       return;
     }
     const diameter = this.seatRadius * 2;
-    const rows = Math.floor((Number(this.rect.attr('height'))) / (diameter * this.seatRowDistance));
-    const cols = Math.floor((Number(this.rect.attr('width'))) / (diameter * this.seatColDistance));
+    const rows = Math.floor(this.height / (diameter * this.seatRowDistance));
+    const cols = Math.floor(this.width / (diameter * this.seatColDistance));
 
     const addSeats = this.seatRows < rows ||
       this.seatCols < cols;
@@ -318,6 +326,8 @@ export class SeatgroupElement {
       return {
         x: this.position.x,
         y: this.position.y,
+        width: this.width,
+        height: this.height,
         name: this.name,
         maxPeople: this.standingPlaceCount,
         price: this.price
@@ -326,6 +336,8 @@ export class SeatgroupElement {
       return {
         x: this.position.x,
         y: this.position.y,
+        width: this.width,
+        height: this.height,
         name: this.name,
         seats: this.seats.filter(seat => seat instanceof SeatElement).map(seat => (seat as SeatElement).convertToSeatDto(this.price)),
         seatLabels: this.seats.filter(seat => seat instanceof SeatLabel).map(seat => (seat as SeatLabel).convertToSeatLabelDto())

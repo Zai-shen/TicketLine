@@ -1562,6 +1562,14 @@ components:
           type: number
           format: double
           example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
         name:
           type: string
           example: 'Haupttribüne'
@@ -1584,6 +1592,14 @@ components:
           type: number
           format: double
           example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
         name:
           type: string
           example: 'Haupttribüne'

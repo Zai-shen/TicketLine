@@ -70,7 +70,7 @@ public class InvoiceData {
         return booking;
     }
 
-    public Set<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return booking.getTickets();
     }
 

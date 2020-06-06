@@ -26,7 +26,7 @@ class TicketMapperTest {
 
         SeatedTicket seatedTicket = getSeatedTicket();
 
-        Set<Ticket> ticketList = ticketMapper.fromDto(bookingDTO);
+        List<Ticket> ticketList = ticketMapper.fromDto(bookingDTO);
 
         assertThat(ticketList.size()).isEqualTo(4);
         assertThat(ticketList).contains(seatedTicket);

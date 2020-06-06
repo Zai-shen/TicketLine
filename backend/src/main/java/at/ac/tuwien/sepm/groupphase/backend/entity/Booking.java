@@ -20,7 +20,7 @@ public class Booking {
     private Performance performance;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
-    private Set<Ticket> tickets;
+    private List<Ticket> tickets;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -52,11 +52,11 @@ public class Booking {
         this.performance = performance;
     }
 
-    public Set<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(Set<Ticket> tickets) {
+    public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
 

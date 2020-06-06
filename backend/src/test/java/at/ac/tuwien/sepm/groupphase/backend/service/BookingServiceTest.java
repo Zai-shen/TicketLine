@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.impl.BookingServiceImpl;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,9 +46,9 @@ class BookingServiceTest {
         when(performanceRepository.findById(1L)).thenReturn(java.util.Optional.of(new Performance()));
 
         bookingService.bookTickets(1L, false, getTickets());
-
+        List<Ticket> createdTickets = user.getBookings().get(0).getTickets();
         assertThat(user.getBookings().get(0).getReservation()).isFalse();
-        assertThat(user.getBookings().get(0).getTickets()).isEqualTo(getTickets());
+        assertThat(createdTickets.size()).isEqualTo(getTickets().size());
     }
 
     @Test
@@ -63,13 +64,13 @@ class BookingServiceTest {
     @Test
     void testPerformanceNotFound() {
         when(performanceRepository.findById(1L)).thenReturn(java.util.Optional.empty());
-        assertThatThrownBy(() -> bookingService.bookTickets(1L,true, Collections.emptySet())).isExactlyInstanceOf(
+        assertThatThrownBy(() -> bookingService.bookTickets(1L,true, Collections.emptyList())).isExactlyInstanceOf(
             IllegalArgumentException.class);    }
 
-    private Set<Ticket> getTickets() {
+    private List<Ticket> getTickets() {
         Ticket ticket = new Ticket();
         ticket.setId(1L);
-        return Collections.singleton(ticket);
+        return Collections.singletonList(ticket);
     }
 
     private List<Booking> getBookings() {

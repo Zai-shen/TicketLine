@@ -17,13 +17,19 @@ public class StandingArea {
     private Double y;
 
     @Column(nullable = false)
+    private Double width;
+
+    @Column(nullable = false)
+    private Double height;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
     private Long maxPeople;
 
     @Column(nullable = false)
-    private Long price;
+    private Double price;
 
     public Long getId() {
         return id;
@@ -33,20 +39,36 @@ public class StandingArea {
         this.id = id;
     }
 
-    public double getX() {
+    public Double getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(Double x) {
         this.x = x;
     }
 
-    public double getY() {
+    public Double getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(Double y) {
         this.y = y;
+    }
+
+    public Double getWidth() {
+        return width;
+    }
+
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
     }
 
     public String getName() {
@@ -65,11 +87,11 @@ public class StandingArea {
         this.maxPeople = maxPeople;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -83,12 +105,13 @@ public class StandingArea {
         }
         StandingArea that = (StandingArea) o;
         return Objects.equals(id, that.id) && Objects.equals(x, that.x) && Objects.equals(y, that.y) &&
+            Objects.equals(width, that.width) && Objects.equals(height, that.height) &&
             Objects.equals(name, that.name) && Objects.equals(maxPeople, that.maxPeople) &&
             Objects.equals(price, that.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, x, y, name, maxPeople, price);
+        return Objects.hash(id, x, y, width, height, name, maxPeople, price);
     }
 }
