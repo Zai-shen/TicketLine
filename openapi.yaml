@@ -1611,53 +1611,131 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SeatLabelDTO'
+
+    SeatmapOccupationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        seatGroupAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatgroupOccupationDTO'
+        standingAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandingAreaOccupationDTO'
+    SeatOccupationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        x:
+          type: number
+          format: double
+          example: 10
+        y:
+          type: number
+          format: double
+          example: 10
+        rowLabel:
+          type: string
+          example: 'AC'
+        colLabel:
+          type: string
+          example: '15'
+        radius:
+          type: number
+          format: double
+          example: 5
+        price:
+          type: number
+          format: double
+          example: 19.99
+        reserved:
+          type: boolean
+          example: false
+        sold:
+          type: boolean
+          example: false
+    StandingAreaOccupationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        x:
+          type: number
+          format: double
+          example: 5
+        y:
+          type: number
+          format: double
+          example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
+        name:
+          type: string
+          example: 'Haupttribüne'
+        maxPeople:
+          type: integer
+          format: int64
+          example: 100
+        price:
+          type: number
+          format: double
+          example: 19.99
+        reserved:
+          type: integer
+          format: double
+          example: 20
+        sold:
+          type: integer
+          format: double
+          example: 30
     SeatgroupOccupationDTO:
       type: object
       properties:
-        seatgroupId:
+        id:
           type: integer
           format: int64
-          example: 66
-        price:
-          type: number
-          example: 29.99
-        type:
-          type: string
-          example: FixedSeatgroupOccupationDTO
-    FixedSeatgroupOccupationDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupOccupationDTO'
-        - type: object
-          properties:
-            occupiedSeats:
-              type: array
-              items:
-                $ref: '#/components/schemas/SeatgroupSeatDTO'
-    FreeSeatgroupOccupationDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupOccupationDTO'
-        - type: object
-          properties:
-            amountOfFreeSeats:
-              type: integer
-              example: 15
-    SeatgroupSeatDTO:
-      type: object
-      properties:
         x:
-          type: integer
-          example: 7
+          type: number
+          format: double
+          example: 5
         y:
-          type: integer
-          example: 3
-        seatgroupId:
-          type: integer
-          format: int64
-          example: 66
-      required:
-        - x
-        - y
-        - seatgroupId
+          type: number
+          format: double
+          example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
+        name:
+          type: string
+          example: 'Haupttribüne'
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatOccupationDTO'
+        seatLabels:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatLabelDTO'
+
+
     FreeSeatgroupBookingDTO:
         properties:
           amount:
