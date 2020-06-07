@@ -54,6 +54,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { SeatplannerComponent } from './components/seatplanner/seatplanner.component';
 import { SeatgroupPropertiesComponent } from './components/seatplanner/seatgroup-properties/seatgroup-properties.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
@@ -73,6 +74,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     LocationComponent,
     CreateLocationComponent,
     NewsComponent,
+    NewsDetailComponent,
     CreateNewsComponent,
     UserDetailComponent,
     ArtistsComponent,
