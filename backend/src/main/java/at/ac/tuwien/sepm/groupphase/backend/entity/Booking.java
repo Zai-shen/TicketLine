@@ -5,7 +5,6 @@ import com.google.common.base.Objects;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Booking {

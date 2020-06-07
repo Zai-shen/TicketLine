@@ -2,42 +2,48 @@
   <mat-card-title>Eigenschaften</mat-card-title>
   <mat-card-content>
   <div *ngIf="seatGroup">
-    <div class="form-group">
-      <label for="nameInput">Name</label>
-      <input  type="text" class="form-control" id="nameInput" [(ngModel)]="seatGroup.name">
-    </div>
-    <div class="form-group">
-      <label for="priceInput">Preis</label>
-      <input matprefix="€"  type="number" class="form-control" id="priceInput" [(ngModel)]="seatGroup.price">
-    </div>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput type="text" [(ngModel)]="seatGroup.name">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="price-input-wrapper">
+      <mat-label>Preis</mat-label>
+      <input matInput matprefix="€"
+             type="number"
+             id="priceInput"
+             class="price-input"
+             [(ngModel)]="seatGroup.price">
+      <span matPrefix>€</span>
+    </mat-form-field>
     <mat-tab-group animationDuration="0ms" [(selectedIndex)]="seatGroupPropertiesSelectedIndex">
       <mat-tab label="Sitzplätze">
         <div class="mat-tab-content">
-          <div class="form-group">
-            <label for="radius">Radius</label>
-            <input  type="number" class="form-control" id="radius" [(ngModel)]="seatRadius">
-          </div>
-          <div class="form-group">
-            <label for="seatColDistance">Spaltenabstand</label>
-            <input   type="number" class="form-control" id="seatColDistance" [(ngModel)]="seatColDistance">
-          </div>
-          <div class="form-group">
-            <label for="seatRowDistance">Reihenabstand</label>
-            <input  type="number" class="form-control" id="seatRowDistance" [(ngModel)]="seatRowDistance">
-          </div>
+          <mat-form-field>
+            <mat-label>Radius</mat-label>
+            <input matInput type="number" [(ngModel)]="seatRadius">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Spaltenabstand</mat-label>
+            <input matInput type="number" [(ngModel)]="seatColDistance">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Reihenabstand</mat-label>
+            <input matInput type="number" [(ngModel)]="seatRowDistance">
+          </mat-form-field>
         </div>
       </mat-tab>
       <mat-tab label="Stehplätze">
         <div class="mat-tab-content">
-          <div class="form-group">
-            <label for="standingPlacesInput">Stehplätze</label>
-            <input  type="number" class="form-control" id="standingPlacesInput" [(ngModel)]="seatGroup.standingPlaceCount">
-          </div>
+          <mat-form-field>
+            <mat-label for="standingPlacesInput">Stehplätze</mat-label>
+            <input matInput type="number" id="standingPlacesInput" [(ngModel)]="seatGroup.standingPlaceCount">
+          </mat-form-field>
         </div>
       </mat-tab>
     </mat-tab-group>
-    <div class="form-group button-container">
-      <button type="button" *ngIf="!seatGroup.isStandingArea" mat-button class="mat-raised-button" color="primary" (click)="updateSeatgroup()">Übernehmen</button>
+    <div class="button-container">
+      <button type="button" mat-button *ngIf="!seatGroup.isStandingArea" class="mat-raised-button" color="primary" (click)="updateSeatgroup()">Übernehmen</button>
       <button type="button" mat-button class="mat-raised-button delete-button" color="warn" (click)="removeSeatgroup()">Löschen</button>
     </div>
   </div>

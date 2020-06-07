@@ -40,8 +40,8 @@ export class CreateLocationComponent implements OnInit {
   createLocation(): void {
     this.submitted = true;
     if (this.locationForm.valid) {
-      const locationCreatioDTO: LocationCreationDTO = Object.assign({seatmap: this.seatPlanner.getDTO()}, this.locationForm.value);
-      this.locationApiService.createLocation(locationCreatioDTO).subscribe(
+      const locationCreationDTO: LocationCreationDTO = Object.assign({seatmap: this.seatPlanner.getDTO()}, this.locationForm.value);
+      this.locationApiService.createLocation(locationCreationDTO).subscribe(
         () => {
           console.log('Location successfully created');
           this.router.navigate(['/location']);

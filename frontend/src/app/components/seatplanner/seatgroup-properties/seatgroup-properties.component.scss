@@ -12,7 +12,8 @@
 .mat-tab-content {
   padding: 5px
 }
-
-.form-group.form-group {
-  margin-bottom: 0;
+.price-input {
+  -webkit-appearance: none;
+  margin: 0;
+  -moz-appearance: textfield;
 }

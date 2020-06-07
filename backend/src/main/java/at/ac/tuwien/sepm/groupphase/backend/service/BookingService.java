@@ -7,7 +7,6 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
-import java.util.Set;
 
 public interface BookingService {
     /**
