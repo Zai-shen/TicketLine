@@ -1,10 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ErrorType, EventCategory, EventDTO, SearchEventDTO } from '../../../generated';
+import { ArtistApiService, ArtistDTO, ErrorType, EventCategory, EventDTO, SearchEventDTO } from '../../../generated';
 import { AuthService } from '../../services/auth.service';
 import { EventService } from '../../services/event.service';
 import { PageEvent } from '@angular/material/paginator';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, switchMap, tap } from 'rxjs/operators';
+import { merge } from 'rxjs';
 
 @Component({
   selector: 'tl-events',
@@ -15,14 +17,19 @@ export class EventsComponent implements OnInit {
 
   readonly EVENT_LIST_PAGE_SIZE = 25;
 
-  constructor(private readonly eventService: EventService,
-    private readonly authService: AuthService, private formBuilder: FormBuilder) {
+  constructor(
+    private readonly eventService: EventService,
+    private readonly authService: AuthService,
+    private formBuilder: FormBuilder,
+    private readonly artistService: ArtistApiService) {
   }
 
   events: EventDTO[];
+  filteredArtists: ArtistDTO[] = [];
   currentPage = 0;
   amountOfPages = 1;
   searchForm: FormGroup;
+  loading: boolean = false;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -37,8 +44,33 @@ export class EventsComponent implements OnInit {
       title: [''],
       category: [null],
       duration: [''],
-      description: ['']
+      description: [''],
+      artist: [''],
     });
+    const artistCtrl = this.searchForm.get('artist');
+    if (artistCtrl !== null) {
+      artistCtrl.valueChanges.pipe(
+        debounceTime(500),
+        tap(() => {
+          this.filteredArtists = [];
+          this.loading = true;
+        }),
+        switchMap(value => {
+          if (value === null || value === undefined || typeof value !== 'string') {
+            value = '';
+          }
+          return merge(
+            this.artistService.searchArtists({firstname: value}),
+            this.artistService.searchArtists({lastname: value})
+          );
+        })
+      ).subscribe(
+        (artists: ArtistDTO[]) => {
+          this.filteredArtists = this.filteredArtists.concat(artists);
+          this.loading = false;
+        }
+      );
+    }
   }
 
   isAdminLoggedIn(): boolean {
@@ -75,4 +107,7 @@ export class EventsComponent implements OnInit {
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
 
+  private displayArtist(artist: ArtistDTO): string {
+    return (artist && artist.firstname && artist.lastname) ? artist.firstname + ' ' + artist.lastname : '';
+  }
 }
