@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PerformanceDTO, SearchPerformanceDTO } from '../../../generated';
 import { PerformanceService } from '../../services/performance.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'tl-performance-list',
@@ -22,19 +23,26 @@ export class PerformanceListComponent implements OnInit {
   searched: boolean;
   performancesFound = 0;
 
+  selectedTime = '';
+  selectedDate: Date | undefined = new Date();
+  wipDateTime: Date | undefined = new Date();
+
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
 
   @ViewChild(MatPaginator)
   private paginator: MatPaginator;
 
-  constructor(private formBuilder: FormBuilder, private performanceService: PerformanceService) { }
+  constructor(private formBuilder: FormBuilder, private performanceService: PerformanceService,
+    private readonly datePipe: DatePipe) { }
 
   ngOnInit(): void {
       this.getAllPerformances();
       this.performanceSearch = this.formBuilder.group({
         date: [''],
-        time: [''],
+        time: new FormControl(this.selectedTime, [
+          Validators.pattern('\\d{1,2}:\\d{1,2}')
+        ]),
         price: [''],
         event: [''],
       });
@@ -62,6 +70,7 @@ export class PerformanceListComponent implements OnInit {
 
   searchPerformances(): void {
     const searchPerformanceDTO: SearchPerformanceDTO = Object.assign({}, this.performanceSearch.value);
+    searchPerformanceDTO.date = this.datePipe.transform(this.wipDateTime, 'yyyy-MM-dd') || '';
 
     this.performanceService.searchPerformances(searchPerformanceDTO, this.currentPage).subscribe(performances => {
         if (performances.body !== null) {
@@ -71,6 +80,14 @@ export class PerformanceListComponent implements OnInit {
         }
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
+  dateChange(event: MatDatepickerInputEvent<Date>) {
+    this.wipDateTime = event.value ? event.value : undefined;
+  }
+
+  timeChange(time: string) {
+    this.selectedTime = time;
   }
 
 }

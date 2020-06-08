@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.SearchPerformance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,5 +27,5 @@ public interface PerformanceService {
      * @param pageable Pagination information
      * @return List of Performances that fit search object of specified size by pagination
      */
-    Page<Performance> searchPerformances(Performance performance, Pageable pageable);
+    Page<Performance> searchPerformances(SearchPerformance performance, Pageable pageable);
 }

@@ -1507,15 +1507,19 @@ components:
     SearchPerformanceDTO:
       type: object
       properties:
-        dateTime:
+        date:
           type: string
-          format: date-time
-          example: '2020-08-17 18:00'
+          format: date
+          example: '2020-08-17'
+        time:
+          type: string
+          example: '18:00'
         price:
           type: number
           example: 29.99
         event:
-          $ref: '#/components/schemas/EventDTO'
+          type: string
+          example: Event 1
     SearchEventDTO:
       type: object
       properties:
