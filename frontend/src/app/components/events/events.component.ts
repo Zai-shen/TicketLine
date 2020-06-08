@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ArtistApiService, ArtistDTO, ErrorType, EventCategory, EventDTO, SearchEventDTO } from '../../../generated';
 import { AuthService } from '../../services/auth.service';
 import { EventService } from '../../services/event.service';
@@ -7,13 +7,14 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, switchMap, tap } from 'rxjs/operators';
 import { merge } from 'rxjs';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'tl-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnInit {
+export class EventsComponent implements OnInit, AfterViewInit {
 
   readonly EVENT_LIST_PAGE_SIZE = 25;
 
@@ -24,12 +25,16 @@ export class EventsComponent implements OnInit {
     private readonly artistService: ArtistApiService) {
   }
 
+
   events: EventDTO[];
   filteredArtists: ArtistDTO[] = [];
   currentPage = 0;
   amountOfPages = 1;
   searchForm: FormGroup;
   loading: boolean = false;
+
+  @ViewChild(MatAutocompleteTrigger)
+  private trigger: MatAutocompleteTrigger;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -73,6 +78,19 @@ export class EventsComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    const artistCtrl = this.searchForm.get('artist');
+    if (artistCtrl !== null) {
+      this.trigger.panelClosingActions.subscribe(e => {
+          if (!(e && e.source)) {
+            artistCtrl.setValue(null);
+            this.trigger.closePanel();
+          }
+        }
+      );
+    }
+  }
+
   isAdminLoggedIn(): boolean {
     return this.authService.isAdminLoggedIn();
   }
@@ -92,6 +110,10 @@ export class EventsComponent implements OnInit {
 
     if (this.searchForm) {
       searchEventDTO = Object.assign({}, this.searchForm.value);
+      // noinspection SuspiciousTypeOfGuard
+      if (!searchEventDTO.artist?.id) {
+        searchEventDTO.artist = undefined;
+      }
     }
 
     this.eventService.searchEvents(searchEventDTO, this.currentPage)

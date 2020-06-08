@@ -1441,6 +1441,8 @@ components:
         title:
           type: string
           example: 'event title'
+        artist:
+          $ref: '#/components/schemas/ArtistDTO'
         category:
           $ref: '#/components/schemas/EventCategory'
     ArtistDTO:
