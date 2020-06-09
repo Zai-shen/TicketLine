@@ -13,7 +13,7 @@
 
   <h3 class="mat-h3">{{artistsFound}} Künstler gefunden</h3>
 
-  <mat-card class="mat-elevation-z2" *ngFor="let artist of artists">
+  <mat-card class="mat-elevation-z2" *ngFor="let artist of artists" [routerLink]="['/events']" [queryParams]="{'artist_id': artist.id}">
     <mat-card-title>{{artist.firstname}} {{artist.lastname}}</mat-card-title>
   </mat-card>
 

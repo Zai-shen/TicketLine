@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
 import org.slf4j.Logger;
@@ -39,5 +40,11 @@ public class ArtistServiceImpl implements ArtistService {
         Example<Artist> probe = Example.of(artist, matcher);
 
         return artistRepository.findAll(probe, pageable);
+    }
+
+    @Override
+    public Artist getArtist(Long artistId) {
+        LOGGER.debug("fetching artist {}",artistId);
+        return artistRepository.findById(artistId).orElseThrow(NotFoundException::new);
     }
 }

@@ -5,9 +5,10 @@ import { EventService } from '../../services/event.service';
 import { PageEvent } from '@angular/material/paginator';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, switchMap, tap } from 'rxjs/operators';
-import { merge } from 'rxjs';
+import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { merge, Observable } from 'rxjs';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tl-events',
@@ -22,7 +23,8 @@ export class EventsComponent implements OnInit, AfterViewInit {
     private readonly eventService: EventService,
     private readonly authService: AuthService,
     private formBuilder: FormBuilder,
-    private readonly artistService: ArtistApiService) {
+    private readonly artistService: ArtistApiService,
+    private readonly route: ActivatedRoute) {
   }
 
 
@@ -32,6 +34,7 @@ export class EventsComponent implements OnInit, AfterViewInit {
   amountOfPages = 1;
   searchForm: FormGroup;
   loading: boolean = false;
+  artistId: Observable<number | null>;
 
   @ViewChild(MatAutocompleteTrigger)
   private trigger: MatAutocompleteTrigger;
@@ -44,7 +47,6 @@ export class EventsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.reload();
     this.searchForm = this.formBuilder.group({
       title: [''],
       category: [null],
@@ -76,6 +78,23 @@ export class EventsComponent implements OnInit, AfterViewInit {
         }
       );
     }
+    this.route.queryParamMap
+        .pipe(map(params => params.get('artist_id')))
+        .subscribe(
+          (value: string | null) => {
+            if (value !== null && !isNaN(+value)) {
+              this.artistService.getArtist(+value).subscribe(
+                (artist: ArtistDTO) => {
+                  if (artistCtrl !== null) {
+                    artistCtrl.setValue(artist);
+                    this.reload();
+                  }
+                }
+              );
+            }
+          }
+        );
+    this.reload();
   }
 
   ngAfterViewInit(): void {

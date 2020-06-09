@@ -1173,6 +1173,34 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/ArtistDTO'
+  /artist/{artistId}:
+    get:
+      tags:
+        - artist
+      summary: Return a list of artists
+      operationId: getArtist
+      parameters:
+        - in: path
+          name: artistId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the artist to fetch
+          required: true
+          example: 22
+      responses:
+        200:
+          description: Queried artist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistDTO'
+        404:
+          description: Couldn't find artist entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /artist/search:
     post:
       tags:

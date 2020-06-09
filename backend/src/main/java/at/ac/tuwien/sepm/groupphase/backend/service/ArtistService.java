@@ -21,4 +21,11 @@ public interface ArtistService {
      * @return List of Artists that fit search object of specified size by pagination
      */
     Page<Artist> searchArtists(Artist artist, Pageable pageable);
+
+    /**
+     * Retrieve an artist entity from storage
+     * @param artistId id of the artist to fetch
+     * @return Artist entity with the specified ID
+     */
+    Artist getArtist(Long artistId);
 }

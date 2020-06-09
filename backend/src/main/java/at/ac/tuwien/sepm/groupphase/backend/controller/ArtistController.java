@@ -49,4 +49,10 @@ public class ArtistController implements ArtistApi {
             .header("X-Total-Count", String.valueOf(artists.getTotalElements()))
             .body(artistMapper.toDto(artists.getContent()));
     }
+
+    @Override
+    public ResponseEntity<ArtistDTO> getArtist(Long artistId) {
+        LOGGER.info("get artist {}",artistId);
+        return ResponseEntity.ok(artistMapper.toDto(artistService.getArtist(artistId)));
+    }
 }
