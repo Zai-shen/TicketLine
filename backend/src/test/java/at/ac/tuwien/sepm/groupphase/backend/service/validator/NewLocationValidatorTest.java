@@ -19,10 +19,22 @@ public class NewLocationValidatorTest {
     public void testLocationWithoutAddress() {
         final Location location = new Location();
         location.setDescription("Veranstaltungsort");
+        location.setSeatmap(DomainTestObjectFactory.getSeatmap());
         Throwable thrown = catchThrowable(() -> new NewLocationValidator().build(location).validate());
 
         assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
         BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
         assertThat(businessValidationException.getValidationMessages()).containsExactly("Adresse ist nicht gesetzt");
+    }
+
+    @Test
+    public void testLocationWithoutAddressSeatmap() {
+        final Location location = DomainTestObjectFactory.getLocation();
+        location.setSeatmap(null);
+        Throwable thrown = catchThrowable(() -> new NewLocationValidator().build(location).validate());
+
+        assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
+        BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
+        assertThat(businessValidationException.getValidationMessages()).containsExactly("Saalplan ist nicht gesetzt");
     }
 }
