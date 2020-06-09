@@ -1781,6 +1781,23 @@ components:
       required:
         - id
         - reserved
+    SeatgroupSeatDTO:
+      type: object
+      properties:
+        x:
+          type: integer
+          example: 7
+        y:
+          type: integer
+          example: 3
+        seatgroupId:
+          type: integer
+          format: int64
+          example: 66
+      required:
+        - x
+        - y
+        - seatgroupId
   securitySchemes:
     ticketline_auth:
       type: http
