@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -89,5 +90,13 @@ public interface UserService extends UserDetailsService {
      * @return returns the currently logged in user
      */
     User getCurrentLoggedInUser();
+
+    /**
+     * Remove a user account from the persistance layer
+     * @param userId that identifies the user
+     * @throws BusinessValidationException if the user has open tickets
+     * @throws NotFoundException when the user doesn't exist
+     */
+    void removeUser(Long userId);
 
 }

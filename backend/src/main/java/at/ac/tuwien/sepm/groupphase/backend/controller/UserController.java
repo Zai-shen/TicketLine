@@ -43,17 +43,15 @@ public class UserController implements UserApi {
     private final UserService userService;
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
-    private final TicketService ticketService;
     private final BookingMapper bookingMapper;
 
     @Autowired
     public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService,
-        BookingService bookingService, TicketService ticketService, BookingMapper bookingMapper) {
+        BookingService bookingService, BookingMapper bookingMapper) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
-        this.ticketService = ticketService;
         this.bookingMapper = bookingMapper;
     }
 
@@ -84,8 +82,8 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<UserDTO> getSelf() {
-        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User currentUser = userService.findUserByEmail(username);
+        LOGGER.info("get current logged in user data");
+        User currentUser = userService.getCurrentLoggedInUser();
         return ResponseEntity.ok(userMapper.toDto(currentUser));
     }
 
@@ -133,6 +131,7 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Resource> getInvoice(Long bookingId, @Valid Optional<Boolean> cancel) {
+        LOGGER.info("Get the invoice for {}", bookingId);
         Booking booking = bookingService.getBookingOfCurrentUser(bookingId);
         ByteArrayFile pdf = bookingService.renderInvoice(booking, cancel.orElse(false));
 
@@ -142,13 +141,14 @@ public class UserController implements UserApi {
         headers.add("Access-Control-Expose-Headers", "Content-Disposition");
         headers.setContentLength(pdf.getContent().length);
 
-        return new ResponseEntity<>(
-            new InputStreamResource(new ByteArrayInputStream(pdf.getContent())), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new InputStreamResource(new ByteArrayInputStream(pdf.getContent())), headers,
+            HttpStatus.OK);
     }
 
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Resource> getTicket(Long bookingId) {
+        LOGGER.info("Get the ticket for {}", bookingId);
         Booking b = bookingService.getBookingOfCurrentUser(bookingId);
         ByteArrayFile pdf = bookingService.renderBooking(b);
 
@@ -158,7 +158,26 @@ public class UserController implements UserApi {
         headers.add("Access-Control-Expose-Headers", "Content-Disposition");
         headers.setContentLength(pdf.getContent().length);
 
-        return new ResponseEntity<>(
-            new InputStreamResource(new ByteArrayInputStream(pdf.getContent())), headers, HttpStatus.OK);
+        return new ResponseEntity<>(new InputStreamResource(new ByteArrayInputStream(pdf.getContent())), headers,
+            HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
+    public ResponseEntity<Void> removeUser(Long userId) {
+        LOGGER.info("Remove user {}", userId);
+        userService.removeUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<Void> removeMyAccount() {
+        User self = userService.getCurrentLoggedInUser();
+        LOGGER.info("Remove self with ID {}", self.getId());
+
+        userService.removeUser(self.getId());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

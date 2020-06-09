@@ -1,11 +1,14 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.impl.UserServiceImpl;
+import at.ac.tuwien.sepm.groupphase.backend.service.validator.EmailValidator;
 import at.ac.tuwien.sepm.groupphase.backend.util.DomainTestObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +19,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -119,5 +123,39 @@ public class UserServiceTest {
         assertThat(user.getLocked()).isFalse();
         assertThat(user.getWrongAttempts()).isEqualTo(0);
         verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testRemoveUserNotExisting() {
+        when(userRepository.findUserById(any())).thenReturn(null);
+
+        assertThatThrownBy(() -> userService.removeUser(7L)).isExactlyInstanceOf(NotFoundException.class);
+        verify(userRepository, never()).delete(any());
+    }
+
+    @Test
+    public void testRemoveUserWithActiveBooking() {
+        final User user = new User();
+        user.setBookings(Collections.singletonList(new Booking()));
+        when(userRepository.findUserById(any())).thenReturn(user);
+
+        Throwable thrown = catchThrowable(() -> userService.removeUser(7L));
+
+        assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
+        BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
+        assertThat(businessValidationException.getValidationMessages()).containsExactly(
+            "Bevor der User gelöscht werden kann, müssen alle Tickets und Reservierungen storniert werden");
+        verify(userRepository, never()).delete(any());
+    }
+
+    @Test
+    public void testRemoveUserSuccessful() {
+        final User user = new User();
+        user.setBookings(Collections.emptyList());
+        when(userRepository.findUserById(any())).thenReturn(user);
+
+        userService.removeUser(8L);
+
+        verify(userRepository, times(1)).delete(user);
     }
 }

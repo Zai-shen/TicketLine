@@ -101,6 +101,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+    delete:
+      tags:
+        - user
+      security:
+        - ticketline_auth: []
+      summary: remove own user account
+      operationId: removeMyAccount
+      responses:
+        200:
+          description: Successfully removed user account
+          content: {}
+        403:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Business error on removal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /user/{userId}:
     put:
       security:
@@ -197,7 +220,7 @@ paths:
       - user
       security:
         - ticketline_auth: []
-      summary: remove a user account
+      summary: remove a user account - Admin task
       operationId: removeUser
       parameters:
         - in: path
