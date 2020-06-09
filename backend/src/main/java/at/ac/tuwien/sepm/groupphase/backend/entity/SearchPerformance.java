@@ -2,12 +2,11 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class SearchPerformance {
 
     public LocalDate date;
-    public LocalTime time;
+    public String time;
     public BigDecimal price;
     public String event;
 
@@ -19,11 +18,11 @@ public class SearchPerformance {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

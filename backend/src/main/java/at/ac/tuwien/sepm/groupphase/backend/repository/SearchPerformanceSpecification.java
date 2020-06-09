@@ -35,11 +35,13 @@ public class SearchPerformanceSpecification implements Specification<Performance
             Expression<Boolean> dateSearch = criteriaBuilder.between(root.get("dateTime"), startDate, endDate);
             searchCriteria.add(dateSearch);
         }
-        if (filter.getTime() != null) {
-            LocalTime filterTime = filter.getTime();
-            LocalTime startTime = filterTime.plusMinutes(30);
-            Expression<Boolean> timeSearch = criteriaBuilder.equal(criteriaBuilder.function("TO_CHAR", Time.class,
-                (root.get("dateTime")), criteriaBuilder.literal("HH:MM")), filterTime.plusMinutes(30));
+        if (!filter.getTime().equals("")) {
+            LocalTime filterTime = LocalTime.parse(filter.getTime());
+            Time startTime = Time.valueOf(filterTime.minusMinutes(MINUTES_OFFSET));
+            Time endTime = Time.valueOf(filterTime.plusMinutes(MINUTES_OFFSET));
+            Expression<Boolean> timeSearch = criteriaBuilder.between(criteriaBuilder.function("FORMATDATETIME",
+                Time.class, root.get("dateTime"), criteriaBuilder.literal("HH:mm")),
+                startTime, endTime);
             searchCriteria.add(timeSearch);
         }
 
