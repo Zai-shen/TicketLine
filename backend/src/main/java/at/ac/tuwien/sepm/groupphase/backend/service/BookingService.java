@@ -36,4 +36,11 @@ public interface BookingService {
      */
     ByteArrayFile renderBooking(Booking booking);
 
+    /**
+     * Utilizes the invoice rendering engine to produce a pdf from all the tickets of a booking
+     * @param booking booking to be printed
+     * @param cancel if true a cancellation of the invoice will be printed
+     * @return pdf document contains invoice for all tickets
+     */
+    ByteArrayFile renderInvoice(Booking booking, boolean cancel);
 }

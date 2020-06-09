@@ -50,3 +50,13 @@ security:
     expiration-time: 43200000
 
 server.servlet.context-path: /v1
+
+ticketline:
+  seller:
+    name: 'Ticketline'
+    street: 'Musterstraße'
+    housenr: '1'
+    postalcode: '1010'
+    city: 'Wien'
+    country: 'Österreich'
+    UID: 'ATU12345678'

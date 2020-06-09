@@ -987,7 +987,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /user/{userId}/ticket/{bookingId}/invoice:
+  /user/ticket/{bookingId}/invoice:
     get:
       security:
         - ticketline_auth: []
@@ -996,14 +996,6 @@ paths:
       summary: Get the invoice for a booking
       operationId: getInvoice
       parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: ID of the User that has booked the ticket
-          example: 3
         - in: path
           name: bookingId
           required: true
