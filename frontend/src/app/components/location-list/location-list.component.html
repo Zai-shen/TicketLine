@@ -47,9 +47,9 @@
   </div>
 
 
-  <mat-card *ngFor="let location of locations">
+  <mat-card *ngFor="let location of locations" (click)="openDetails(location)">
     <mat-card-title>{{location.description}}</mat-card-title>
-    <mat-card-content class="card-body" >
+    <mat-card-content class="card-body">
       <div>
         <p><mat-icon>add_location</mat-icon> {{location.address.street}} {{location.address.housenr}}</p>
         <p>{{location.address.postalcode}} {{location.address.city}}, {{location.address.country}}</p>

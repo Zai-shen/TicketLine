@@ -24,7 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { ArtistsComponent } from './components/artists/artists.component';
 import { CustomPaginatorComponent } from './components/custom-paginator/custom-paginator.component';
-import { LocationComponent } from './components/location/location.component';
+import { LocationListComponent } from './components/location-list/location-list.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import { NewsComponent } from './components/news/news.component';
 import { CreateNewsComponent } from './components/create-news/create-news.component';
@@ -45,12 +45,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { LocationPerformancesSheetComponent } from './components/location-list/location-performances-sheet/location-performances-sheet.component';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -68,7 +70,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     ErrorMessageComponent,
     ChangePasswordComponent,
     EventDetailComponent,
-    LocationComponent,
+    LocationListComponent,
     CreateLocationComponent,
     NewsComponent,
     NewsDetailComponent,
@@ -80,6 +82,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     CreatePerformanceModalComponent,
     PerformanceTableComponent,
     TicketListComponent,
+    LocationPerformancesSheetComponent,
     RelativeTimestampComponent
   ],
   imports: [
@@ -113,6 +116,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     MatNativeDateModule,
     NgxMaterialTimepickerModule,
     MatExpansionModule,
+    MatBottomSheetModule,
     MatListModule,
     MatTooltipModule
   ],
