@@ -20,6 +20,7 @@ public class Performance {
     private Event event;
 
     @ManyToOne()
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
     public Long getId() {
