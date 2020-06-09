@@ -16,6 +16,7 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
 import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'location', component: LocationListComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
   { path: 'news', canActivate: [AuthGuard], component: NewsComponent },
+  { path: 'news/:id', component: NewsDetailComponent },
   { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },

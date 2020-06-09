@@ -22,6 +22,17 @@ export class BookingService {
           });
   }
 
+  public renderInvoice(ticketId: Number) {
+    let headers = new HttpHeaders();
+    headers = headers.set('Accept', 'application/pdf');
+    this.httpClient.get(this.globals.backendUri + '/user/ticket/' + ticketId + '/invoice',
+      { headers: headers, responseType: 'blob', observe: 'response' })
+        .subscribe(
+          (result: HttpResponse<Blob>) => {
+                   this.downloadFile(result);
+    });
+  }
+
   downloadFile(response: HttpResponse<Blob>) {
     const filename: string = this.parseFilenameFromHeader(response);
     const binaryData: Blob[] = [];

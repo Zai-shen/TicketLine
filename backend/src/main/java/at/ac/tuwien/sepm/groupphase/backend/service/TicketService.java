@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
+import at.ac.tuwien.sepm.groupphase.backend.dto.InvoiceData;
 import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
 
 import java.util.List;
@@ -13,4 +14,12 @@ public interface TicketService {
      * @see ByteArrayFile
      */
     ByteArrayFile renderTickets(List<TicketData> tickets);
+
+    /**
+     * renders the invoice to a pdf file
+     * @param invoice invoice to be rendered.
+     * @return File containing the PDF as a byte Array
+     * @see ByteArrayFile
+     */
+    ByteArrayFile renderInvoice(InvoiceData invoice);
 }

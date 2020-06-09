@@ -45,7 +45,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
@@ -53,6 +53,7 @@ import { TicketListComponent } from './components/ticket-list/ticket-list.compon
 import { MatExpansionModule } from '@angular/material/expansion';
 import { LocationPerformancesSheetComponent } from './components/location-list/location-performances-sheet/location-performances-sheet.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
@@ -72,6 +73,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     LocationListComponent,
     CreateLocationComponent,
     NewsComponent,
+    NewsDetailComponent,
     CreateNewsComponent,
     UserDetailComponent,
     ArtistsComponent,

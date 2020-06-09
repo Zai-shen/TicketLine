@@ -1,0 +1,32 @@
+.details {
+  background-color: #ffffff;
+  margin-top: 5em;
+  padding: 5em;
+}
+
+mat-grid-tile {
+  background-color: lightblue;
+}
+mat-spinner {
+  margin: 5em auto;
+}
+
+.error-msg {
+  margin-top: 5em;
+  text-align: center;
+}
+
+.facts {
+  margin: 1em;
+}
+
+.results {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+img {
+  border-radius: 25% 25% 25% 25%;
+  margin-bottom: 3rem;
+}
