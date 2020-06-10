@@ -1401,7 +1401,6 @@ components:
           type: string
           example: Awesome concert of the best band in the best location!
       required:
-        - id
         - title
         - category
         - duration

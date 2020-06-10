@@ -81,6 +81,7 @@ public class EventController implements EventApi {
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Long> createEvent(@Valid EventDTO eventDTO) {
+        LOGGER.info("Create event");
         return ResponseEntity.status(HttpStatus.CREATED).body(
             this.eventService.createEvent(eventMapper.fromDto(eventDTO)));
     }
