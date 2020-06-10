@@ -1,23 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated/api/location.api.service';
-import {LocationDTO} from '../../../generated/model/locationDTO';
-import {SearchLocationDTO} from '../../../generated/model/searchLocationDTO';
-import {AuthService} from '../../services/auth.service';
+import { LocationApiService, LocationDTO, SearchLocationDTO } from '../../../generated';
+import { AuthService } from '../../services/auth.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { LocationPerformancesSheetComponent } from './location-performances-sheet/location-performances-sheet.component';
 
 @Component({
   selector: 'tl-location',
-  templateUrl: './location.component.html',
-  styleUrls: ['./location.component.css']
+  templateUrl: './location-list.component.html',
+  styleUrls: ['./location-list.component.css']
 })
-export class LocationComponent implements OnInit {
+export class LocationListComponent implements OnInit {
 
-  locations: LocationDTO[];
+  locations: LocationDTO[] = [];
   searchForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService,
-              private authService: AuthService) { }
+              private authService: AuthService, private bottomSheet: MatBottomSheet) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -56,6 +56,12 @@ export class LocationComponent implements OnInit {
         this.locations = locationDTO;
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
+  openDetails(location: LocationDTO): void {
+    this.bottomSheet.open(LocationPerformancesSheetComponent,{
+      data: location
+    });
   }
 
 

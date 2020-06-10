@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +12,7 @@ public interface LocationService {
 
     /**
      * Create a new Location
-     * @param location the location object containing the address
+     * @param location the location object containing the address and seatmap
      * @throws BusinessValidationException if location doesn't comply with business validation
      */
     void createLocation(Location location) throws BusinessValidationException;
@@ -24,7 +25,6 @@ public interface LocationService {
      * @return list of locations at requested page number
      */
     Page<Location> getLocationList(Pageable page);
-
     /**
      * Search locations base on description and address.
      *
@@ -32,4 +32,12 @@ public interface LocationService {
      * @return queried location entries
      */
     List<Location> searchLocations(Location location);
+
+    /**
+     * Get performances of a specific location
+     *
+     * @param locationId id of the location to fetch the performances for
+     * @return list of perforrmances at this location
+     */
+    List<Performance> performancesForLocation(Long locationId);
 }

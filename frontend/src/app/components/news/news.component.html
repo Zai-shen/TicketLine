@@ -1,15 +1,15 @@
 <mat-card>
 <div class="results">
   <p *ngIf="news"><b>{{newsFound}} News gefunden</b></p>
-  <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" class="btn btn-secondary btn-sm mr-4">News hinzufügen</button>
+  <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" mat-stroked-button color="primary">News hinzufügen</button>
 </div>
 </mat-card>
 
-<mat-card *ngFor="let newsEntry of news">
+<mat-card *ngFor="let newsEntry of news" [routerLink]="['/news', newsEntry.id]">
   <mat-card-title>{{newsEntry.title}}</mat-card-title>
   <mat-card-content>
     <p>{{newsEntry.summary}}</p>
-    <p><mat-icon>history</mat-icon>{{ computeMinutes(newsEntry.publishedAt) }}</p>
+    <p><mat-icon>history</mat-icon><tl-timestamp [timestamp]="newsEntry.publishedAt"></tl-timestamp></p>
     <p><mat-icon>perm_identity</mat-icon>von {{newsEntry.author}}</p>
   </mat-card-content>
 </mat-card>

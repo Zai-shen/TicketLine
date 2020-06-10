@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {LocationApiService} from '../../../generated/api/location.api.service';
-import {LocationDTO} from '../../../generated/model/locationDTO';
+import { LocationApiService, LocationCreationDTO, LocationDTO } from '../../../generated';
+import { Router } from '@angular/router';
+import { SeatplannerComponent } from '../seatplanner/seatplanner.component';
 
 @Component({
   selector: 'tl-create-location',
@@ -14,7 +15,11 @@ export class CreateLocationComponent implements OnInit {
   submitted: boolean = false;
   locationForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService) { }
+  @ViewChild(SeatplannerComponent)
+  private seatPlanner: SeatplannerComponent;
+
+  constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService,
+    private router: Router) { }
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -35,10 +40,11 @@ export class CreateLocationComponent implements OnInit {
   createLocation(): void {
     this.submitted = true;
     if (this.locationForm.valid) {
-      const locationDTO: LocationDTO = Object.assign({}, this.locationForm.value);
-      this.locationApiService.createLocation(locationDTO).subscribe(
+      const locationCreationDTO: LocationCreationDTO = Object.assign({seatmap: this.seatPlanner.getDTO()}, this.locationForm.value);
+      this.locationApiService.createLocation(locationCreationDTO).subscribe(
         () => {
           console.log('Location successfully created');
+          this.router.navigate(['/location']);
         },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
     }

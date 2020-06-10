@@ -1,9 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import com.google.common.base.Objects;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -18,8 +18,14 @@ public class Booking {
     @ManyToOne
     private Performance performance;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
     private List<Ticket> tickets;
+
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @ManyToOne
+    private User user;
 
     public Long getId() {
         return id;
@@ -51,6 +57,22 @@ public class Booking {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

@@ -2,11 +2,10 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.LocationApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.LocationMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.LocationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
-import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,19 +22,22 @@ public class LocationController implements LocationApi {
 
     private final LocationService locationService;
     private final LocationMapper locationMapper;
+    private final PerformanceMapper performanceMapper;
 
     private static final int PAGE_SIZE = 25;
 
     @Autowired
-    public LocationController(LocationService locationService, LocationMapper locationMapper) {
+    public LocationController(LocationService locationService, LocationMapper locationMapper,
+        PerformanceMapper performanceMapper) {
         this.locationService = locationService;
         this.locationMapper = locationMapper;
+        this.performanceMapper = performanceMapper;
     }
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
-    public ResponseEntity<Void> createLocation(@Valid LocationDTO locationDTO) {
-        locationService.createLocation(locationMapper.locationDtoToLocation(locationDTO));
+    public ResponseEntity<Void> createLocation(@Valid LocationCreationDTO locationCreationDTO) {
+        locationService.createLocation(locationMapper.locationCreationDtoToLocation(locationCreationDTO));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -54,4 +55,9 @@ public class LocationController implements LocationApi {
         return ResponseEntity.ok(list);
     }
 
+    @Override
+    public ResponseEntity<List<PerformanceDTO>> getPerformancesOfLocation(Long locationId) {
+        var list = locationService.performancesForLocation(locationId);
+        return ResponseEntity.ok(performanceMapper.toDto(list));
+    }
 }

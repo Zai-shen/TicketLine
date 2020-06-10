@@ -617,6 +617,14 @@ paths:
         - event
       summary: Search for events
       operationId: searchEvents
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameters
         content:
@@ -899,14 +907,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TicketResponseDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingDTO'
         404:
           description: Couldn't find event or performance entry with that id
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /user/{userId}/ticket/{bookingId}/invoice:
+  /user/ticket/{bookingId}/invoice:
     get:
       security:
         - ticketline_auth: []
@@ -915,14 +925,6 @@ paths:
       summary: Get the invoice for a booking
       operationId: getInvoice
       parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: ID of the User that has booked the ticket
-          example: 3
         - in: path
           name: bookingId
           required: true
@@ -941,6 +943,43 @@ paths:
       responses:
         200:
           description: Invoice of the booking
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: file
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find user or booking entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /user/ticket/{bookingId}/ticket:
+    get:
+      security:
+        - ticketline_auth: []
+      tags:
+        - ticket
+      summary: Get the print ticket for a booking
+      operationId: getTicket
+      parameters:
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: integer
+            format: int64
+          description: ID of the booking to generate the invoice for
+          example: 254
+      responses:
+        200:
+          description: Printable PDF Ticket
           content:
             application/pdf:
               schema:
@@ -993,7 +1032,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LocationDTO'
+              $ref: '#/components/schemas/LocationCreationDTO'
         required: true
       responses:
         201:
@@ -1040,7 +1079,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SeatmapDTO'
+                  $ref: '#/components/schemas/LocationDTO'
         404:
           description: Couldn't find location entry with that id
           content:
@@ -1395,6 +1434,12 @@ components:
         description:
           type: string
           example: Awesome concert of the best band in the best location!
+      required:
+        - id
+        - title
+        - category
+        - duration
+        - description
     EventCategory:
       type: string
       enum: [CONCERT, FESTIVAL, THEATRE, OPERA, PARTY, LITERATURE, MUSICAL, SHOW, CIRCUS, COMEDY, WELLNESS, ADVENTURE, OTHER]
@@ -1464,6 +1509,20 @@ components:
           example: Danube Island
         address:
           $ref: '#/components/schemas/AddressDTO'
+    LocationCreationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 9
+        description:
+          type: string
+          example: Danube Island
+        address:
+          $ref: '#/components/schemas/AddressDTO'
+        seatmap:
+          $ref: '#/components/schemas/SeatmapDTO'
     SearchLocationDTO:
       type: object
       properties:
@@ -1475,96 +1534,242 @@ components:
     SeatmapDTO:
       type: object
       properties:
-        location:
-          $ref: '#/components/schemas/LocationDTO'
-        seatgroups:
+        seatGroupAreas:
           type: array
           items:
-            oneOf:
-              - $ref: '#/components/schemas/FixedSeatgroupDTO'
-              - $ref: '#/components/schemas/FreeSeatgroupDTO'
+            $ref: '#/components/schemas/SeatgroupDTO'
+        standingAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandingAreaDTO'
+    SeatDTO:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+          example: 10
+        y:
+          type: number
+          format: double
+          example: 10
+        rowLabel:
+          type: string
+          example: 'AC'
+        colLabel:
+          type: string
+          example: '15'
+        radius:
+          type: number
+          format: double
+          example: 5
+        price:
+          type: number
+          format: double
+          example: 19.99
+    SeatLabelDTO:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+          example: 5
+        y:
+          type: number
+          format: double
+          example: 5
+        size:
+          type: number
+          format: double
+          example: 5
+        text:
+          type: string
+          example: 'AB'
+    StandingAreaDTO:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+          example: 5
+        y:
+          type: number
+          format: double
+          example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
+        name:
+          type: string
+          example: 'Haupttribüne'
+        maxPeople:
+          type: integer
+          format: int64
+          example: 100
+        price:
+          type: number
+          format: double
+          example: 19.99
     SeatgroupDTO:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+          example: 5
+        y:
+          type: number
+          format: double
+          example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
+        name:
+          type: string
+          example: 'Haupttribüne'
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatDTO'
+        seatLabels:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatLabelDTO'
+
+    SeatmapOccupationDTO:
       type: object
       properties:
         id:
           type: integer
           format: int64
-          example: 66
-        rotation:
+        seatGroupAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatgroupOccupationDTO'
+        standingAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandingAreaOccupationDTO'
+    SeatOccupationDTO:
+      type: object
+      properties:
+        id:
           type: integer
-          example: 45
-        positionX:
+          format: int64
+        x:
+          type: number
+          format: double
+          example: 10
+        y:
+          type: number
+          format: double
+          example: 10
+        rowLabel:
+          type: string
+          example: 'AC'
+        colLabel:
+          type: string
+          example: '15'
+        radius:
+          type: number
+          format: double
+          example: 5
+        price:
+          type: number
+          format: double
+          example: 19.99
+        reserved:
+          type: boolean
+          example: false
+        sold:
+          type: boolean
+          example: false
+    StandingAreaOccupationDTO:
+      type: object
+      properties:
+        id:
           type: integer
-          example: 3
-        positionY:
+          format: int64
+        x:
+          type: number
+          format: double
+          example: 5
+        y:
+          type: number
+          format: double
+          example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
+        name:
+          type: string
+          example: 'Haupttribüne'
+        maxPeople:
           type: integer
-          example: 0
-    FixedSeatgroupDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupDTO'
-        - type: object
-          properties:
-            rows:
-              type: integer
-              example: 5
-            seatsPerRow:
-              type: integer
-              example: 20
-    FreeSeatgroupDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupDTO'
-        - type: object
-          properties:
-            maxPeople:
-              type: integer
-              example: 300
+          format: int64
+          example: 100
+        price:
+          type: number
+          format: double
+          example: 19.99
+        reserved:
+          type: integer
+          format: double
+          example: 20
+        sold:
+          type: integer
+          format: double
+          example: 30
     SeatgroupOccupationDTO:
       type: object
       properties:
-        seatgroupId:
+        id:
           type: integer
           format: int64
-          example: 66
-        price:
-          type: number
-          example: 29.99
-        type:
-          type: string
-          example: FixedSeatgroupOccupationDTO
-    FixedSeatgroupOccupationDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupOccupationDTO'
-        - type: object
-          properties:
-            occupiedSeats:
-              type: array
-              items:
-                $ref: '#/components/schemas/SeatgroupSeatDTO'
-    FreeSeatgroupOccupationDTO:
-      allOf:
-        - $ref: '#/components/schemas/SeatgroupOccupationDTO'
-        - type: object
-          properties:
-            amountOfFreeSeats:
-              type: integer
-              example: 15
-    SeatgroupSeatDTO:
-      type: object
-      properties:
         x:
-          type: integer
-          example: 7
+          type: number
+          format: double
+          example: 5
         y:
-          type: integer
-          example: 3
-        seatgroupId:
-          type: integer
-          format: int64
-          example: 66
-      required:
-        - x
-        - y
-        - seatgroupId
+          type: number
+          format: double
+          example: 5
+        width:
+          type: number
+          format: double
+          example: 50
+        height:
+          type: number
+          format: double
+          example: 50
+        name:
+          type: string
+          example: 'Haupttribüne'
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatOccupationDTO'
+        seatLabels:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeatLabelDTO'
+
+
     FreeSeatgroupBookingDTO:
         properties:
           amount:
@@ -1574,6 +1779,13 @@ components:
           - amount
     BookingDTO:
       properties:
+        id:
+          type: integer
+          format: int64
+        performance:
+          $ref: '#/components/schemas/PerformanceDTO'
+        reservation:
+          type: boolean
         fixedSeats:
           type: array
           items:
@@ -1603,16 +1815,23 @@ components:
       required:
         - id
         - reserved
-    TicketResponseDTO:
+    SeatgroupSeatDTO:
+      type: object
       properties:
-        freeTickets:
-          type: array
-          items:
-            $ref: '#/components/schemas/FreeTicketDTO'
-        seatedTickets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SeatedTicketDTO'
+        x:
+          type: integer
+          example: 7
+        y:
+          type: integer
+          example: 3
+        seatgroupId:
+          type: integer
+          format: int64
+          example: 66
+      required:
+        - x
+        - y
+        - seatgroupId
   securitySchemes:
     ticketline_auth:
       type: http

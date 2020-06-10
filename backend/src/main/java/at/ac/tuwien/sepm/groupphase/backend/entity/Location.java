@@ -14,8 +14,9 @@ public class Location {
     @Column(nullable=false,length = 1024)
     private String description;
 
-    @OneToMany
-    private List<SeatGroup> seatGroups;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seatmap_id", referencedColumnName = "id")
+    private Seatmap seatmap;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -37,20 +38,20 @@ public class Location {
         this.description = description;
     }
 
-    public List<SeatGroup> getSeatGroups() {
-        return seatGroups;
-    }
-
-    public void setSeatGroups(List<SeatGroup> seatGroups) {
-        this.seatGroups = seatGroups;
-    }
-
     public Address getAddress() {
         return address;
     }
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Seatmap getSeatmap() {
+        return seatmap;
+    }
+
+    public void setSeatmap(Seatmap seatmap) {
+        this.seatmap = seatmap;
     }
 
     @Override
@@ -68,10 +69,7 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Location{" +
-            "id=" + id +
-            ", description='" + description + '\'' +
-            ", address=" + address.toString() +
-            '}';
+        return "Location{" + "id=" + id + ", description='" + description + '\'' + ", seatmap=" + seatmap +
+            ", address=" + address + '}';
     }
 }

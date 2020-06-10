@@ -7,7 +7,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { EventsComponent } from './components/events/events.component';
 import { ArtistsComponent } from './components/artists/artists.component';
 import { EventDetailComponent } from './components/event-detail/event-detail.component';
-import { LocationComponent } from './components/location/location.component';
+import { LocationListComponent } from './components/location-list/location-list.component';
 import { CreateLocationComponent } from './components/create-location/create-location.component';
 import {NewsComponent} from './components/news/news.component';
 import {CreateNewsComponent} from './components/create-news/create-news.component';
@@ -16,6 +16,7 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
 import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
+import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,13 +26,14 @@ const routes: Routes = [
   { path: 'admin/users', canActivate: [AdminGuard], component: UserListComponent },
   { path: 'artists', component: ArtistsComponent },
   { path: 'events/:id', component: EventDetailComponent},
-  { path: 'location', component: LocationComponent},
+  { path: 'location', component: LocationListComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
   { path: 'news', canActivate: [AuthGuard], component: NewsComponent },
+  { path: 'news/:id', component: NewsDetailComponent },
   { path: 'news/addNews', canActivate: [AdminGuard], component: CreateNewsComponent },
   { path: 'user/settings', canActivate: [AuthGuard], component: UserDetailComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent },
-  { path: 'tickets', canActivate: [AuthGuard], component: TicketListComponent },
+  { path: 'user/tickets', canActivate: [AuthGuard], component: TicketListComponent },
   { path: 'event/newEvent', canActivate: [AdminGuard], component: CreateEventComponent }
 ];
 

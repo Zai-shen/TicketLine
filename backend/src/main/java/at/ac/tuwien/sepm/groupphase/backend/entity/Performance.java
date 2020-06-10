@@ -1,9 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +20,7 @@ public class Performance {
     private Event event;
 
     @ManyToOne()
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
     public Long getId() {
@@ -53,6 +53,10 @@ public class Performance {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String formatDateTime() {
+        return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"));
     }
 
     @Override

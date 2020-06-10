@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -92,6 +93,15 @@ public abstract class Validator<T> {
         if (child != null) {
             validator.build(child);
             errorMessages.addAll(validator.errorMessages);
+        }
+    }
+
+    protected <S> void callValidatorOnChildColleciton(Validator<S> validator, Collection<S> childCollection) {
+        if (childCollection != null && childCollection.size() > 0) {
+            for (S child: childCollection) {
+                validator.build(child);
+                errorMessages.addAll(validator.errorMessages);
+            }
         }
     }
 }
