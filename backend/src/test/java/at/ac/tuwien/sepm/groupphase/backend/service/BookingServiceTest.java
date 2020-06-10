@@ -4,10 +4,8 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
-import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.impl.BookingServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +18,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,9 +41,9 @@ class BookingServiceTest {
         when(performanceRepository.findById(1L)).thenReturn(java.util.Optional.of(new Performance()));
 
         bookingService.bookTickets(1L, false, getTickets());
-
+        List<Ticket> createdTickets = user.getBookings().get(0).getTickets();
         assertThat(user.getBookings().get(0).getReservation()).isFalse();
-        assertThat(user.getBookings().get(0).getTickets()).isEqualTo(getTickets());
+        assertThat(createdTickets.size()).isEqualTo(getTickets().size());
     }
 
     @Test

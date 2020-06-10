@@ -54,6 +54,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { PerformanceListComponent } from './components/performance-list/performance-list.component';
 import { LocationPerformancesSheetComponent } from './components/location-list/location-performances-sheet/location-performances-sheet.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { SeatplannerComponent } from './components/seatplanner/seatplanner.component';
+import { SeatgroupPropertiesComponent } from './components/seatplanner/seatgroup-properties/seatgroup-properties.component';
+import { MatTabsModule } from '@angular/material/tabs';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -85,6 +88,8 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     TicketListComponent,
     PerformanceListComponent,
     LocationPerformancesSheetComponent,
+    SeatplannerComponent,
+    SeatgroupPropertiesComponent,
     RelativeTimestampComponent
   ],
   imports: [
@@ -120,7 +125,8 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     MatExpansionModule,
     MatBottomSheetModule,
     MatListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTabsModule
   ],
   providers: [
     {
