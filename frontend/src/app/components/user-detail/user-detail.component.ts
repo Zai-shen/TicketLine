@@ -15,8 +15,6 @@ export class UserDetailComponent implements OnInit {
 
   public user: UserDTO;
 
-  public errorMsg?: string;
-
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
 
