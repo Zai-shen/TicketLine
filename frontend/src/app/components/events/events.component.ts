@@ -57,7 +57,7 @@ export class EventsComponent implements OnInit, AfterViewInit {
     const artistCtrl = this.searchForm.get('artist');
     if (artistCtrl !== null) {
       artistCtrl.valueChanges.pipe(
-        debounceTime(500),
+        debounceTime(200),
         tap(() => {
           this.filteredArtists = [];
           this.loading = true;
