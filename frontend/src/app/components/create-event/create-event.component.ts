@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { EventCategory, EventDTO, PerformanceDTO } from '../../../generated';
+import { EventCategory, PerformanceDTO } from '../../../generated';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { EventService } from '../../services/event.service';
 import { PerformanceService } from '../../services/performance.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { forkJoin, Observable } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CreateArtistModalComponent } from './create-artist-modal/create-artist-modal.component';
 
 @Component({
   selector: 'tl-create-event',
@@ -22,7 +24,8 @@ export class CreateEventComponent implements OnInit {
   constructor(private readonly formBuilder: FormBuilder,
               private readonly location: Location,
               private readonly performanceService: PerformanceService,
-              private readonly eventService: EventService) {
+              private readonly eventService: EventService,
+              private readonly dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -61,4 +64,13 @@ export class CreateEventComponent implements OnInit {
       );
     }
   }
+
+  createArtist() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.disableClose = true;
+
+    this.dialog.open(CreateArtistModalComponent, dialogConfig);
+  }
+
 }

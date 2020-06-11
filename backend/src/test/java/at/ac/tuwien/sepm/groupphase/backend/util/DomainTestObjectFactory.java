@@ -5,8 +5,11 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
+
 import java.time.LocalDateTime;
+
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -23,6 +26,7 @@ public class DomainTestObjectFactory {
         user.setId(14L);
         return user;
     }
+
     public static Address getAddress() {
         final Address address = new Address();
         address.setStreet("Hauptstraße");
@@ -68,13 +72,13 @@ public class DomainTestObjectFactory {
         return seatmap;
     }
 
-    public static News getNews(){
+    public static News getNews() {
         final News news = new News();
         news.setId(16L);
         news.setTitle("Breaking News!");
         news.setSummary("In conclusion we can conclude alternative facts are in fact no facts.");
         news.setContent("Today we discovered, that I am to lazy to write more content.");
-        news.setPublishedAt(LocalDateTime.of(2002,1,13,12,55,59));
+        news.setPublishedAt(LocalDateTime.of(2002, 1, 13, 12, 55, 59));
         news.setAuthor("Doris Duftler");
         return news;
     }
@@ -101,9 +105,18 @@ public class DomainTestObjectFactory {
         Performance performance = new Performance();
         performance.setId(1L);
         performance.setDateTime(OffsetDateTime.now().plusDays(1));
-        performance.setLocation(getLocation());;
+        performance.setLocation(getLocation());
+        ;
         performance.setEvent(getEvent());
         return performance;
+    }
+
+    public static Artist getArtist() {
+        Artist artist = new Artist();
+        artist.setFirstname("Wolfgang");
+        artist.setLastname("Mozart");
+        artist.setId(1L);
+        return artist;
     }
 
 }

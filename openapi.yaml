@@ -1173,6 +1173,40 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/ArtistDTO'
+      post:
+        tags:
+          - artist
+        summary: create new artist
+        operationId: createArtist
+        requestBody:
+          description: Artist information to be created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistDTO'
+          required: true
+        responses:
+          201:
+            description: Created Artist
+            content: {}
+          400:
+            description: Invalid input
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
+          403:
+            description: Not logged in or insufficient permission
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
+          422:
+            description: Failed validation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
   /artist/search:
     post:
       tags:
