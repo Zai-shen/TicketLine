@@ -1,0 +1,60 @@
+.seatmap {
+  max-width: 502px;
+  max-height: 502px;
+  margin-bottom: 20px;
+}
+
+:host ::ng-deep {
+  &[seat="true"] {
+    stroke: #058d17;
+    fill: rgba(27, 173, 14, 0.38);
+    cursor: pointer;
+    &[selected="true"] {
+      stroke: #097d16;
+      fill: rgb(20, 239, 0);
+    }
+    &[reserved="true"] {
+      stroke: #faf822;
+      fill: rgba(229, 226, 20, 0.38);
+      cursor: default;
+    }
+    &[sold="true"] {
+      stroke: #1f1f1f;
+      fill: rgba(68, 68, 68, 0.38);
+      cursor: default;
+    }
+  }
+  .seatgroup {
+    fill: #d5d5d5;
+    stroke: #9c9c9c;
+  }
+  .standing-area {
+    fill: rgba(27, 173, 14, 0.38);
+    stroke: #9c9c9c;
+    cursor: pointer;
+    &[sold-out="true"] {
+      stroke: #1f1f1f;
+      fill: rgba(68, 68, 68, 0.38);
+      cursor: default;
+    }
+    &[selected="true"] {
+      stroke: #097d16;
+      fill: rgb(20, 239, 0);
+    }
+  }
+}
+
+circle {
+  &[seat="true"] {
+    color: #7dff00;
+    &[locked="reserved"] {
+      fill: #f8ff0e;
+    }
+    &[locked="true"] {
+      fill: #ee4545;
+    }
+    &[selected="true"] {
+      fill: #ffe100;
+    }
+  }
+}
