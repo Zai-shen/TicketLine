@@ -1,23 +1,36 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.service.SeatService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@ActiveProfiles("test")
 class TicketMapperTest {
 
-    private TicketMapper ticketMapper = new TicketMapper();
+    private TicketMapper ticketMapper;
+
+    TicketMapperTest(SeatService seatService) {
+        ticketMapper = new TicketMapper(seatService);
+    }
 
     @Test
     void fromDto() {
         BookingDTO bookingDTO = new BookingDTO();
-        bookingDTO.setFreeSeats(new FreeSeatgroupBookingDTO().amount(3));
+        bookingDTO.setFreeSeats(Collections.singletonList(new FreeSeatgroupBookingDTO().amount(3L)));
         bookingDTO.setFixedSeats(Collections.singletonList(new SeatgroupSeatDTO().x(1).y(1).seatgroupId(1L)));
 
         SeatedTicket seatedTicket = getSeatedTicket();
@@ -30,15 +43,10 @@ class TicketMapperTest {
 
     private SeatedTicket getSeatedTicket() {
         SeatedTicket seatedTicket = new SeatedTicket();
-        seatedTicket.setSeatRow(1);
-        seatedTicket.setSeatColumn(1);
-        seatedTicket.setSeatGroupId(1L);
+        Seat s = new Seat();
+        s.setX(1D);
+        s.setY(1D);
+        seatedTicket.setSeat(s);
         return seatedTicket;
-    }
-
-    private Ticket getTicket() {
-        Ticket ticket = new Ticket();
-        ticket.setId(2L);
-        return ticket;
     }
 }

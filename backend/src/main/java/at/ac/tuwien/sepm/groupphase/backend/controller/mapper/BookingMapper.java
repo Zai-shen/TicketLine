@@ -1,9 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
-import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
@@ -19,27 +17,33 @@ public interface BookingMapper {
         for (Booking booking : bookings) {
             BookingDTO outbooking = toDto(booking);
             outbooking.setFixedSeats(new LinkedList<>());
-            int amount = 0;
-            for (Ticket ticket : booking.getTickets()) {
-                if (ticket instanceof SeatedTicket) {
-                    SeatedTicket seatedTicket = (SeatedTicket) ticket;
-                    outbooking.getFixedSeats().add(getSeatgroupSeatDTO(seatedTicket));
-                } else {
-                    amount++;
+            outbooking.setFreeSeats(new LinkedList<>());
+            for (Ticket t : booking.getTickets()) {
+                if(t instanceof StandingTicket) {
+                    outbooking.getFreeSeats().add(getFreeSeatDTO((StandingTicket)t));
+                }
+                if(t instanceof SeatedTicket) {
+                    outbooking.getFixedSeats().add(getSeatgroupSeatDTO(((SeatedTicket) t).getSeat()));
                 }
             }
-            outbooking.setFreeSeats(new FreeSeatgroupBookingDTO().amount(amount));
             outlist.add(outbooking);
         }
         return outlist;
     }
 
 
-    default SeatgroupSeatDTO getSeatgroupSeatDTO(SeatedTicket seatedTicket) {
+    default SeatgroupSeatDTO getSeatgroupSeatDTO(Seat seat) {
         SeatgroupSeatDTO seatgroupSeatDTO = new SeatgroupSeatDTO();
-        seatgroupSeatDTO.setSeatgroupId(seatedTicket.getSeatGroupId());
-        seatgroupSeatDTO.setX(seatedTicket.getSeatColumn());
-        seatgroupSeatDTO.setY(seatedTicket.getSeatColumn());
+        seatgroupSeatDTO.setSeatgroupId(seat.getId());
+        seatgroupSeatDTO.setX(seat.getX().intValue());
+        seatgroupSeatDTO.setY(seat.getY().intValue());
         return seatgroupSeatDTO;
+    }
+
+    default FreeSeatgroupBookingDTO getFreeSeatDTO(StandingTicket t) {
+        FreeSeatgroupBookingDTO freeSeatgroupBookingDTO = new FreeSeatgroupBookingDTO();
+        freeSeatgroupBookingDTO.setAmount(t.getAmount());
+        freeSeatgroupBookingDTO.setSeatGroupId(t.getSeatGroupArea().getId());
+        return freeSeatgroupBookingDTO;
     }
 }

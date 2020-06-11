@@ -1529,10 +1529,6 @@ components:
           type: number
           format: double
           example: 5
-        price:
-          type: number
-          format: double
-          example: 19.99
     SeatLabelDTO:
       type: object
       properties:
@@ -1736,13 +1732,6 @@ components:
             $ref: '#/components/schemas/SeatLabelDTO'
 
 
-    FreeSeatgroupBookingDTO:
-        properties:
-          amount:
-            type: integer
-            example: 3
-        required:
-          - amount
     BookingDTO:
       properties:
         id:
@@ -1757,30 +1746,9 @@ components:
           items:
             $ref: '#/components/schemas/SeatgroupSeatDTO'
         freeSeats:
-          $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
-    SeatedTicketDTO:
-      properties:
-        seat:
-          $ref: '#/components/schemas/SeatgroupSeatDTO'
-        id:
-          type: integer
-          format: int64
-        reserved:
-          type: boolean
-      required:
-        - id
-        - reserved
-        - seat
-    FreeTicketDTO:
-      properties:
-        id:
-          type: integer
-          format: int64
-        reserved:
-          type: boolean
-      required:
-        - id
-        - reserved
+          type: array
+          items:
+            $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
     SeatgroupSeatDTO:
       type: object
       properties:
@@ -1798,6 +1766,19 @@ components:
         - x
         - y
         - seatgroupId
+    FreeSeatgroupBookingDTO:
+      properties:
+        amount:
+          type: integer
+          format: int64
+          example: 3
+        seatGroupId:
+          type: integer
+          format: int64
+          example: 12
+      required:
+        - amount
+        - seatGroupId
   securitySchemes:
     ticketline_auth:
       type: http

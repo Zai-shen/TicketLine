@@ -55,9 +55,9 @@ export class EventDetailComponent implements OnInit {
 
   buyTicket(reserve: boolean, performance: PerformanceDTO): void {
     const bookingDto: BookingDTO = {};
-    // TODO: raplace these tickets with the real tickets, once the seatmap gets implemented.
-    bookingDto.freeSeats = { amount: 1 };
-    bookingDto.fixedSeats = [{ seatgroupId: 1, x: 1, y: 1 }];
+    // TODO: replace these tickets with the real tickets, once the seatmap gets implemented.
+    bookingDto.freeSeats = [{ seatGroupId: 1, amount: 1}];
+    bookingDto.fixedSeats = [{ seatgroupId: 1, x: 1, y: 1}];
 
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)

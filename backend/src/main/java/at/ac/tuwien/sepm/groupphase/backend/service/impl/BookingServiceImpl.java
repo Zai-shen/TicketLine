@@ -80,7 +80,8 @@ public class BookingServiceImpl implements BookingService {
         for(Ticket ticket : booking.getTickets()) {
             String seat = "Freie Platzwahl";
             if (ticket instanceof SeatedTicket) {
-                seat = String.format("Reihe %d Platz %d",((SeatedTicket) ticket).getSeatRow(),((SeatedTicket) ticket).getSeatColumn());
+                Seat s = ((SeatedTicket) ticket).getSeat();
+                seat = String.format("Reihe %s Platz %s",s.getRowLabel(),s.getColLabel());
             }
             tickets.add(new TicketData(
                 booking.getPerformance().getEvent(),

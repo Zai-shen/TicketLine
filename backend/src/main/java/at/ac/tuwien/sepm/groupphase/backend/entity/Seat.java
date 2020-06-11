@@ -28,6 +28,9 @@ public class Seat {
     @Column(nullable = false)
     private Double price;
 
+    @ManyToOne
+    private SeatGroupArea seatGroupArea;
+
     public Long getId() {
         return id;
     }
