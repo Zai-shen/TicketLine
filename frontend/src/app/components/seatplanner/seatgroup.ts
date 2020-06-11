@@ -339,7 +339,8 @@ export class SeatgroupElement {
         width: this.width,
         height: this.height,
         name: this.name,
-        seats: this.seats.filter(seat => seat instanceof SeatElement).map(seat => (seat as SeatElement).convertToSeatDto(this.price)),
+        price: this.price,
+        seats: this.seats.filter(seat => seat instanceof SeatElement).map(seat => (seat as SeatElement).convertToSeatDto()),
         seatLabels: this.seats.filter(seat => seat instanceof SeatLabel).map(seat => (seat as SeatLabel).convertToSeatLabelDto())
       };
     }

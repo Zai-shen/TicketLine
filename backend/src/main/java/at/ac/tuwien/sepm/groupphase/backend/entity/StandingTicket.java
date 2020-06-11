@@ -9,8 +9,7 @@ public class StandingTicket extends Ticket {
     @Column
     private Long amount;
 
-    @ManyToOne
-    @Column(nullable = false)
+    @ManyToOne(optional = false)
     private SeatGroupArea seatGroupArea;
 
     public Long getAmount() {

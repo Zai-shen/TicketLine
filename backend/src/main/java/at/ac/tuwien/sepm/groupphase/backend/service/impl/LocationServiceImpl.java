@@ -2,6 +2,8 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
+import at.ac.tuwien.sepm.groupphase.backend.entity.SeatGroupArea;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.LocationRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
@@ -41,6 +43,11 @@ public class LocationServiceImpl implements LocationService {
     public void createLocation(Location location) {
         LOGGER.debug("create location");
         new NewLocationValidator().build(location).validate();
+        for (SeatGroupArea sga : location.getSeatmap().getSeatGroupAreas()) {
+            for (Seat s : sga.getSeats()) {
+                s.setSeatGroupArea(sga);
+            }
+        }
         locationRepository.save(location);
     }
 

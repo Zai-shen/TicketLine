@@ -27,8 +27,7 @@ public class SeatGroupArea {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "seatgroup_id")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER,mappedBy = "seatGroupArea")
     private Set<Seat> seats;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

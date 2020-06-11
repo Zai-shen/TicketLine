@@ -10,8 +10,6 @@ public class SeatValidator extends Validator<Seat> {
         notNullOrName(seat.getRadius(),"Sitzplatz Größe");
         notNullOrName(seat.getRowLabel(),"Sitzplatzreihe-Bezeichnung");
         notNullOrName(seat.getColLabel(),"Sitzplatzspalte-Bezeichnung");
-        notNullOrName(seat.getPrice(),"Sitzplatz Preis");
-        validOrMessage(seat.getPrice() >= 0,"Sitplatz Preis muss positiv sein");
         validOrMessage(seat.getRadius() > 0,"Sitzplatz Größe muss positiv sein");
     }
 }

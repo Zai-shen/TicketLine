@@ -37,7 +37,6 @@ public class DomainTestObjectFactory {
         final Seat seat = new Seat();
             seat.setColLabel("colLabel");
             seat.setRowLabel("rowlabel");
-            seat.setPrice(10.0);
             seat.setRadius(5.0);
             seat.setX(10.0);
             seat.setY(10.0);
