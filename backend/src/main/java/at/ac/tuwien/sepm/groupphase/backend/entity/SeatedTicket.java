@@ -7,7 +7,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class SeatedTicket extends Ticket {
     @OneToOne
-    @JoinColumn(name = "seat_id", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "seat_id", referencedColumnName = "id")
     private Seat seat;
 
     public Seat getSeat() {

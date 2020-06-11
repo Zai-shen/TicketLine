@@ -27,7 +27,10 @@ public class SeatGroupArea {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER,mappedBy = "seatGroupArea")
+    @Column(nullable = false)
+    private Double price;
+
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "seatGroupArea")
     private Set<Seat> seats;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -96,6 +99,14 @@ public class SeatGroupArea {
 
     public void setSeatLabels(Set<SeatLabel> seatLabels) {
         this.seatLabels = seatLabels;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Override
