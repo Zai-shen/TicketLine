@@ -14,7 +14,6 @@ import java.util.List;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
-    //SELECT e.*,count(booking.id) FROM EVENT e JOIN PERFORMANCE ON event_id=e.id LEFT JOIN BOOKING ON performance_id=performance.id WHERE performance.date_time > now() AND e.category =  'PARTY' GROUP BY e.id ORDER BY count(booking.id) DESC LIMIT 10;
     @Query("SELECT e FROM Event e JOIN Performance p ON p.event=e LEFT JOIN Booking b ON b.performance=p WHERE p.dateTime > ?1 AND p.dateTime < ?2 AND e.category = ?3 GROUP BY e ORDER BY count(b) DESC")
     Page<Event> getOrderedEvents(OffsetDateTime after, OffsetDateTime before, CategoryEnum c, PageRequest pageRequest);
 
