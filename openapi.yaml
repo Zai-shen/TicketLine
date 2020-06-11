@@ -215,38 +215,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-    delete:
-      tags:
-      - user
-      security:
-        - ticketline_auth: []
-      summary: remove a user account - Admin task
-      operationId: removeUser
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: Id of the user to remove
-          example: 3
-      responses:
-        200:
-          description: Successfully removed user account
-          content: {}
-        403:
-          description: Not logged in or insufficient permission
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        404:
-          description: Cannot find user to remove
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
   /user/self:
     get:
       security:

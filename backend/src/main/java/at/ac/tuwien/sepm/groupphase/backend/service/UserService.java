@@ -92,11 +92,10 @@ public interface UserService extends UserDetailsService {
     User getCurrentLoggedInUser();
 
     /**
-     * Remove a user account from the persistance layer
-     * @param userId that identifies the user
+     * Remove the logged in user account from the persistance layer
      * @throws BusinessValidationException if the user has open tickets
      * @throws NotFoundException when the user doesn't exist
      */
-    void removeUser(Long userId);
+    void removeUser();
 
 }

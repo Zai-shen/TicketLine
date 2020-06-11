@@ -171,12 +171,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void removeUser(Long userId) {
-        User user = userRepository.findUserById(userId);
-
-        if (user == null) {
-            throw new NotFoundException("Der zu löschende User wurde nicht gefunden");
-        }
+    public void removeUser() {
+        User user = getCurrentLoggedInUser();
 
         if (user.getBookings().stream().anyMatch(booking -> !booking.isCanceled())) {
             throw new BusinessValidationException(

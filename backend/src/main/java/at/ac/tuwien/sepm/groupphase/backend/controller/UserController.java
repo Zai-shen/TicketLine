@@ -163,21 +163,10 @@ public class UserController implements UserApi {
     }
 
     @Override
-    @Secured(AuthorizationRole.ADMIN_ROLE)
-    public ResponseEntity<Void> removeUser(Long userId) {
-        LOGGER.info("Remove user {}", userId);
-        userService.removeUser(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Void> removeMyAccount() {
-        User self = userService.getCurrentLoggedInUser();
-        LOGGER.info("Remove self with ID {}", self.getId());
-
-        userService.removeUser(self.getId());
-
+        LOGGER.info("Remove self");
+        userService.removeUser();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

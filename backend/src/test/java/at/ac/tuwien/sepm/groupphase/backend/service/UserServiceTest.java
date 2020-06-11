@@ -8,15 +8,18 @@ import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.impl.UserServiceImpl;
-import at.ac.tuwien.sepm.groupphase.backend.service.validator.EmailValidator;
 import at.ac.tuwien.sepm.groupphase.backend.util.DomainTestObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
@@ -126,20 +129,13 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testRemoveUserNotExisting() {
-        when(userRepository.findUserById(any())).thenReturn(null);
-
-        assertThatThrownBy(() -> userService.removeUser(7L)).isExactlyInstanceOf(NotFoundException.class);
-        verify(userRepository, never()).delete(any());
-    }
-
-    @Test
     public void testRemoveUserWithActiveBooking() {
         final User user = new User();
         user.setBookings(Collections.singletonList(new Booking()));
-        when(userRepository.findUserById(any())).thenReturn(user);
+        when(userRepository.findUserByEmail(any())).thenReturn(user);
+        mockAuthenticationContext();
 
-        Throwable thrown = catchThrowable(() -> userService.removeUser(7L));
+        Throwable thrown = catchThrowable(() -> userService.removeUser());
 
         assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
         BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
@@ -152,10 +148,20 @@ public class UserServiceTest {
     public void testRemoveUserSuccessful() {
         final User user = new User();
         user.setBookings(Collections.emptyList());
-        when(userRepository.findUserById(any())).thenReturn(user);
+        when(userRepository.findUserByEmail(any())).thenReturn(user);
 
-        userService.removeUser(8L);
+        mockAuthenticationContext();
+
+        userService.removeUser();
 
         verify(userRepository, times(1)).delete(user);
+    }
+
+    private void mockAuthenticationContext() {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        // Mockito.whens() for your authorization object
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
     }
 }
