@@ -61,6 +61,7 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
+import { TopTenComponent } from './components/top-ten/top-ten.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
     LocationPerformancesSheetComponent,
     SeatplannerComponent,
     SeatgroupPropertiesComponent,
-    RelativeTimestampComponent
+    RelativeTimestampComponent,
+    TopTenComponent
   ],
   imports: [
     BrowserModule,
