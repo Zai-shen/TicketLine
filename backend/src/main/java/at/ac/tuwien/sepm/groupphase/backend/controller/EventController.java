@@ -4,10 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.api.EventApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
-import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.SearchEventDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
@@ -99,5 +96,13 @@ public class EventController implements EventApi {
         LOGGER.info("Create ticket for performance {}", performanceId);
         bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingDTO));
         return ResponseEntity.ok(0L);
+    }
+
+    @Override
+    public ResponseEntity<List<EventDTO>> getTopTenEvents(@Valid Optional<EventCategory> category) {
+        LOGGER.info("Get top ten events");
+        return category.map(eventCategory -> ResponseEntity.ok(
+            eventMapper.toDto(eventService.getTopTen(eventMapper.fromDto(eventCategory)))))
+            .orElseGet(() -> ResponseEntity.ok(eventMapper.toDto(eventService.getTopTen(null))));
     }
 }

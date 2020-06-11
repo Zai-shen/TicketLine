@@ -520,13 +520,6 @@ paths:
       operationId: getTopTenEvents
       parameters:
         - in: query
-          name: page
-          schema:
-            type: integer
-          description: Pagination information
-          required: false
-          example: 2
-        - in: query
           name: category
           schema:
             $ref: '#/components/schemas/EventCategory'
@@ -540,7 +533,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PerformanceDTO'
+                  $ref: '#/components/schemas/EventDTO'
     post:
       security:
         - ticketline_auth: []
