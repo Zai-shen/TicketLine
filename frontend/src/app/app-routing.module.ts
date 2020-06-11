@@ -17,6 +17,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateEventComponent } from './components/create-event/create-event.component';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { NewsDetailComponent } from './components/news-detail/news-detail.component';
+import { TopTenComponent } from './components/top-ten/top-ten.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'admin/users', canActivate: [AdminGuard], component: UserListComponent },
   { path: 'artists', component: ArtistsComponent },
+  { path: 'events/top', component: TopTenComponent},
   { path: 'events/:id', component: EventDetailComponent},
   { path: 'location', component: LocationListComponent},
   { path: 'location/addLocation', canActivate: [AdminGuard], component: CreateLocationComponent },
