@@ -35,11 +35,10 @@ import { PerformanceTableComponent } from './components/create-event/performance
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
@@ -64,6 +63,7 @@ import { RelativeTimestampComponent } from './components/relative-timestamp/rela
 import { SeatplanComponent } from './components/seatplan/seatplan.component';
 import { SelectStandingareaDialogComponent } from './components/seatplan/select-standingarea-dialog/select-standingarea-dialog.component';
 import { TopTenComponent } from './components/top-ten/top-ten.component';
+import { ConfirmUserDeletionModalComponent } from './components/user-detail/confirm-user-deletion-modal/confirm-user-deletion-modal.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +96,8 @@ import { TopTenComponent } from './components/top-ten/top-ten.component';
     RelativeTimestampComponent,
     TopTenComponent,
     SeatplanComponent,
-    SelectStandingareaDialogComponent
+    SelectStandingareaDialogComponent,
+    ConfirmUserDeletionModalComponent
   ],
   imports: [
     BrowserModule,

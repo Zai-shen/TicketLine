@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -126,7 +127,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public User findUserByEmail(String email) {
         LOGGER.debug("Find user by email");
         User user = userRepository.findUserByEmail(email);
@@ -139,18 +140,21 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User updateUser(Long userId, User updateUser) {
-        String username =  (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = findUserByEmail(username);
-        if(!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
-            throw new AccessDeniedException("Der aktuelle Benutzer hat keine Berechtigung um andere Nutzer zu bearbeiten");
+        if (!userId.equals(currentUser.getId()) && currentUser.getRole() != AuthorizationRole.ADMIN) {
+            throw new AccessDeniedException(
+                "Der aktuelle Benutzer hat keine Berechtigung um andere Nutzer zu bearbeiten");
         }
         LOGGER.debug("Update User");
-        if(updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty())
+        if (updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty()) {
             currentUser.setFirstname(updateUser.getFirstname());
-        if(updateUser.getLastname() != null && !updateUser.getLastname().isEmpty())
+        }
+        if (updateUser.getLastname() != null && !updateUser.getLastname().isEmpty()) {
             currentUser.setLastname(updateUser.getLastname());
+        }
         long addressId = currentUser.getAddress().getId();
-        if(updateUser.getAddress() != null) {
+        if (updateUser.getAddress() != null) {
             currentUser.setAddress(updateUser.getAddress());
             currentUser.getAddress().setId(addressId);
         }
@@ -163,5 +167,18 @@ public class UserServiceImpl implements UserService {
     public User getCurrentLoggedInUser() {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return this.findUserByEmail(username);
+    }
+
+    @Override
+    @Transactional
+    public void removeUser() {
+        User user = getCurrentLoggedInUser();
+
+        if (user.getBookings().stream().anyMatch(booking -> !booking.isCanceled())) {
+            throw new BusinessValidationException(
+                "Bevor der User gelöscht werden kann, müssen alle Tickets und Reservierungen storniert werden");
+        }
+
+        userRepository.delete(user);
     }
 }

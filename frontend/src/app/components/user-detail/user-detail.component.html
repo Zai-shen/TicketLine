@@ -1,3 +1,4 @@
+<tl-error-message></tl-error-message>
 <div class="details mat-elevation-z4 main-content" *ngIf="user">
   <h1 class="mat-title">Persönliche Daten</h1>
   <mat-divider></mat-divider>
@@ -37,5 +38,8 @@
     </div>
     <button mat-raised-button color="primary" (click)="saveUser()" [disabled]="!userForm.valid">Speichern</button>
   </form>
+  <button mat-raised-button class="remove-user-btn" color="warn" (click)="openRemoveConfirmDialog()">
+    Nutzeraccount löschen
+  </button>
 </div>
-<mat-spinner *ngIf="!user && !errorMsg"></mat-spinner>
+<mat-spinner *ngIf="!user"></mat-spinner>

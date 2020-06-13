@@ -1,6 +1,8 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
@@ -11,13 +13,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -119,5 +126,41 @@ public class UserServiceTest {
         assertThat(user.getLocked()).isFalse();
         assertThat(user.getWrongAttempts()).isEqualTo(0);
         verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    public void testRemoveUserWithActiveBooking() {
+        final User user = new User();
+        user.setBookings(Collections.singletonList(new Booking()));
+        when(userRepository.findUserByEmail(any())).thenReturn(user);
+        mockAuthenticationContext();
+
+        Throwable thrown = catchThrowable(() -> userService.removeUser());
+
+        assertThat(thrown).isExactlyInstanceOf(BusinessValidationException.class);
+        BusinessValidationException businessValidationException = (BusinessValidationException) thrown;
+        assertThat(businessValidationException.getValidationMessages()).containsExactly(
+            "Bevor der User gelöscht werden kann, müssen alle Tickets und Reservierungen storniert werden");
+        verify(userRepository, never()).delete(any());
+    }
+
+    @Test
+    public void testRemoveUserSuccessful() {
+        final User user = new User();
+        user.setBookings(Collections.emptyList());
+        when(userRepository.findUserByEmail(any())).thenReturn(user);
+
+        mockAuthenticationContext();
+
+        userService.removeUser();
+
+        verify(userRepository, times(1)).delete(user);
+    }
+
+    private void mockAuthenticationContext() {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
     }
 }
