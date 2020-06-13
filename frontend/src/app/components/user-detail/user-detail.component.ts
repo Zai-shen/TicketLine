@@ -5,6 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Globals } from '../../global/globals';
 import { AuthService } from '../../services/auth.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmUserDeletionModalComponent } from './confirm-user-deletion-modal/confirm-user-deletion-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'tl-home',
@@ -19,7 +22,7 @@ export class UserDetailComponent implements OnInit {
   private errorMessageComponent: ErrorMessageComponent;
 
   constructor(private userService: UserService, private snackBar: MatSnackBar, private globals: Globals,
-    private authService: AuthService) {
+    private authService: AuthService, private dialog: MatDialog, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -55,13 +58,15 @@ export class UserDetailComponent implements OnInit {
   }
 
   openRemoveConfirmDialog(): void {
-    this.snackBar.open('Nuteraccount wirklich unwiederbringlich löschen?', 'OK',
-      { duration: this.globals.defaultSnackbarDuration })
-        .onAction().subscribe(() => {
-      this.userService.removeUser().subscribe(() => {
-          this.authService.logoutUser();
-        }, error => this.errorMessageComponent.defaultServiceErrorHandling(error)
-      );
+    this.dialog.open(ConfirmUserDeletionModalComponent)
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.userService.removeUser().subscribe(() => {
+                this.authService.logoutUser();
+                this.router.navigate(['/']);
+              }, error => this.errorMessageComponent.defaultServiceErrorHandling(error)
+            );
+          }
     });
   }
 
