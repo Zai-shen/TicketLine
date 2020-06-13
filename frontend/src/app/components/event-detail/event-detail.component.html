@@ -11,18 +11,22 @@
 
   <mat-divider></mat-divider>
   <h2>Saalplan</h2>
-
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let performance of performances">
+    <mat-expansion-panel *ngFor="let performance of performances" >
       <mat-expansion-panel-header>
         Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> <tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp>
       </mat-expansion-panel-header>
-      <mat-grid-list cols="8" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let seat of seats">{{ seat }}</mat-grid-tile>
-      </mat-grid-list>
+      <tl-seatplan [seatmap]="getSeatmap(performance.id)"
+                   [postfixId]="performance.id.toString()"
+                   (selectedSeatsChanged)="selectedSeatsChanged($event)"
+                   (selectedStandingAreaChanged)="selectedStandingAreasChanged($event)"
+      ></tl-seatplan>
       <span *ngIf="isUserLoggedIn()">
         <button mat-raised-button (click)="buyTicket(false, performance)">Kaufen</button>
         <button mat-raised-button (click)="buyTicket(true, performance)">Reservieren</button>
+      </span>
+      <span *ngIf="!isUserLoggedIn()">
+        Login or Register to Buy or Reserve Tickets
       </span>
     </mat-expansion-panel>
   </mat-accordion>
