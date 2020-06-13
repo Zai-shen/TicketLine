@@ -1,0 +1,18 @@
+button:focus {
+  outline: none;
+  border: 0;
+}
+.select-label {
+  font-weight: bold;
+}
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.selection {
+  align-self: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

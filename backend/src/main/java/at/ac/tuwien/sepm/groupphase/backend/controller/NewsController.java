@@ -54,7 +54,6 @@ public class NewsController implements NewsApi {
         return ResponseEntity.ok()
             .header("X-Total-Count", String.valueOf(news.getTotalElements()))
             .body(newsMapper.toDtoList(news.getContent()));
-        //return ResponseEntity.ok(newsMapper.toDtoList(newsService.findAll(PageRequest.of(page.orElse(0), PAGE_SIZE)).getContent()));
     }
 
     @Override

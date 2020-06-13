@@ -1,0 +1,15 @@
+<h2>Seatplanner</h2>
+<button mat-button class="mat-raised-button add-area-button" type="button" (click)="addSeatGroup()">Bereich hinzufügen</button>
+<div class="seatplanner-wrapper">
+  <div id="seatplanner">
+    <svg id="planner-svg">
+      <g id="planner-board" board="true">
+      </g>
+    </svg>
+    <div class="seatmap-hint">
+      <small>Generierte Sitze und Bezeichnungen können mit Doppelklick gelöscht werden.</small>
+    </div>
+  </div>
+  <tl-seatgroup-properties class="seatplanner-properties" [seatGroup]="selectedSeatgroup"></tl-seatgroup-properties>
+</div>
+

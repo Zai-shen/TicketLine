@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.ArtistRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.ArtistService;
+import at.ac.tuwien.sepm.groupphase.backend.service.validator.ArtistValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
@@ -44,7 +45,13 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist getArtist(Long artistId) {
-        LOGGER.debug("fetching artist {}",artistId);
+        LOGGER.debug("fetching artist {}", artistId);
         return artistRepository.findById(artistId).orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public void createArtist(Artist artist) {
+        new ArtistValidator().build(artist).validate();
+        artistRepository.save(artist);
     }
 }
