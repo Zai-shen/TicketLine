@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { NewsApiService, NewsDTO, TicketApiService, UserApiService } from '../../generated';
+import { TicketApiService, UserApiService } from '../../generated';
 import { Globals } from '../global/globals';
 
 @Injectable({
@@ -33,7 +32,7 @@ export class BookingService {
     });
   }
 
-  downloadFile(response: HttpResponse<Blob>) {
+  downloadFile(response: HttpResponse<Blob>): void {
     const filename: string = this.parseFilenameFromHeader(response);
     const binaryData: Blob[] = [];
     if (response.body !== null) {

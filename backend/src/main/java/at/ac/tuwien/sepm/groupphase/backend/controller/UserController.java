@@ -43,17 +43,15 @@ public class UserController implements UserApi {
     private final UserService userService;
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
-    private final TicketService ticketService;
     private final BookingMapper bookingMapper;
 
     @Autowired
     public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService,
-        BookingService bookingService, TicketService ticketService, BookingMapper bookingMapper) {
+        BookingService bookingService, BookingMapper bookingMapper) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
-        this.ticketService = ticketService;
         this.bookingMapper = bookingMapper;
     }
 
@@ -84,6 +82,7 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<UserDTO> getSelf() {
+        LOGGER.info("get logged in user");
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User currentUser = userService.findUserByEmail(username);
         return ResponseEntity.ok(userMapper.toDto(currentUser));
