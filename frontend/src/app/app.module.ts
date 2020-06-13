@@ -35,11 +35,10 @@ import { PerformanceTableComponent } from './components/create-event/performance
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
@@ -51,6 +50,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CreateArtistModalComponent } from './components/create-event/create-artist-modal/create-artist-modal.component';
 import { LocationPerformancesSheetComponent } from './components/location-list/location-performances-sheet/location-performances-sheet.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { SeatplannerComponent } from './components/seatplanner/seatplanner.component';
@@ -60,6 +60,9 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
+import { SeatplanComponent } from './components/seatplan/seatplan.component';
+import { SelectStandingareaDialogComponent } from './components/seatplan/select-standingarea-dialog/select-standingarea-dialog.component';
+import { TopTenComponent } from './components/top-ten/top-ten.component';
 import { ConfirmUserDeletionModalComponent } from './components/user-detail/confirm-user-deletion-modal/confirm-user-deletion-modal.component';
 
 @NgModule({
@@ -84,12 +87,16 @@ import { ConfirmUserDeletionModalComponent } from './components/user-detail/conf
     UserListComponent,
     CreateEventComponent,
     CreatePerformanceModalComponent,
+    CreateArtistModalComponent,
     PerformanceTableComponent,
     TicketListComponent,
     LocationPerformancesSheetComponent,
     SeatplannerComponent,
     SeatgroupPropertiesComponent,
     RelativeTimestampComponent,
+    TopTenComponent,
+    SeatplanComponent,
+    SelectStandingareaDialogComponent,
     ConfirmUserDeletionModalComponent
   ],
   imports: [

@@ -1,0 +1,33 @@
+<div class="mat-elevation-z4 main-content">
+  <tl-error-message></tl-error-message>
+
+  <h2 class="mat-title">Top Ten Events dieses Monats</h2>
+
+  <form [formGroup]="searchForm" (ngSubmit)="searchEvents()">
+    <mat-form-field>
+      <mat-label>Kategorie</mat-label>
+      <mat-select id="event-category" formControlName="category">
+        <mat-option [value]="null">Kein Filter</mat-option>
+        <mat-option *ngFor="let category of eventCategories" [value]="category">{{category}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+  </form>
+  <div *ngFor="let event of events; let i = index" class="ranked">
+    <span class="mat-title">{{i+1}}.</span>
+    <mat-card  [routerLink]="['/events', event.id]"
+               mat-ripple>
+      <mat-card-title>{{event.title}}</mat-card-title>
+      <mat-card-content>
+        <p>
+          <mat-icon>av_timer</mat-icon>
+          {{event.duration}} minuten
+        </p>
+        <p>
+          <mat-icon>list</mat-icon>
+          {{event.category}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

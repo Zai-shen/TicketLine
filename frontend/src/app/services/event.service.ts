@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventApiService, EventDTO, SearchEventDTO } from '../../generated';
+import { EventApiService, EventCategory, EventDTO, SearchEventDTO } from '../../generated';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 
@@ -15,5 +15,9 @@ export class EventService {
 
   searchEvents(eventSearchParameters: SearchEventDTO, page: number): Observable<HttpResponse<EventDTO[]>> {
     return this.eventApiService.searchEvents(eventSearchParameters, page, 'response');
+  }
+
+  getTopTen(category?: EventCategory): Observable<EventDTO[]> {
+    return this.eventApiService.getTopTenEvents(category);
   }
 }
