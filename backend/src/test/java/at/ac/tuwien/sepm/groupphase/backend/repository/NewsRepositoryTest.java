@@ -1,8 +1,6 @@
-package at.ac.tuwien.sepm.groupphase.backend.unittests;
+package at.ac.tuwien.sepm.groupphase.backend.repository;
 
-import at.ac.tuwien.sepm.groupphase.backend.basetest.TestData;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
-import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 // the entire application context
 @DataJpaTest
 @ActiveProfiles("test")
-public class NewsRepositoryTest implements TestData {
+public class NewsRepositoryTest {
+
+    String TEST_NEWS_TITLE = "Title";
+    String TEST_NEWS_SUMMARY = "Summary";
+    String TEST_NEWS_CONTENT = "TestMessageText";
+    String TEST_NEWS_AUTHOR = "Doris Duftler";
 
     @Autowired
     private NewsRepository newsRepository;
