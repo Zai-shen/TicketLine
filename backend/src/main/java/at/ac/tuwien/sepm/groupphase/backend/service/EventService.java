@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.dto.SeatmapOccupationDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.CategoryEnum;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
@@ -46,4 +47,5 @@ public interface EventService {
      * @return ten (or less) events in this month ordered by their ticket sales
      */
     List<Event> getTopTen(CategoryEnum category);
+
 }

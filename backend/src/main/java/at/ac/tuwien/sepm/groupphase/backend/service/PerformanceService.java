@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.dto.SeatmapOccupationDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
@@ -22,4 +23,12 @@ public interface PerformanceService {
      * @throws BusinessValidationException if location doesn't comply with business validation
      */
     Long createPerformance(Long eventId, Performance performance) throws BusinessValidationException;
+
+    /**
+     * Get the seatmap for a specific pperformance
+     * @param eventId
+     * @param performanceId
+     * @return
+     */
+    SeatmapOccupationDTO getSeatmap(Long performanceId);
 }

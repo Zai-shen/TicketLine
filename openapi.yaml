@@ -756,7 +756,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BookingDTO'
+                $ref: '#/components/schemas/SeatmapOccupationDTO'
         404:
           description: Couldn't find event or performance entry with that id
           content:
@@ -1622,6 +1622,10 @@ components:
           type: number
           format: double
           example: 50
+        price:
+          type: number
+          format: double
+          example: 3.50
         name:
           type: string
           example: 'Haupttribüne'
