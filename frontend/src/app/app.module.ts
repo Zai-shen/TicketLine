@@ -61,6 +61,8 @@ import { NewsDetailComponent } from './components/news-detail/news-detail.compon
 import { MatListModule } from '@angular/material/list';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RelativeTimestampComponent } from './components/relative-timestamp/relative-timestamp.component';
+import { SeatplanComponent } from './components/seatplan/seatplan.component';
+import { SelectStandingareaDialogComponent } from './components/seatplan/select-standingarea-dialog/select-standingarea-dialog.component';
 import { TopTenComponent } from './components/top-ten/top-ten.component';
 
 @NgModule({
@@ -92,7 +94,9 @@ import { TopTenComponent } from './components/top-ten/top-ten.component';
     SeatplannerComponent,
     SeatgroupPropertiesComponent,
     RelativeTimestampComponent,
-    TopTenComponent
+    TopTenComponent,
+    SeatplanComponent,
+    SelectStandingareaDialogComponent
   ],
   imports: [
     BrowserModule,
