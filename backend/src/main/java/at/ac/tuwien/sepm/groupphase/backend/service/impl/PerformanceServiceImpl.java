@@ -68,6 +68,7 @@ public class PerformanceServiceImpl implements PerformanceService {
             .maxPeople(x.getMaxPeople())
             .sold((int) (x.getMaxPeople()/3))
             .reserved((int) (x.getMaxPeople()/3))
+            .id(x.getId())
         )
             .collect(
                 Collectors.toList()));
@@ -76,10 +77,22 @@ public class PerformanceServiceImpl implements PerformanceService {
                     .stream()
                     .map(y -> new SeatLabelDTO().size(y.getSize()).x(y.getX()).y(y.getY()).text(y.getText()))
                     .collect(Collectors.toList()))
+                    .x(x.getX())
+                    .y(x.getY())
                     .height(x.getHeight())
                     .width(x.getWidth())
                     .name(x.getName())
-                    .seats(x.getSeats().stream().map(s -> new SeatOccupationDTO().x(s.getX()).y(s.getY()).colLabel(s.getColLabel()).rowLabel(s.getRowLabel()).reserved(false).sold(false).price(x.getPrice())).collect(Collectors.toList()));
+                    .id(x.getId())
+                    .seats(x.getSeats().stream().map(s -> new SeatOccupationDTO()
+                        .x(s.getX())
+                        .y(s.getY())
+                        .colLabel(s.getColLabel())
+                        .rowLabel(s.getRowLabel())
+                        .reserved(false)
+                        .sold(false)
+                        .price(x.getPrice())
+                        .radius(s.getRadius())
+                        .id(s.getId())).collect(Collectors.toList()));
             }
         ).collect(Collectors.toList()));
         return sdto;
