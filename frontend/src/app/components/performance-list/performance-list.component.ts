@@ -38,15 +38,17 @@ export class PerformanceListComponent implements OnInit {
 
   ngOnInit(): void {
       this.getAllPerformances();
-      this.performanceSearch = this.formBuilder.group({
-        date: [''],
-        time: new FormControl(this.selectedTime, [
-          Validators.pattern('\\d{1,2}:\\d{1,2}')
-        ]),
-        price: [''],
-        event: [''],
-        location: [''],
-      });
+      this.formInit();
+  }
+
+  formInit(): void {
+    this.performanceSearch = this.formBuilder.group({
+      date: [''],
+      time: [''],
+      price: [''],
+      event: [''],
+      location: [''],
+    });
   }
 
   onPaginationChange(event: PageEvent): void {
@@ -56,6 +58,23 @@ export class PerformanceListComponent implements OnInit {
     } else {
       this.getAllPerformances();
     }
+  }
+
+  clearSearch(): void {
+    this.searched = false;
+    this.performanceSearch.reset();
+    this.formInit();
+    this.wipDateTime = undefined;
+    this.currentPage = 0;
+    this.paginator.pageIndex = 0;
+    this.getAllPerformances();
+  }
+
+
+  newSearch(): void {
+    this.currentPage = 0;
+    this.paginator.pageIndex = 0;
+    this.searchPerformances();
   }
 
   private getAllPerformances(): void {
@@ -72,6 +91,7 @@ export class PerformanceListComponent implements OnInit {
   searchPerformances(): void {
     const searchPerformanceDTO: SearchPerformanceDTO = Object.assign({}, this.performanceSearch.value);
     searchPerformanceDTO.date = this.datePipe.transform(this.wipDateTime, 'yyyy-MM-dd') || '';
+    this.searched = true;
 
     this.performanceService.searchPerformances(searchPerformanceDTO, this.currentPage).subscribe(performances => {
         if (performances.body !== null) {

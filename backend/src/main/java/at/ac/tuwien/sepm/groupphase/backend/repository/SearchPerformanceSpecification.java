@@ -54,31 +54,19 @@ public class SearchPerformanceSpecification implements Specification<Performance
                 "%" + filter.getEvent().toLowerCase() + "%");
             searchCriteria.add(eventSearch);
         }
-        /*
-        SELECT * FROM PERFORMANCE
-        WHERE PERFORMANCE.ID IN (SELECT PERFORMANCE.ID FROM PERFORMANCE
-         INNER JOIN LOCATION
-          ON PERFORMANCE.LOCATION_ID = LOCATION.ID
-         INNER JOIN SEATMAP
-          ON SEATMAP.ID = LOCATION.SEATMAP_ID
-         INNER JOIN SEAT_GROUP_AREA
-          ON SEAT_GROUP_AREA.SEATMAP_ID = SEATMAP.ID
-         INNER JOIN SEAT
-          ON SEAT.SEATGROUP_ID = SEAT_GROUP_AREA.ID
-        AND SEAT.price < 20
-        GROUP BY PERFORMANCE.ID
-        )
-         */
         if (filter.getPrice() != null) {
-            Join<Performance, Seat> seatJoin = root.join("location").join("seatmap")
-                .join("seatGroupAreas").join("seats");
+            Join<Performance, SeatGroupArea> seatJoin = root.join("location").join("seatmap")
+                .join("seatGroupAreas", JoinType.LEFT);
+            Join<Performance, StandingArea> standingJoin = root.join("location").join("seatmap")
+                .join("standingAreas", JoinType.LEFT);
 
             Subquery<Performance> subquery = criteriaQuery.subquery(Performance.class);
             Root<Performance> performances = subquery.from(Performance.class);
             subquery.select(performances)
                 .distinct(true)
-                .where(criteriaBuilder.between(seatJoin.get("price"), filter.getPrice().doubleValue() - PRICE_OFFSET,
-                    filter.getPrice().doubleValue() + PRICE_OFFSET));
+                .where(criteriaBuilder.or(criteriaBuilder.between(seatJoin.get("price"), filter.getPrice().doubleValue() - PRICE_OFFSET,
+                    filter.getPrice().doubleValue() + PRICE_OFFSET), criteriaBuilder.between(standingJoin.get("price"), filter.getPrice().doubleValue() - PRICE_OFFSET,
+                    filter.getPrice().doubleValue() + PRICE_OFFSET )));
             Expression<Boolean> priceSearch = criteriaBuilder.in(root.get("id")).value(subquery);
             searchCriteria.add(priceSearch);
         }

@@ -1,6 +1,6 @@
 <div class="main-content mat-elevation-z4">
 
-  <form [formGroup]="performanceSearch" (ngSubmit)="searchPerformances()">
+  <form [formGroup]="performanceSearch" (ngSubmit)="newSearch()">
     <mat-form-field class="date-time" appearance="standard">
       <mat-label>Datum</mat-label>
       <input matInput [min]="minDate" [matDatepicker]="datepicker" (dateChange)="dateChange($event)" name="date" formControlName="date" placeholder="06/05/2020">
@@ -29,7 +29,7 @@
     <mat-form-field appearance="standard">
       <mat-label>Preis</mat-label>
       <input matInput type="text" name="price" formControlName="price"
-             id="price" placeholder="23,50">
+             id="price" placeholder="23.50">
       <span matSuffix>€</span>
     </mat-form-field>
 
@@ -47,6 +47,7 @@
 
 
     <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+    <button *ngIf="searched" mat-raised-button color="secondary" type="button" (click)="clearSearch()">Suche zurücksetzen</button>
   </form>
 
   <h3 class="mat-h3">{{performancesFound}} Aufführungen gefunden</h3>
