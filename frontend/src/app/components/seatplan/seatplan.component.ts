@@ -20,16 +20,17 @@ import { SeatRenderDTO } from './entities/seat-render-dto';
 import { SeatLabelRenderDTO } from './entities/seat-label-render-dto';
 import { SeatingAreaRenderDTO } from './entities/seating-area-render-dto';
 import { SeatmapOccupationDTO } from '../../../generated';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'tl-seatplan',
   templateUrl: './seatplan.component.html',
   styleUrls: ['./seatplan.component.scss']
 })
-export class SeatplanComponent implements OnInit, OnChanges, AfterViewInit {
+export class SeatplanComponent implements OnInit, AfterViewInit {
 
   @Input()
-  seatmap: SeatmapOccupationDTO;
+  seatmap: Observable<SeatmapOccupationDTO>;
 
   @Input()
   postfixId: string = '';
@@ -59,12 +60,11 @@ export class SeatplanComponent implements OnInit, OnChanges, AfterViewInit {
   selectedStandingAreaPlaces: StandingAreaSelection[];
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.seatmapInternal == null && changes['seatmap'] != null && changes['seatmap'].isFirstChange()) {
-        this.initSeatmap();
-    }
+    this.seatmap.subscribe(
+      (value: SeatmapOccupationDTO) => {
+        this.initSeatmap(value);
+      }
+    );
   }
 
   ngAfterViewInit() {
@@ -75,8 +75,8 @@ export class SeatplanComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  public initSeatmap() {
-    this.seatmapInternal = new SeatmapRenderData(this.seatmap, this.postfixId);
+  public initSeatmap(seatmap: SeatmapOccupationDTO) {
+    this.seatmapInternal = new SeatmapRenderData(seatmap, this.postfixId);
     this.seatGroups = this.seatmapInternal.seatGroupAreas || [];
     this.standingAreas = this.seatmapInternal.standingAreas || [];
     this.selectedStandingAreaPlaces = this.standingAreas.map((area) => {
