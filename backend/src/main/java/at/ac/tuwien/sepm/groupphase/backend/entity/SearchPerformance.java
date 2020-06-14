@@ -9,6 +9,7 @@ public class SearchPerformance {
     public String time;
     public BigDecimal price;
     public String event;
+    public String location;
 
     public LocalDate getDate() {
         return date;
@@ -40,5 +41,13 @@ public class SearchPerformance {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

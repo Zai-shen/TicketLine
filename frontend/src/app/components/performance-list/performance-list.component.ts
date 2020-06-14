@@ -25,7 +25,7 @@ export class PerformanceListComponent implements OnInit {
 
   selectedTime = '';
   selectedDate: Date | undefined = new Date();
-  wipDateTime: Date | undefined = new Date();
+  wipDateTime: Date | undefined;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -45,6 +45,7 @@ export class PerformanceListComponent implements OnInit {
         ]),
         price: [''],
         event: [''],
+        location: [''],
       });
   }
 

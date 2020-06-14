@@ -1,9 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.repository;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.SearchPerformance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.EntityManager;
@@ -18,11 +15,12 @@ import java.util.List;
 
 public class SearchPerformanceSpecification implements Specification<Performance> {
 
-    @PersistenceContext
-    EntityManager entityManager;
-
     private static final int MINUTES_OFFSET = 30;
+    private static final int PRICE_OFFSET = 5;
     private SearchPerformance filter;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public SearchPerformanceSpecification(SearchPerformance filter) {
         super();
@@ -56,21 +54,39 @@ public class SearchPerformanceSpecification implements Specification<Performance
                 "%" + filter.getEvent().toLowerCase() + "%");
             searchCriteria.add(eventSearch);
         }
+        /*
+        SELECT * FROM PERFORMANCE
+        WHERE PERFORMANCE.ID IN (SELECT PERFORMANCE.ID FROM PERFORMANCE
+         INNER JOIN LOCATION
+          ON PERFORMANCE.LOCATION_ID = LOCATION.ID
+         INNER JOIN SEATMAP
+          ON SEATMAP.ID = LOCATION.SEATMAP_ID
+         INNER JOIN SEAT_GROUP_AREA
+          ON SEAT_GROUP_AREA.SEATMAP_ID = SEATMAP.ID
+         INNER JOIN SEAT
+          ON SEAT.SEATGROUP_ID = SEAT_GROUP_AREA.ID
+        AND SEAT.price < 20
+        GROUP BY PERFORMANCE.ID
+        )
+         */
         if (filter.getPrice() != null) {
             Join<Performance, Seat> seatJoin = root.join("location").join("seatmap")
                 .join("seatGroupAreas").join("seats");
 
             Subquery<Performance> subquery = criteriaQuery.subquery(Performance.class);
-            subquery.select(root.join("location").join("seatmap")
-                .join("seatGroupAreas").join("seats"));
-            subquery.where(criteriaBuilder.lessThan(seatJoin.get("price"), filter.getPrice().doubleValue()));
-            Expression<Boolean> test = criteriaBuilder.exists(subquery);
-
-
-            Expression<Boolean> priceSearch = criteriaBuilder.between(seatJoin.get("price"),
-                filter.getPrice().doubleValue()-10, filter.getPrice().doubleValue()+10);
-
+            Root<Performance> performances = subquery.from(Performance.class);
+            subquery.select(performances)
+                .distinct(true)
+                .where(criteriaBuilder.between(seatJoin.get("price"), filter.getPrice().doubleValue() - PRICE_OFFSET,
+                    filter.getPrice().doubleValue() + PRICE_OFFSET));
+            Expression<Boolean> priceSearch = criteriaBuilder.in(root.get("id")).value(subquery);
             searchCriteria.add(priceSearch);
+        }
+        if (filter.getLocation() != null) {
+            Join<Performance, Location> locationJoin = root.join("location");
+            Expression<Boolean> locationSearch = criteriaBuilder.like(criteriaBuilder.lower(locationJoin.get("description")),
+                "%" + filter.getLocation().toLowerCase() + "%");
+            searchCriteria.add(locationSearch);
         }
         return predicate;
     }
