@@ -5,12 +5,13 @@ import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.SearchEventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.CategoryEnum;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(uses = ArtistMapper.class)
+@Mapper(uses = ArtistMapper.class,injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface EventMapper {
     EventDTO toDto(Event event);
 
