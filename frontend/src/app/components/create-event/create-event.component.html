@@ -43,6 +43,7 @@
         </div>
       </mat-error>
     </mat-form-field>
+    <tl-artist-dropdown formControlName="artist" placeholder="Künstler" id="artist" name="artist" appearance="fill" [required]="true"></tl-artist-dropdown>
     <button mat-raised-button color="primary" (click)="createArtist()">Künstler erstellen</button>
 
     <h2>Aufführungen</h2>

@@ -11,6 +11,7 @@ import { MatInput } from '@angular/material/input';
   selector: 'tl-artist-dropdown',
   templateUrl: './artist-dropdown.component.html',
   providers: [{ provide: MatFormFieldControl, useExisting: ArtistDropdownComponent }],
+  styleUrls: ['./artist-dropdown.component.scss']
 })
 export class ArtistDropdownComponent implements OnInit, MatFormFieldControl<ArtistDTO>, AfterViewInit, ControlValueAccessor {
   constructor(
@@ -44,6 +45,9 @@ export class ArtistDropdownComponent implements OnInit, MatFormFieldControl<Arti
 
   static nextId = 0;
 
+  @Input()
+  public appearance: String = 'fill';
+
   @ViewChild(MatInput)
   public artistInput: MatInput;
   private _placeholder: string;
@@ -56,7 +60,8 @@ export class ArtistDropdownComponent implements OnInit, MatFormFieldControl<Arti
   readonly focused: boolean;
   @HostBinding() id = `artist-dropdown-${ArtistDropdownComponent.nextId++}`;
 
-  readonly required: boolean;
+  @Input()
+  public required: boolean = false;
 
   readonly shouldLabelFloat: boolean;
   readonly stateChanges: Observable<void> = new Subject();
