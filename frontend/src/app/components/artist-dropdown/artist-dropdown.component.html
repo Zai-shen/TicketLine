@@ -1,0 +1,10 @@
+<mat-form-field appearance="standard">
+  <mat-label>Künstler</mat-label>
+  <input matInput type="text" name="artist" [formControl]="artistCtrl" [placeholder]="placeholder" [matAutocomplete]="auto">
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayArtist">
+    <mat-option *ngIf="loading">Lade Künstler...</mat-option>
+    <mat-option *ngFor="let artist of filteredArtists" [value]="artist">
+      {{artist.firstname}} {{artist.lastname}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

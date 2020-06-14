@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss']
 })
-export class EventsComponent implements OnInit, AfterViewInit {
+export class EventsComponent implements OnInit {
 
   readonly EVENT_LIST_PAGE_SIZE = 25;
 
@@ -29,15 +29,10 @@ export class EventsComponent implements OnInit, AfterViewInit {
 
 
   events: EventDTO[];
-  filteredArtists: ArtistDTO[] = [];
   currentPage = 0;
   amountOfPages = 1;
   searchForm: FormGroup;
-  loading: boolean = false;
   artistId: Observable<number | null>;
-
-  @ViewChild(MatAutocompleteTrigger)
-  private trigger: MatAutocompleteTrigger;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -55,29 +50,6 @@ export class EventsComponent implements OnInit, AfterViewInit {
       artist: [''],
     });
     const artistCtrl = this.searchForm.get('artist');
-    if (artistCtrl !== null) {
-      artistCtrl.valueChanges.pipe(
-        debounceTime(200),
-        tap(() => {
-          this.filteredArtists = [];
-          this.loading = true;
-        }),
-        switchMap(value => {
-          if (value === null || value === undefined || typeof value !== 'string') {
-            value = '';
-          }
-          return merge(
-            this.artistService.searchArtists({firstname: value}),
-            this.artistService.searchArtists({lastname: value})
-          );
-        })
-      ).subscribe(
-        (artists: ArtistDTO[]) => {
-          this.filteredArtists = this.filteredArtists.concat(artists);
-          this.loading = false;
-        }
-      );
-    }
     this.route.queryParamMap
         .pipe(map(params => params.get('artist_id')))
         .subscribe(
@@ -97,18 +69,6 @@ export class EventsComponent implements OnInit, AfterViewInit {
     this.reload();
   }
 
-  ngAfterViewInit(): void {
-    const artistCtrl = this.searchForm.get('artist');
-    if (artistCtrl !== null) {
-      this.trigger.panelClosingActions.subscribe(e => {
-          if (!(e && e.source)) {
-            artistCtrl.setValue(null);
-            this.trigger.closePanel();
-          }
-        }
-      );
-    }
-  }
 
   isAdminLoggedIn(): boolean {
     return this.authService.isAdminLoggedIn();
@@ -126,7 +86,7 @@ export class EventsComponent implements OnInit, AfterViewInit {
 
   private reload(): void {
     let searchEventDTO: SearchEventDTO = {};
-
+    console.log(this.searchForm.value);
     if (this.searchForm) {
       searchEventDTO = Object.assign({}, this.searchForm.value);
       // noinspection SuspiciousTypeOfGuard
@@ -146,9 +106,5 @@ export class EventsComponent implements OnInit, AfterViewInit {
             }
           },
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
-  }
-
-  private displayArtist(artist: ArtistDTO): string {
-    return (artist && artist.firstname && artist.lastname) ? artist.firstname + ' ' + artist.lastname : '';
   }
 }
