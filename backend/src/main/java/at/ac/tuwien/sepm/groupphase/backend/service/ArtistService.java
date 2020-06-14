@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Artist;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,4 +22,11 @@ public interface ArtistService {
      * @return List of Artists that fit search object of specified size by pagination
      */
     Page<Artist> searchArtists(Artist artist, Pageable pageable);
+
+    /**
+     * Creates a new artist
+     * @param artist the Artist to be created
+     * @throws BusinessValidationException when the artist is incomplete
+     */
+    void createArtist(Artist artist);
 }

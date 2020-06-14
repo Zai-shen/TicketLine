@@ -75,6 +75,11 @@ public class Booking {
         this.user = user;
     }
 
+    public Boolean isCanceled() {
+        // TODO: 09.06.2020 implement with ticket/reservation cancelation
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

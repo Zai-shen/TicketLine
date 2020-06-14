@@ -5,11 +5,6 @@ mat-spinner {
   margin: 5em auto;
 }
 
-.error-msg {
-  margin-top: 5em;
-  text-align: center;
-}
-
 form {
   .field-group {
     display: flex;
@@ -22,4 +17,8 @@ form {
       margin: 3em;
     }
   }
+}
+
+.remove-user-btn {
+  margin-top: 1em;
 }

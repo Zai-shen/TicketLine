@@ -101,6 +101,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+    delete:
+      tags:
+        - user
+      security:
+        - ticketline_auth: []
+      summary: remove own user account
+      operationId: removeMyAccount
+      responses:
+        200:
+          description: Successfully removed user account
+          content: {}
+        403:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Business error on removal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /user/{userId}:
     put:
       security:
@@ -188,38 +211,6 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         422:
           description: Validation failed on updated user information input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-    delete:
-      tags:
-      - user
-      security:
-        - ticketline_auth: []
-      summary: remove a user account
-      operationId: removeUser
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: Id of the user to remove
-          example: 3
-      responses:
-        200:
-          description: Successfully removed user account
-          content: {}
-        403:
-          description: Not logged in or insufficient permission
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        404:
-          description: Cannot find user to remove
           content:
             application/json:
               schema:
@@ -520,13 +511,6 @@ paths:
       operationId: getTopTenEvents
       parameters:
         - in: query
-          name: page
-          schema:
-            type: integer
-          description: Pagination information
-          required: false
-          example: 2
-        - in: query
           name: category
           schema:
             $ref: '#/components/schemas/EventCategory'
@@ -540,7 +524,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PerformanceDTO'
+                  $ref: '#/components/schemas/EventDTO'
     post:
       security:
         - ticketline_auth: []
@@ -1244,6 +1228,40 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/ArtistDTO'
+      post:
+        tags:
+          - artist
+        summary: create new artist
+        operationId: createArtist
+        requestBody:
+          description: Artist information to be created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistDTO'
+          required: true
+        responses:
+          201:
+            description: Created Artist
+            content: {}
+          400:
+            description: Invalid input
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
+          403:
+            description: Not logged in or insufficient permission
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
+          422:
+            description: Failed validation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorDTO'
   /artist/search:
     post:
       tags:
@@ -1472,7 +1490,6 @@ components:
           type: string
           example: Awesome concert of the best band in the best location!
       required:
-        - id
         - title
         - category
         - duration

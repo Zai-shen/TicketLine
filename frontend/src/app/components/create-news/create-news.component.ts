@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import {AuthService} from '../../services/auth.service';
-import {NewsApiService, NewsDTO, UserDTO} from '../../../generated';
-import {UserService} from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { NewsDTO, UserDTO } from '../../../generated';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Globals } from '../../global/globals';
+import { NewsService } from '../../services/news.service';
 
 @Component({
   selector: 'tl-create-news',
@@ -19,7 +20,7 @@ export class CreateNewsComponent implements OnInit {
   submitted: boolean = false;
   newsForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private newsApiService: NewsApiService,
+  constructor(private formBuilder: FormBuilder, private newsService: NewsService,
               private authService: AuthService, private userService: UserService,
               private router: Router, private snackBar: MatSnackBar,
               private globals: Globals) { }
@@ -50,34 +51,25 @@ export class CreateNewsComponent implements OnInit {
     );
   }
 
-  submitAndRedirect() {
+  submitAndRedirect(): void {
     this.createNews();
     this.router.navigate(['/news']);
   }
 
-  /** Sends news creation request
-   *
-   * @param newsDTO the news which should be created
-   */
-  createNews() {
+  createNews(): void {
     this.submitted = true;
     if (this.newsForm.valid) {
       const newsDTO: NewsDTO = Object.assign({}, this.newsForm.value);
       newsDTO.author = this.userName;
       newsDTO.publishedAt = new Date().toISOString();
-      this.newsApiService.createNews(newsDTO).subscribe(
+      this.newsService.createNews(newsDTO).subscribe(
         () => {
           this.newsForm.reset();
           this.snackBar.open('Erfolgreich gespeichert.', 'OK', {
             duration: this.globals.defaultSnackbarDuration,
           });
         },
-        error => () => {
-          this.errorMessageComponent.defaultServiceErrorHandling(error);
-          this.snackBar.open('Fehler beim speichern:' + error.message, 'OK', {
-            duration: this.globals.defaultSnackbarDuration,
-          });
-        }
+        error => () => this.errorMessageComponent.defaultServiceErrorHandling(error)
       );
     }
     this.submitted = false;

@@ -4,7 +4,10 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Artist {
+@Table(
+    name = "artist",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"firstname", "lastname"})}
+)public class Artist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +45,12 @@ public class Artist {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Artist artist = (Artist) o;
         return Objects.equals(id, artist.id);
     }
@@ -55,10 +62,6 @@ public class Artist {
 
     @Override
     public String toString() {
-        return "Artist{" +
-            "id=" + id +
-            ", firstname='" + firstname + '\'' +
-            ", lastname='" + lastname + '\'' +
-            '}';
+        return "Artist{" + "id=" + id + ", firstname='" + firstname + '\'' + ", lastname='" + lastname + '\'' + '}';
     }
 }

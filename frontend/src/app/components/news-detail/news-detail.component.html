@@ -1,3 +1,4 @@
+<tl-error-message></tl-error-message>
 <div class="details mat-elevation-z4" *ngIf="news">
   <img width="100%" height="200px" src="https://picsum.photos/800/200" alt="Test picture" />
   <div class="results">
@@ -5,7 +6,7 @@
     <button routerLink="/news" type="button" mat-stroked-button color="primary">Zur&uuml;ck</button>
   </div>
   <div class="facts">
-    <h3 class="mat-card-subtitle"><span><mat-icon>calendar_today</mat-icon>am {{convertToString(news.publishedAt)}}</span></h3>
+    <h3 class="mat-card-subtitle"><span><mat-icon>calendar_today</mat-icon>am {{formatDate(news.publishedAt)}}</span></h3>
     <h3 class="mat-card-subtitle"><span><mat-icon>perm_identity</mat-icon>von {{news.author}}</span></h3>
   </div>
   <mat-divider></mat-divider>
@@ -13,7 +14,4 @@
   <mat-divider></mat-divider>
   <p class="mat-body-2">{{ news.content }}</p>
 </div>
-<mat-spinner *ngIf="!news && !errorMsg"></mat-spinner>
-<div class="error-msg" *ngIf="errorMsg">
-  <h1>{{ errorMsg }}</h1>
-</div>
+<mat-spinner *ngIf="!news"></mat-spinner>

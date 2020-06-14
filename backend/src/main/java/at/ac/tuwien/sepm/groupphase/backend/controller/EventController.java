@@ -83,6 +83,7 @@ public class EventController implements EventApi {
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Long> createEvent(@Valid EventDTO eventDTO) {
+        LOGGER.info("Create event");
         return ResponseEntity.status(HttpStatus.CREATED).body(
             this.eventService.createEvent(eventMapper.fromDto(eventDTO)));
     }
@@ -115,9 +116,17 @@ public class EventController implements EventApi {
     @Override
     public ResponseEntity<List<PerformanceDTO>> searchPerformances(@Valid SearchPerformanceDTO searchPerformanceDTO, @Valid Optional<Integer> page) {
         LOGGER.info("search for performances");
-        Page<Performance> performances = performanceService.searchPerformances(performanceMapper.fromDto(searchPerformanceDTO), PageRequest.of(page.orElse(0), PAGE_SIZE));
+        Page<Performance> performances =
+            performanceService.searchPerformances(performanceMapper.fromDto(searchPerformanceDTO), PageRequest.of(page.orElse(0), PAGE_SIZE));
         return ResponseEntity.ok()
             .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
             .body(performanceMapper.toDto(performances.getContent()));
+    }
+    @Override
+    public ResponseEntity<List<EventDTO>> getTopTenEvents(@Valid Optional<EventCategory> category) {
+        LOGGER.info("Get top ten events");
+        return category.map(eventCategory -> ResponseEntity.ok(
+            eventMapper.toDto(eventService.getTopTen(eventMapper.fromDto(eventCategory)))))
+            .orElseGet(() -> ResponseEntity.ok(eventMapper.toDto(eventService.getTopTen(null))));
     }
 }

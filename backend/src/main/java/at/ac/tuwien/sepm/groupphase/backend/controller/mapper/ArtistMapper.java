@@ -14,4 +14,7 @@ public interface ArtistMapper {
     List<ArtistDTO> toDto(List<Artist> artists);
 
     Artist fromDto(SearchArtistDTO artistDTO);
+
+    Artist fromDto(ArtistDTO artistDTO);
+
 }
