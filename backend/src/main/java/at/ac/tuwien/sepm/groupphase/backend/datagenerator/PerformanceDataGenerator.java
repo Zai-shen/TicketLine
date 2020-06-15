@@ -74,15 +74,15 @@ public class PerformanceDataGenerator {
                 sga.setPrice(4.20);
                 sga.setName("Stehplätze");
                 Set<Seat> seats = new HashSet<>();
-                for (int j = 0; j < 50 ; j++) {
-                    for (int k = 0; k < 50 ; k++) {
+                for (int j = 10; j < 100 ; j+=10) {
+                    for (int k = 10; k < 100 ; k+=10) {
                         Seat s = new Seat();
                         s.setX((double) j);
                         s.setY((double) k);
-                        s.setRowLabel(String.valueOf(j));
-                        s.setColLabel(String.valueOf(k));
+                        s.setRowLabel(String.valueOf(10));
+                        s.setColLabel(String.valueOf(10));
                         s.setSeatGroupArea(sga);
-                        s.setRadius(0.5);
+                        s.setRadius(5.0);
                         seats.add(s);
                     }
                 }
