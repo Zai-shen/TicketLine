@@ -1076,6 +1076,14 @@ paths:
         - location
       summary: Search for locations
       operationId: searchLocations
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
       requestBody:
         description: Search parameters
         content:
