@@ -3,8 +3,6 @@ package at.ac.tuwien.sepm.groupphase.backend.repository;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -18,9 +16,6 @@ public class SearchPerformanceSpecification implements Specification<Performance
     private static final int MINUTES_OFFSET = 30;
     private static final int PRICE_OFFSET = 5;
     private SearchPerformance filter;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public SearchPerformanceSpecification(SearchPerformance filter) {
         super();
