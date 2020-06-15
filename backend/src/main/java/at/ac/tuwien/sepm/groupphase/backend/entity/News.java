@@ -3,6 +3,7 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class News {
@@ -28,6 +29,9 @@ public class News {
 
     @Column(nullable = false, length = 100)
     private String author;
+
+    @OneToMany(mappedBy = "news")
+    private Set<UserReadNews> readByUsers;
 
     public Long getId() {
         return id;
@@ -85,10 +89,22 @@ public class News {
         this.author = author;
     }
 
+    public Set<UserReadNews> getReadByUsers() {
+        return readByUsers;
+    }
+
+    public void setReadByUsers(Set<UserReadNews> readByUsers) {
+        this.readByUsers = readByUsers;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof News)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof News)) {
+            return false;
+        }
         News news = (News) o;
         return Objects.equals(id, news.id);
     }
@@ -100,13 +116,7 @@ public class News {
 
     @Override
     public String toString() {
-        return "News{" +
-            "id=" + id +
-            ", publishedAt=" + publishedAt +
-            ", title='" + title + '\'' +
-            ", summary='" + summary + '\'' +
-            ", content='" + content + '\'' +
-            ", author='" + author + '\'' +
-            '}';
+        return "News{" + "id=" + id + ", publishedAt=" + publishedAt + ", title='" + title + '\'' + ", summary='" +
+            summary + '\'' + ", content='" + content + '\'' + ", author='" + author + '\'' + '}';
     }
 }

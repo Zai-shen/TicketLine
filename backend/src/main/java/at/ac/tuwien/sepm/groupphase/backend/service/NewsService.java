@@ -17,6 +17,14 @@ public interface NewsService {
     Page<News> findAll(Pageable pageable);
 
     /**
+     * Find all news entries that haven't been read by the logged in user yet, paginated and ordered by publishing date
+     *
+     * @param pageable Pagination information
+     * @return ordered page of news entries
+     */
+    Page<News> findAllUnread(Pageable pageable);
+
+    /**
      * Find a single news entry by id.
      *
      * @param id the id of the news entry
