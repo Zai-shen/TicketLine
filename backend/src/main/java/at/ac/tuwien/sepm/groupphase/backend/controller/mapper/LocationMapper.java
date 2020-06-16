@@ -1,8 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
-import at.ac.tuwien.sepm.groupphase.backend.dto.LocationCreationDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.LocationDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.SearchLocationDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;

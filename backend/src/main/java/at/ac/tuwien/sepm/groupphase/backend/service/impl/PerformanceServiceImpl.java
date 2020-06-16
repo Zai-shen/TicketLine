@@ -1,14 +1,15 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.SeatMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Seatmap;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
-import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
+import at.ac.tuwien.sepm.groupphase.backend.repository.SeatRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.LocationService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
@@ -18,22 +19,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class PerformanceServiceImpl implements PerformanceService {
     private final PerformanceRepository performanceRepository;
-    private final BookingService bookingService;
     private final EventService eventService;
     private final LocationService locationService;
+    private final SeatRepository seatRepository;
+    private final SeatMapper seatMapper;
 
-    public PerformanceServiceImpl(PerformanceRepository performanceRepository, BookingService bookingService,
-        EventService eventService, LocationService locationService) {
+    public PerformanceServiceImpl(PerformanceRepository performanceRepository, EventService eventService,
+        LocationService locationService, SeatRepository seatRepository, SeatMapper seatMapper) {
         this.performanceRepository = performanceRepository;
-        this.bookingService = bookingService;
+        this.seatRepository = seatRepository;
         this.eventService = eventService;
         this.locationService = locationService;
+        this.seatMapper = seatMapper;
     }
 
     @Override
@@ -56,7 +60,6 @@ public class PerformanceServiceImpl implements PerformanceService {
     @Transactional(readOnly = true)
     public SeatmapOccupationDTO getSeatmap(Long performanceId) {
         Performance performance = performanceRepository.findById(performanceId).orElseThrow(NotFoundException::new);
-        List<Booking> bookings = bookingService.getBookingsForPerformance(performance);
         Seatmap sm = locationService.getSeatMapForLocation(performance.getLocation());
         SeatmapOccupationDTO sdto = new SeatmapOccupationDTO();
         sdto.setStandingAreas(sm.getStandingAreas().stream().map(x -> new StandingAreaOccupationDTO()
@@ -73,26 +76,32 @@ public class PerformanceServiceImpl implements PerformanceService {
             .collect(
                 Collectors.toList()));
         sdto.setSeatGroupAreas(sm.getSeatGroupAreas().stream().map(x -> {
-                return new SeatgroupOccupationDTO().seatLabels(x.getSeatLabels()
-                    .stream()
-                    .map(y -> new SeatLabelDTO().size(y.getSize()).x(y.getX()).y(y.getY()).text(y.getText()))
-                    .collect(Collectors.toList()))
+                Set<Seat> reserved = seatRepository.findReservedForPerformance(x, performance);
+                Set<Seat> sold = seatRepository.findSoldForPerformance(x, performance);
+                Set<Seat> free = seatRepository.findFreeForPerformance(x, performance);
+                SeatgroupOccupationDTO sgo = new SeatgroupOccupationDTO().seatLabels(seatMapper.fromEntity(x.getSeatLabels()))
                     .x(x.getX())
                     .y(x.getY())
                     .height(x.getHeight())
                     .width(x.getWidth())
                     .name(x.getName())
-                    .id(x.getId())
-                    .seats(x.getSeats().stream().map(s -> new SeatOccupationDTO()
-                        .x(s.getX())
-                        .y(s.getY())
-                        .colLabel(s.getColLabel())
-                        .rowLabel(s.getRowLabel())
-                        .reserved(false)
-                        .sold(false)
-                        .price(x.getPrice())
-                        .radius(s.getRadius())
-                        .id(s.getId())).collect(Collectors.toList()));
+                    .id(x.getId());
+                sgo.setSeats(new LinkedList<>());
+                for (Seat s : reserved) {
+                    SeatOccupationDTO so = seatMapper.fromEntity(s);
+                    so.setReserved(true);
+                    sgo.addSeatsItem(so);
+                }
+                for (Seat s : sold) {
+                    SeatOccupationDTO so = seatMapper.fromEntity(s);
+                    so.setSold(true);
+                    sgo.addSeatsItem(so);
+                }
+                for (Seat s : free) {
+                    SeatOccupationDTO so = seatMapper.fromEntity(s);
+                    sgo.addSeatsItem(so);
+                }
+                return sgo;
             }
         ).collect(Collectors.toList()));
         return sdto;
