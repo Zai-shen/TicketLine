@@ -73,7 +73,7 @@ export class LocationListComponent implements OnInit {
       const searchLocationDTO: SearchLocationDTO = Object.assign({}, this.searchForm.value);
       this.searched = true;
 
-      this.locationApiService.searchLocations(searchLocationDTO, 'response').subscribe(locations => {
+      this.locationApiService.searchLocations(searchLocationDTO, this.currentPage, 'response').subscribe(locations => {
         if (locations.body != null) {
           this.locations = locations.body;
           this.amountOfPages = Number(locations.headers.get('X-Total-Count')) || 1;
