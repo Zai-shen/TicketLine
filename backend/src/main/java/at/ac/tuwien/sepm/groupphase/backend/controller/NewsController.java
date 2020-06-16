@@ -48,7 +48,7 @@ public class NewsController implements NewsApi {
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<List<NewsDTO>> getNewsList(@Valid Optional<Boolean> inclRead,
         @Valid Optional<Integer> page) {
-        LOGGER.info("Get all news");
+        LOGGER.info("Get all news, include read ones: {}", inclRead);
 
         Page<News> news;
 
