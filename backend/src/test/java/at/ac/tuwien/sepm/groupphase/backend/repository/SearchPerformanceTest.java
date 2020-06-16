@@ -41,7 +41,7 @@ public class SearchPerformanceTest {
 
         Page<Performance> result = performanceRepository.findAll(specification, Pageable.unpaged());
 
-        assertThat(result.getContent()).contains(performancesToFind);
+        assertThat(result.getContent()).containsExactlyInAnyOrder(performancesToFind);
     }
 
     private Performance insertTestPerformances() {
