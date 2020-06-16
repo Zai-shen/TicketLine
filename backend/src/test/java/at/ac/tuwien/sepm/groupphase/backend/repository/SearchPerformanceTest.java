@@ -36,7 +36,7 @@ public class SearchPerformanceTest {
     void testSearchPerformanceSpecification() {
         Performance performancesToFind = insertTestPerformances();
 
-        SearchPerformance filter = searchPerformanceFrom(null, "", "Event-Title", null, null);
+        SearchPerformance filter = searchPerformanceFrom(null, null, "Event-Title", null, null);
         Specification<Performance> specification = new SearchPerformanceSpecification(filter);
 
         Page<Performance> result = performanceRepository.findAll(specification, Pageable.unpaged());
@@ -47,9 +47,15 @@ public class SearchPerformanceTest {
     private Performance insertTestPerformances() {
         Event event = DomainTestObjectFactory.getEvent();
         Performance performancesToFind = performanceFrom(OffsetDateTime.now(), event, null);
-
         eventRepository.saveAndFlush(event);
         performanceRepository.saveAndFlush(performancesToFind);
+
+        Event otherEvents = DomainTestObjectFactory.getEvent();
+        otherEvents.setId(2L);
+        otherEvents.setTitle("Other-Title");
+        eventRepository.saveAndFlush(otherEvents);
+        performanceRepository.saveAndFlush(performanceFrom(OffsetDateTime.now(), otherEvents, null));
+        performanceRepository.saveAndFlush(performanceFrom(OffsetDateTime.now(), otherEvents, null));
 
         return performancesToFind;
     }

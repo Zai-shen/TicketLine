@@ -3,7 +3,7 @@
   <form [formGroup]="performanceSearch" (ngSubmit)="newSearch()">
     <mat-form-field class="date-time" appearance="standard">
       <mat-label>Datum</mat-label>
-      <input matInput [min]="minDate" [matDatepicker]="datepicker" (dateChange)="dateChange($event)" name="date" formControlName="date" placeholder="06/05/2020">
+      <input matInput [min]="minDate" [matDatepicker]="datepicker" (dateChange)="dateChange($event)" name="date" formControlName="date" placeholder="Datum">
       <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
       <mat-datepicker #datepicker></mat-datepicker>
       <mat-error *ngIf="submitted && performanceForm.get('date').errors" class="error">
@@ -18,7 +18,7 @@
 
     <mat-form-field class="date-time" appearance="standard">
       <mat-label>Uhrzeit</mat-label>
-      <input matInput [ngxTimepicker]="timepicker" [format]="24" (ngModelChange)="timeChange($event)" disableClick="true" placeholder="20:00" formControlName="time" />
+      <input matInput [ngxTimepicker]="timepicker" [format]="24" (ngModelChange)="timeChange($event)" disableClick="true" placeholder="Uhrzeit" formControlName="time" />
       <ngx-material-timepicker-toggle matSuffix [for]="timepicker"></ngx-material-timepicker-toggle>
       <ngx-material-timepicker #timepicker (timeSet)="timeChange($event)" [minutesGap]="5"></ngx-material-timepicker>
       <mat-error *ngIf="submitted && performanceForm.get('time').errors" class="error">
@@ -29,20 +29,20 @@
     <mat-form-field appearance="standard">
       <mat-label>Preis</mat-label>
       <input matInput type="text" name="price" formControlName="price"
-             id="price" placeholder="23.50">
+             id="price" placeholder="Preis">
       <span matSuffix>€</span>
     </mat-form-field>
 
     <mat-form-field appearance="standard">
       <mat-label>Veranstaltung</mat-label>
       <input matInput type="text" name="event" formControlName="event"
-             id="event" placeholder="Veranstaltungsname">
+             id="event" placeholder="Veranstaltung">
     </mat-form-field>
 
     <mat-form-field appearance="standard">
       <mat-label>Ort</mat-label>
       <input matInput type="text" name="location" formControlName="location"
-             id="location" placeholder="Veranstaltungsort">
+             id="location" placeholder="Ort">
     </mat-form-field>
 
 

@@ -34,7 +34,7 @@ public class SearchPerformanceSpecification implements Specification<Performance
             Expression<Boolean> dateSearch = criteriaBuilder.between(root.get("dateTime"), startDate, endDate);
             searchCriteria.add(dateSearch);
         }
-        if (!filter.getTime().equals("")) {
+        if (filter.getTime() != null && !filter.getTime().equals("")) {
             LocalTime filterTime = LocalTime.parse(filter.getTime());
             Time startTime = Time.valueOf(filterTime.minusMinutes(MINUTES_OFFSET));
             Time endTime = Time.valueOf(filterTime.plusMinutes(MINUTES_OFFSET));
