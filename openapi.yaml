@@ -302,6 +302,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /user/readNews:
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - user
+      summary: Save read news for the currently logged in user
+      operationId: addReadNewsOfUser
+      requestBody:
+        description: Read news to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsDTO'
+        required: true
+      responses:
+        200:
+          description: Successfully added read news
+          content: {}
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Cannot find user to modify
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /news:
     get:
       tags:

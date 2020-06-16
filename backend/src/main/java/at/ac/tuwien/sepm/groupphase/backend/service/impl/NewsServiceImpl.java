@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.entity.UserReadNews;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
@@ -16,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -61,4 +64,24 @@ public class NewsServiceImpl implements NewsService {
         return newsRepository.save(news);
     }
 
+    @Override
+    public void saveReadNewsForCurrentUser(News news){
+        LOGGER.debug("Save read news with id {} for current user", news.getId());
+        new NewNewsValidator().build(news).validate();
+
+        User currentuser = userService.getCurrentLoggedInUser();
+
+        UserReadNews URNews = new UserReadNews();
+        URNews.setNews(news);
+        URNews.setUser(currentuser);
+
+        Set<UserReadNews> URNSet = new HashSet<>();
+        URNSet.add(URNews);
+
+        //Set<UserReadNews> URNSet = news.getReadByUsers();
+        //URNSet.add(URNews);
+        //TODO: get old list and add new entry
+        news.setReadByUsers(URNSet);
+        //System.out.println(news.getReadByUsers().toString());
+    }
 }

@@ -51,4 +51,9 @@ public class UserReadNews {
     public int hashCode() {
         return Objects.hash(user, news);
     }
+
+    @Override
+    public String toString() {
+        return "UserReadNews{" + "id=" + id + ", user=" + user + ", news=" + news + '}';
+    }
 }

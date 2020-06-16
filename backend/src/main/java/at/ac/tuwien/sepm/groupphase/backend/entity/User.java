@@ -147,4 +147,10 @@ public class User {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", email='" + email + '\'' + ", firstname='" + firstname + '\'' + ", lastname='" +
+            lastname + '\'' + ", role=" + role + ", address=" + address + '}';
+    }
 }

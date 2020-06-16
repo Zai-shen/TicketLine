@@ -40,4 +40,9 @@ public interface NewsService {
      */
     News publishNews(News news);
 
+    /**
+     * Add read news entry to the set of read news
+     * @param news the read news to be saved for the current user
+     */
+    void saveReadNewsForCurrentUser(News news);
 }

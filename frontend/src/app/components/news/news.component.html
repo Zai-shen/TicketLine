@@ -15,7 +15,6 @@
 <mat-card *ngFor="let newsEntry of news" [routerLink]="['/news', newsEntry.id]">
   <mat-card-title>{{newsEntry.title}}</mat-card-title>
   <mat-card-content>
-    <p>{{newsEntry.id}}</p>
     <p>{{newsEntry.summary}}</p>
     <p><mat-icon>history</mat-icon><tl-timestamp [timestamp]="newsEntry.publishedAt"></tl-timestamp></p>
     <p><mat-icon>perm_identity</mat-icon>von {{newsEntry.author}}</p>
