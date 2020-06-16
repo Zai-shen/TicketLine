@@ -53,7 +53,7 @@ export class EventDetailComponent implements OnInit {
 
   getSeatmap(performance: PerformanceDTO): Observable<SeatmapOccupationDTO> {
     if (this.event.id && performance.id) {
-      return this.eventService.getSeatmapOfPerformance(this.event.id!!, 1);
+      return this.eventService.getSeatmapOfPerformance(this.event.id!!,performance.id!!);
     }
     return EMPTY;
   }
