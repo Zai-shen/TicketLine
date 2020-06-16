@@ -2,14 +2,12 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.SeatMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Seatmap;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.SeatRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.StandingAreaRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.LocationService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
@@ -29,14 +27,17 @@ public class PerformanceServiceImpl implements PerformanceService {
     private final EventService eventService;
     private final LocationService locationService;
     private final SeatRepository seatRepository;
+    private final StandingAreaRepository standingAreaRepository;
     private final SeatMapper seatMapper;
 
     public PerformanceServiceImpl(PerformanceRepository performanceRepository, EventService eventService,
-        LocationService locationService, SeatRepository seatRepository, SeatMapper seatMapper) {
+        LocationService locationService, SeatRepository seatRepository, StandingAreaRepository standingAreaRepository,
+        SeatMapper seatMapper) {
         this.performanceRepository = performanceRepository;
         this.seatRepository = seatRepository;
         this.eventService = eventService;
         this.locationService = locationService;
+        this.standingAreaRepository = standingAreaRepository;
         this.seatMapper = seatMapper;
     }
 
@@ -62,16 +63,14 @@ public class PerformanceServiceImpl implements PerformanceService {
         Performance performance = performanceRepository.findById(performanceId).orElseThrow(NotFoundException::new);
         Seatmap sm = locationService.getSeatMapForLocation(performance.getLocation());
         SeatmapOccupationDTO sdto = new SeatmapOccupationDTO();
-        sdto.setStandingAreas(sm.getStandingAreas().stream().map(x -> new StandingAreaOccupationDTO()
-            .x(x.getX())
-            .y(x.getY())
-            .height(x.getHeight())
-            .width(x.getWidth())
-            .name(x.getName())
-            .maxPeople(x.getMaxPeople())
-            .sold((int) (x.getMaxPeople()/3))
-            .reserved((int) (x.getMaxPeople()/3))
-            .id(x.getId())
+        sdto.setStandingAreas(sm.getStandingAreas().stream().map(x -> {
+            StandingAreaOccupationDTO sao = seatMapper.fromEntity(x);
+            Integer reserved = standingAreaRepository.sumReserved(x,performance);
+            Integer sold = standingAreaRepository.sumSold(x,performance);
+            sao.setReserved(reserved != null ? reserved : 0);
+            sao.setSold(sold != null ? sold : 0);
+            return sao;
+            }
         )
             .collect(
                 Collectors.toList()));
