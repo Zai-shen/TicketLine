@@ -17,7 +17,6 @@ export class LocationListComponent implements OnInit {
   readonly LIST_PAGE_SIZE = 25;
   locations: LocationDTO[];
   searchForm: FormGroup;
-  amountOfPages = 1;
   private currentPage = 0;
   searched: boolean;
   locationsFound = 0;
@@ -62,7 +61,6 @@ export class LocationListComponent implements OnInit {
     this.locationApiService.getLocationList(this.currentPage, 'response').subscribe(locations => {
       if (locations.body != null) {
         this.locations = locations.body;
-        this.amountOfPages = Number(locations.headers.get('X-Total-Count')) || 1;
         this.locationsFound = Number(locations.headers.get('X-Total-Count')) || 0;
       }
     },
@@ -76,7 +74,6 @@ export class LocationListComponent implements OnInit {
       this.locationApiService.searchLocations(searchLocationDTO, this.currentPage, 'response').subscribe(locations => {
         if (locations.body != null) {
           this.locations = locations.body;
-          this.amountOfPages = Number(locations.headers.get('X-Total-Count')) || 1;
           this.locationsFound = Number(locations.headers.get('X-Total-Count')) || 0;
         }
       },
