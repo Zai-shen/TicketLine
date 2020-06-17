@@ -24,14 +24,17 @@ public class News {
     @Column(nullable = false, length = 10000)
     private String content;
 
-    @Column(nullable = true, name = "picture_path")
+    @Column(name = "picture_path")
     private String picturePath;
 
     @Column(nullable = false, length = 100)
     private String author;
 
-    @OneToMany(mappedBy = "news")
-    private Set<UserReadNews> readByUsers;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_read_news",
+               joinColumns = {@JoinColumn(name = "news_id", nullable = false, updatable = false),},
+               inverseJoinColumns = {@JoinColumn(name = "user_id", nullable = false, updatable = false)})
+    private Set<User> readByUsers;
 
     public Long getId() {
         return id;
@@ -89,11 +92,11 @@ public class News {
         this.author = author;
     }
 
-    public Set<UserReadNews> getReadByUsers() {
+    public Set<User> getReadByUsers() {
         return readByUsers;
     }
 
-    public void setReadByUsers(Set<UserReadNews> readByUsers) {
+    public void setReadByUsers(Set<User> readByUsers) {
         this.readByUsers = readByUsers;
     }
 

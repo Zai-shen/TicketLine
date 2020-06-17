@@ -42,7 +42,7 @@ public interface NewsService {
 
     /**
      * Add read news entry to the set of read news
-     * @param news the read news to be saved for the current user
+     * @param newsId the read news id to be saved for the current user
      */
-    void saveReadNewsForCurrentUser(News news);
+    void saveReadNewsForCurrentUser(Long newsId);
 }

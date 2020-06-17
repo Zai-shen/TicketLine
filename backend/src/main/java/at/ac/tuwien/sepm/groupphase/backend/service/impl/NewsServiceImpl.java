@@ -2,7 +2,6 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
-import at.ac.tuwien.sepm.groupphase.backend.entity.UserReadNews;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
@@ -17,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -50,6 +47,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public News findOne(Long id) {
         LOGGER.debug("Find news with id {}", id);
         Optional<News> news = newsRepository.findById(id);
@@ -65,23 +63,14 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void saveReadNewsForCurrentUser(News news){
-        LOGGER.debug("Save read news with id {} for current user", news.getId());
-        new NewNewsValidator().build(news).validate();
+    @Transactional
+    public void saveReadNewsForCurrentUser(Long newsId){
+        LOGGER.debug("Save read news with id {} for current user", newsId);
+        News news = findOne(newsId);
+        User currentUser = userService.getCurrentLoggedInUser();
 
-        User currentuser = userService.getCurrentLoggedInUser();
+        news.getReadByUsers().add(currentUser);
 
-        UserReadNews URNews = new UserReadNews();
-        URNews.setNews(news);
-        URNews.setUser(currentuser);
-
-        Set<UserReadNews> URNSet = new HashSet<>();
-        URNSet.add(URNews);
-
-        //Set<UserReadNews> URNSet = news.getReadByUsers();
-        //URNSet.add(URNews);
-        //TODO: get old list and add new entry
-        news.setReadByUsers(URNSet);
-        //System.out.println(news.getReadByUsers().toString());
+        newsRepository.save(news);
     }
 }

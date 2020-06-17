@@ -12,6 +12,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class DomainTestObjectFactory {
 
@@ -24,6 +25,8 @@ public class DomainTestObjectFactory {
         user.setEmail("hans.mueller@example.com");
         user.setPassword("secretPassword");
         user.setId(14L);
+        user.setLocked(false);
+        user.setWrongAttempts(1);
         return user;
     }
 
@@ -80,6 +83,7 @@ public class DomainTestObjectFactory {
         news.setContent("Today we discovered, that I am to lazy to write more content.");
         news.setPublishedAt(LocalDateTime.of(2002, 1, 13, 12, 55, 59));
         news.setAuthor("Doris Duftler");
+        news.setReadByUsers(new HashSet<>());
         return news;
     }
 
@@ -106,7 +110,6 @@ public class DomainTestObjectFactory {
         performance.setId(1L);
         performance.setDateTime(OffsetDateTime.now().plusDays(1));
         performance.setLocation(getLocation());
-        ;
         performance.setEvent(getEvent());
         return performance;
     }

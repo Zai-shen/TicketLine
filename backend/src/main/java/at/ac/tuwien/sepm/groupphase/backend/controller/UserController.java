@@ -177,9 +177,9 @@ public class UserController implements UserApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Void> addReadNewsOfUser(@Valid NewsDTO newsDTO) {
-        LOGGER.info("Add read news wiht id {}", newsDTO.getId());
+        LOGGER.info("Add read news with id {}", newsDTO.getId());
         News news = newsMapper.toEntity(newsDTO);
-        newsService.saveReadNewsForCurrentUser(news);
+        newsService.saveReadNewsForCurrentUser(news.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

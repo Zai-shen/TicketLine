@@ -13,7 +13,7 @@ public class NewsMapperTest {
     @Test
     public void testToEntity() {
         assertThat(newsMapper.toEntity(DTOTestObjectFactory.getNewsDTO()))
-            .isEqualToIgnoringGivenFields(DomainTestObjectFactory.getNews());
+            .isEqualToIgnoringGivenFields(DomainTestObjectFactory.getNews(), "readByUsers");
     }
 
     @Test
