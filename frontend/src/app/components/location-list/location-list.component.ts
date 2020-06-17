@@ -86,5 +86,11 @@ export class LocationListComponent implements OnInit {
     });
   }
 
+  newSearch(): void {
+    this.currentPage = 0;
+    this.paginator.pageIndex = 0;
+    this.searchLocations();
+  }
+
 
 }
