@@ -46,12 +46,13 @@ public class SearchPerformanceTest {
 
     private Performance insertTestPerformances() {
         Event event = DomainTestObjectFactory.getEvent();
+        event.setId(null);
         Performance performancesToFind = performanceFrom(OffsetDateTime.now(), event, null);
         eventRepository.saveAndFlush(event);
         performanceRepository.saveAndFlush(performancesToFind);
 
         Event otherEvents = DomainTestObjectFactory.getEvent();
-        otherEvents.setId(2L);
+        otherEvents.setId(null);
         otherEvents.setTitle("Other-Title");
         eventRepository.saveAndFlush(otherEvents);
         performanceRepository.saveAndFlush(performanceFrom(OffsetDateTime.now(), otherEvents, null));
