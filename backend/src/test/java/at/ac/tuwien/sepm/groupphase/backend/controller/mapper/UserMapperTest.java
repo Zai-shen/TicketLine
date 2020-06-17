@@ -13,7 +13,7 @@ public class UserMapperTest {
     @Test
     public void testToEntity() {
         assertThat(userMapper.toEntity(DTOTestObjectFactory.getUserDTO()))
-            .isEqualToIgnoringGivenFields(DomainTestObjectFactory.getUser(), "role");
+            .isEqualToIgnoringGivenFields(DomainTestObjectFactory.getUser(), "role", "locked", "wrongAttempts");
     }
 
     @Test
