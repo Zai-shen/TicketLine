@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.groupphase.backend.exception;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BusinessValidationException extends RuntimeException {
@@ -8,6 +9,11 @@ public class BusinessValidationException extends RuntimeException {
 
     public BusinessValidationException() {
         this(new ArrayList<>());
+    }
+
+    public BusinessValidationException(String message) {
+        super(message);
+        validationMessages = Collections.singletonList(message);
     }
 
     public BusinessValidationException(List<String> messages) {

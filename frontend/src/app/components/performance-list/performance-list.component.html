@@ -1,0 +1,75 @@
+<div class="main-content mat-elevation-z4">
+
+  <form [formGroup]="performanceSearch" (ngSubmit)="newSearch()">
+    <mat-form-field class="date-time" appearance="standard">
+      <mat-label>Datum</mat-label>
+      <input matInput [min]="minDate" [matDatepicker]="datepicker" (dateChange)="dateChange($event)" name="date" formControlName="date" placeholder="Datum">
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker></mat-datepicker>
+      <mat-error *ngIf="submitted && performanceForm.get('date').errors" class="error">
+        <div *ngIf="performanceForm.get('date').errors.required">
+          Datum ist ein Pflichtfeld!
+        </div>
+        <div *ngIf="!performanceSearch.get('date').errors.required">
+          Datum ungültig!
+        </div>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="date-time" appearance="standard">
+      <mat-label>Uhrzeit</mat-label>
+      <input matInput [ngxTimepicker]="timepicker" [format]="24" (ngModelChange)="timeChange($event)" disableClick="true" placeholder="Uhrzeit" formControlName="time" />
+      <ngx-material-timepicker-toggle matSuffix [for]="timepicker"></ngx-material-timepicker-toggle>
+      <ngx-material-timepicker #timepicker (timeSet)="timeChange($event)" [minutesGap]="5"></ngx-material-timepicker>
+      <mat-error *ngIf="submitted && performanceForm.get('time').errors" class="error">
+        Zeit muss auf einen gültigen Wert gesetzt werden!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Preis</mat-label>
+      <input matInput type="text" name="price" formControlName="price"
+             id="price" placeholder="Preis">
+      <span matSuffix>€</span>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Veranstaltung</mat-label>
+      <input matInput type="text" name="event" formControlName="event"
+             id="event" placeholder="Veranstaltung">
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Ort</mat-label>
+      <input matInput type="text" name="location" formControlName="location"
+             id="location" placeholder="Ort">
+    </mat-form-field>
+
+
+    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+    <button *ngIf="searched" mat-raised-button color="secondary" type="button" (click)="clearSearch()">Suche zurücksetzen</button>
+  </form>
+
+  <h3 class="mat-h3">{{performancesFound}} Aufführungen gefunden</h3>
+
+  <mat-card *ngFor="let performance of performances" [routerLink]="['/events',performance.event.id]">
+    <mat-card-title>{{performance.event.title}}</mat-card-title>
+    <mat-card-content class="card-body" >
+      <p class="aligned-icons">
+        <mat-icon>av_timer</mat-icon>
+        <tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp>
+      </p>
+      <p class="aligned-icons">
+        <mat-icon>place</mat-icon>
+        {{performance.location.description}}
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-paginator [length]="amountOfPages"
+                 [pageSize]="LIST_PAGE_SIZE"
+                 [pageSizeOptions]="[LIST_PAGE_SIZE]"
+                 (page)="onPaginationChange($event)">
+  </mat-paginator>
+</div>
+

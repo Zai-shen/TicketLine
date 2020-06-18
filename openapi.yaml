@@ -101,6 +101,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+    delete:
+      tags:
+        - user
+      security:
+        - ticketline_auth: []
+      summary: remove own user account
+      operationId: removeMyAccount
+      responses:
+        200:
+          description: Successfully removed user account
+          content: {}
+        403:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Business error on removal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /user/{userId}:
     put:
       security:
@@ -188,38 +211,6 @@ paths:
                 $ref: '#/components/schemas/ErrorDTO'
         422:
           description: Validation failed on updated user information input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-    delete:
-      tags:
-      - user
-      security:
-        - ticketline_auth: []
-      summary: remove a user account
-      operationId: removeUser
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
-          description: Id of the user to remove
-          example: 3
-      responses:
-        200:
-          description: Successfully removed user account
-          content: {}
-        403:
-          description: Not logged in or insufficient permission
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDTO'
-        404:
-          description: Cannot find user to remove
           content:
             application/json:
               schema:
@@ -886,6 +877,77 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /event/performances:
+    get:
+      tags:
+        - event
+      summary: Get all performances
+      operationId: getAllPerformances
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of Performances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceDTO'
+        404:
+          description: Couldn't find event entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /event/performances/search:
+    post:
+      tags:
+        - event
+      summary: Search for performances
+      operationId: searchPerformances
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      requestBody:
+        description: Search parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchPerformanceDTO'
+        required: true
+      responses:
+        200:
+          description: Search performed without errors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerformanceDTO'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Search parameter don't validate
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /user/tickets:
     get:
       security:
@@ -1451,6 +1513,25 @@ components:
           $ref: '#/components/schemas/EventDTO'
         location:
           $ref: '#/components/schemas/LocationDTO'
+    SearchPerformanceDTO:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          example: '2020-08-17'
+        time:
+          type: string
+          example: '18:00'
+        price:
+          type: number
+          example: 29.99
+        event:
+          type: string
+          example: Event 1
+        location:
+          type: string
+          example: 'Ort'
     SearchEventDTO:
       type: object
       properties:

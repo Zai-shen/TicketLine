@@ -1,7 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.SearchPerformanceDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.SearchPerformance;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -13,4 +15,6 @@ public interface PerformanceMapper {
     List<PerformanceDTO> toDto(List<Performance> events);
 
     Performance fromDto(PerformanceDTO eventDTO);
+
+    SearchPerformance fromDto(SearchPerformanceDTO searchPerformanceDTO);
 }

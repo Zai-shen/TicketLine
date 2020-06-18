@@ -5,6 +5,11 @@ import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.SearchEventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
@@ -99,6 +104,24 @@ public class EventController implements EventApi {
         return ResponseEntity.ok(0L);
     }
 
+    @Override
+    public ResponseEntity<List<PerformanceDTO>> getAllPerformances(@Valid Optional<Integer> page) {
+        LOGGER.info("get all performances");
+        Page<Performance> performances = performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
+            .body(performanceMapper.toDto(performances.getContent()));
+    }
+
+    @Override
+    public ResponseEntity<List<PerformanceDTO>> searchPerformances(@Valid SearchPerformanceDTO searchPerformanceDTO, @Valid Optional<Integer> page) {
+        LOGGER.info("search for performances");
+        Page<Performance> performances =
+            performanceService.searchPerformances(performanceMapper.fromDto(searchPerformanceDTO), PageRequest.of(page.orElse(0), PAGE_SIZE));
+        return ResponseEntity.ok()
+            .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
+            .body(performanceMapper.toDto(performances.getContent()));
+    }
     @Override
     public ResponseEntity<List<EventDTO>> getTopTenEvents(@Valid Optional<EventCategory> category) {
         LOGGER.info("Get top ten events");

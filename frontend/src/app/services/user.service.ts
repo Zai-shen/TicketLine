@@ -37,4 +37,8 @@ export class UserService {
   unlockUser(userId: number): Observable<any> {
     return this.userApiService.unlockUser(userId);
   }
+
+  removeUser(): Observable<any> {
+    return this.userApiService.removeMyAccount();
+  }
 }

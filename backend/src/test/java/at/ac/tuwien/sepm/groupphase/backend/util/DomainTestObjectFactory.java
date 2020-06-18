@@ -3,20 +3,13 @@ package at.ac.tuwien.sepm.groupphase.backend.util;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.LocationMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.LocationMapperImpl;
 import at.ac.tuwien.sepm.groupphase.backend.dto.SeatmapDTO;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
-import at.ac.tuwien.sepm.groupphase.backend.entity.News;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
-import at.ac.tuwien.sepm.groupphase.backend.entity.User;
-import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
-
-import java.time.LocalDateTime;
-
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.Collections;
 
 public class DomainTestObjectFactory {
 
