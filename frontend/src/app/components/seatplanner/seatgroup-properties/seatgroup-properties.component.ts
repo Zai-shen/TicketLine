@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SeatgroupElement } from '../seatgroup';
 
 @Component({
@@ -16,9 +17,18 @@ export class SeatgroupPropertiesComponent implements OnInit, OnChanges {
   seatColDistance: number;
   isStandingArea: boolean;
 
-  constructor() { }
+  seatgroupForm: FormGroup
+
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.seatgroupForm = this.formBuilder.group({
+      price: ['', [Validators.required, Validators.min(0)]],
+      radius: ['', [Validators.required, Validators.min(1)]],
+      seatColDistance: ['', [Validators.required, Validators.min(1)]],
+      seatRowDistance: ['', [Validators.required, Validators.min(1)]],
+      standingPlaceCount: ['', [Validators.required, Validators.min(1)]],
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
