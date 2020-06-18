@@ -50,6 +50,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DatePipe } from '@angular/common';
 import { TicketListComponent } from './components/ticket-list/ticket-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { PerformanceListComponent } from './components/performance-list/performance-list.component';
 import { CreateArtistModalComponent } from './components/create-event/create-artist-modal/create-artist-modal.component';
 import { LocationPerformancesSheetComponent } from './components/location-list/location-performances-sheet/location-performances-sheet.component';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -90,6 +91,7 @@ import { ConfirmUserDeletionModalComponent } from './components/user-detail/conf
     CreateArtistModalComponent,
     PerformanceTableComponent,
     TicketListComponent,
+    PerformanceListComponent,
     LocationPerformancesSheetComponent,
     SeatplannerComponent,
     SeatgroupPropertiesComponent,

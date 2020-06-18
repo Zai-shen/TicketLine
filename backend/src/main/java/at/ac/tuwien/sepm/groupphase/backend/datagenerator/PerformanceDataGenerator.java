@@ -13,7 +13,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.lang.invoke.MethodHandles;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Profile("generateData")
@@ -61,6 +63,41 @@ public class PerformanceDataGenerator {
                 Location location = new Location();
                 location.setDescription(f.lordOfTheRings().location());
                 location.setAddress(locaddr);
+
+                Seatmap sm = new Seatmap();
+                SeatGroupArea sga = new SeatGroupArea();
+                sga.setWidth(100.0);
+                sga.setHeight(100.0);
+                sga.setX(0.0);
+                sga.setY(0.0);
+                sga.setPrice(4.20);
+                sga.setName("Stehplätze");
+                Set<Seat> seats = new HashSet<>();
+                for (int j = 0; j < 50 ; j++) {
+                    for (int k = 0; k < 50 ; k++) {
+                        Seat s = new Seat();
+                        s.setX((double) j);
+                        s.setY((double) k);
+                        s.setRowLabel(String.valueOf(j));
+                        s.setColLabel(String.valueOf(k));
+                        s.setSeatGroupArea(sga);
+                        s.setRadius(0.5);
+                        seats.add(s);
+                    }
+                }
+                sga.setSeats(seats);
+                sm.setSeatGroupAreas(Set.of(sga));
+                StandingArea sa = new StandingArea();
+                sa.setWidth(100.0);
+                sa.setHeight(100.0);
+                sa.setMaxPeople(50L);
+                sa.setName("Stehplätze");
+                sa.setX(200.0);
+                sa.setY(200.0);
+                sa.setPrice(3.50);
+                sm.setStandingAreas(Set.of(sa));
+                location.setSeatmap(sm);
+
 
                 Performance performance = new Performance();
                 performance.setDateTime(OffsetDateTime.now().plusDays(i).plusHours(i));

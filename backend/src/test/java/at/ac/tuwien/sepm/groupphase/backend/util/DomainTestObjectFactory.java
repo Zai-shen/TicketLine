@@ -1,15 +1,9 @@
 package at.ac.tuwien.sepm.groupphase.backend.util;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Address;
-import at.ac.tuwien.sepm.groupphase.backend.entity.News;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
-import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 
 import java.time.LocalDateTime;
-
-import at.ac.tuwien.sepm.groupphase.backend.entity.*;
-
 import java.time.OffsetDateTime;
 import java.util.Collections;
 
@@ -41,7 +35,6 @@ public class DomainTestObjectFactory {
         final Seat seat = new Seat();
             seat.setColLabel("colLabel");
             seat.setRowLabel("rowlabel");
-            seat.setPrice(10.0);
             seat.setRadius(5.0);
             seat.setX(10.0);
             seat.setY(10.0);
@@ -66,6 +59,7 @@ public class DomainTestObjectFactory {
             seatGroupArea.setY(10.0);
             seatGroupArea.setWidth(10.0);
             seatGroupArea.setHeight(10.0);
+            seatGroupArea.setPrice(13.40);
         final Seatmap seatmap = new Seatmap();
             seatmap.setSeatGroupAreas(Collections.singleton(seatGroupArea));
             seatmap.setStandingAreas(Collections.singleton(standingArea));
