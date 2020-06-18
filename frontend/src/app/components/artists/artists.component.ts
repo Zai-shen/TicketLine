@@ -17,10 +17,9 @@ export class ArtistsComponent implements OnInit {
 
   artists: ArtistDTO[];
   artistForm: FormGroup;
-  amountOfPages = 1;
+  totalAmountOfArtists = 0;
   private currentPage = 0;
   searched: boolean;
-  artistsFound = 0;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -50,14 +49,12 @@ export class ArtistsComponent implements OnInit {
   clearSearch(): void {
     this.searched = false;
     this.artistForm.reset();
-    this.currentPage = 0;
-    this.paginator.pageIndex = 0;
+    this.paginator.firstPage();
     this.getAllArtists();
   }
 
   newSearch(): void {
-    this.currentPage = 0;
-    this.paginator.pageIndex = 0;
+    this.paginator.firstPage();
     this.searchArtists();
   }
 
@@ -69,8 +66,7 @@ export class ArtistsComponent implements OnInit {
       this.artistService.searchArtists(searchArtistDTO, this.currentPage).subscribe(artists => {
           if (artists.body !== null) {
             this.artists = artists.body;
-            this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 1;
-            this.artistsFound = Number(artists.headers.get('X-Total-Count')) || 0;
+            this.totalAmountOfArtists = Number(artists.headers.get('X-Total-Count')) || 0;
           }
         },
         error => this.errorMessageComponent.defaultServiceErrorHandling(error));
@@ -81,8 +77,7 @@ export class ArtistsComponent implements OnInit {
     this.artistService.getArtistList(this.currentPage).subscribe(artists => {
         if (artists.body !== null) {
           this.artists = artists.body;
-          this.amountOfPages = Number(artists.headers.get('X-Total-Count')) || 1;
-          this.artistsFound = Number(artists.headers.get('X-Total-Count')) || 0;
+          this.totalAmountOfArtists = Number(artists.headers.get('X-Total-Count')) || 0;
         }
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
