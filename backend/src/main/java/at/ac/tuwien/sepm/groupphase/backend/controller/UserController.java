@@ -3,14 +3,13 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.BookingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
-import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
-import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
@@ -149,8 +147,13 @@ public class UserController implements UserApi {
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Resource> getTicket(Long bookingId) {
         LOGGER.info("Get the ticket for {}", bookingId);
-        Booking b = bookingService.getBookingOfCurrentUser(bookingId);
-        ByteArrayFile pdf = bookingService.renderBooking(b);
+        Booking booking = bookingService.getBookingOfCurrentUser(bookingId);
+
+        if (booking.getReservation() != null && booking.getReservation()) {
+            throw new BusinessValidationException("reservierte Tickets können nicht geducked werden.");
+        }
+
+        ByteArrayFile pdf = bookingService.renderBooking(booking);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
