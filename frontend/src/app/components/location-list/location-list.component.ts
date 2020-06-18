@@ -5,6 +5,7 @@ import { LocationApiService, LocationDTO, SearchLocationDTO } from '../../../gen
 import { AuthService } from '../../services/auth.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { LocationPerformancesSheetComponent } from './location-performances-sheet/location-performances-sheet.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'tl-location',
@@ -13,11 +14,18 @@ import { LocationPerformancesSheetComponent } from './location-performances-shee
 })
 export class LocationListComponent implements OnInit {
 
-  locations: LocationDTO[] = [];
+  readonly LIST_PAGE_SIZE = 25;
+  locations: LocationDTO[];
   searchForm: FormGroup;
+  private currentPage = 0;
+  searched: boolean;
+  locationsFound = 0;
 
   constructor(private formBuilder: FormBuilder, private locationApiService: LocationApiService,
               private authService: AuthService, private bottomSheet: MatBottomSheet) { }
+
+  @ViewChild(MatPaginator)
+  private paginator: MatPaginator;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -25,35 +33,49 @@ export class LocationListComponent implements OnInit {
   ngOnInit(): void {
     this.getLocationList();
     this.searchForm = this.formBuilder.group({
-      description: ['', Validators.required],
+      description: [''],
           address: this.formBuilder.group({
-            street: ['', Validators.required],
-            housenr: ['', Validators.required],
-            postalcode: ['', Validators.required],
-            city: ['', Validators.required],
-            country: ['', Validators.required]
+            street: [''],
+            housenr: [''],
+            postalcode: [''],
+            city: [''],
+            country: ['']
           })
       });
   }
+
+    onPaginationChange(event: PageEvent): void {
+      this.currentPage = event.pageIndex;
+      if (this.searched) {
+        this.searchLocations();
+      } else {
+        this.getLocationList();
+      }
+    }
 
   isAdmin(): boolean {
     return this.authService.isAdminLoggedIn();
   }
 
   getLocationList(): void {
-    this.locationApiService.getLocationList().subscribe(
-      (locationDTO: LocationDTO[]) => {
-        this.locations = locationDTO;
-      },
+    this.locationApiService.getLocationList(this.currentPage, 'response').subscribe(locations => {
+      if (locations.body != null) {
+        this.locations = locations.body;
+        this.locationsFound = Number(locations.headers.get('X-Total-Count')) || 0;
+      }
+    },
     error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
 
   searchLocations(): void {
       const searchLocationDTO: SearchLocationDTO = Object.assign({}, this.searchForm.value);
+      this.searched = true;
 
-      this.locationApiService.searchLocations(searchLocationDTO).subscribe(
-      (locationDTO: LocationDTO[]) => {
-        this.locations = locationDTO;
+      this.locationApiService.searchLocations(searchLocationDTO, this.currentPage, 'response').subscribe(locations => {
+        if (locations.body != null) {
+          this.locations = locations.body;
+          this.locationsFound = Number(locations.headers.get('X-Total-Count')) || 0;
+        }
       },
       error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
@@ -62,6 +84,12 @@ export class LocationListComponent implements OnInit {
     this.bottomSheet.open(LocationPerformancesSheetComponent,{
       data: location
     });
+  }
+
+  newSearch(): void {
+    this.currentPage = 0;
+    this.paginator.pageIndex = 0;
+    this.searchLocations();
   }
 
 

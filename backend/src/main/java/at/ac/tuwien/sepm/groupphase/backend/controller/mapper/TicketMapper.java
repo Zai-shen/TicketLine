@@ -1,9 +1,10 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.FreeSeatgroupBookingDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.SeatgroupSeatDTO;
-import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
+import at.ac.tuwien.sepm.groupphase.backend.service.SeatService;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,26 +13,30 @@ import java.util.List;
 
 @Component
 public class TicketMapper {
+    private final SeatService seatService;
+
+    public TicketMapper(SeatService seatService) {
+        this.seatService = seatService;
+    }
 
     public List<Ticket> fromDto(BookingDTO bookingDTO) {
         List<Ticket> tickets = new ArrayList<>();
 
-        int freeTicketAmount =
-            bookingDTO.getFreeSeats().getAmount() != null ? bookingDTO.getFreeSeats().getAmount() : 0;
-
-        for (int i = 0; i < freeTicketAmount; i++) {
-            Ticket ticket = new Ticket();
-            ticket.setPrice(BigDecimal.valueOf(23.50)); // TODO: get price from SeatgroupPerformance
-            tickets.add(ticket);
+        for(SeatgroupSeatDTO seated : bookingDTO.getFixedSeats()) {
+            SeatGroupArea area = seatService.getArea(seated.getSeatgroupId());
+            Seat s = seatService.byPosition(area,seated.getX().doubleValue(),seated.getY().doubleValue());
+            SeatedTicket t = new SeatedTicket();
+            t.setSeat(s);
+            t.setPrice(BigDecimal.valueOf(area.getPrice()));
+            tickets.add(t);
         }
-
-        for (SeatgroupSeatDTO fixedSeatgroupBookingDTO : bookingDTO.getFixedSeats()) {
-            SeatedTicket seatedTicket = new SeatedTicket();
-            seatedTicket.setSeatGroupId(fixedSeatgroupBookingDTO.getSeatgroupId());
-            seatedTicket.setSeatColumn(fixedSeatgroupBookingDTO.getY());
-            seatedTicket.setSeatRow(fixedSeatgroupBookingDTO.getX());
-            seatedTicket.setPrice(BigDecimal.valueOf(31.70)); // TODO: get price from SeatgroupPerformance
-            tickets.add(seatedTicket);
+        for(FreeSeatgroupBookingDTO free : bookingDTO.getFreeSeats()) {
+            StandingArea area = seatService.getStandingArea(free.getSeatGroupId());
+            StandingTicket t = new StandingTicket();
+            t.setAmount(free.getAmount().longValue());
+            t.setStandingArea(area);
+            t.setPrice(BigDecimal.valueOf(area.getPrice()));
+            tickets.add(t);
         }
         return tickets;
     }

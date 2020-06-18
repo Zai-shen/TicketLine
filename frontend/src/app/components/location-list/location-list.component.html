@@ -1,5 +1,5 @@
 <div class="main-content mat-elevation-z4">
-  <form [formGroup]="searchForm" (ngSubmit)="searchLocations()">
+  <form [formGroup]="searchForm" (ngSubmit)="newSearch()">
     <mat-form-field appearance="standard">
       <mat-label>Bezeichnung</mat-label>
       <input matInput type="text" name="description" formControlName="description"
@@ -38,14 +38,13 @@
       </mat-form-field>
     </div>
 
-    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+    <div class="results">
+      <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+      <button mat-raised-button color="secondary" *ngIf="isAdmin()" routerLink="/location/addLocation" type="button">Ort hinzufügen</button>
+    </div>
   </form>
 
-  <div class="results">
-    <p><b>{{locations.length}} Veranstaltungen gefunden</b></p>
-    <button *ngIf="isAdmin()" routerLink="/location/addLocation" type="button" class="btn btn-secondary btn-sm mr-4">Ort hinzufügen</button>
-  </div>
-
+  <h3 class="mat-h3">{{locationsFound}} Orte gefunden</h3>
 
   <mat-card *ngFor="let location of locations" (click)="openDetails(location)">
     <mat-card-title>{{location.description}}</mat-card-title>
@@ -57,4 +56,10 @@
       <div class="upcoming-events">bevorstehende Veranstaltungen</div>
     </mat-card-content>
   </mat-card>
+
+  <mat-paginator [length]="locationsFound"
+                 [pageSize]="LIST_PAGE_SIZE"
+                 [pageSizeOptions]="[LIST_PAGE_SIZE]"
+                 (page)="onPaginationChange($event)">
+  </mat-paginator>
 </div>

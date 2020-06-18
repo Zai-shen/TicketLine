@@ -1,7 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,13 +26,26 @@ public class SeatGroupArea {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "seatgroup_id")
+    @Column(nullable = false)
+    private Double price;
+
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "seatGroupArea")
     private Set<Seat> seats;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "seatgroup_id")
     private Set<SeatLabel> seatLabels;
+
+    @ManyToOne
+    private Seatmap seatmap;
+
+    public Seatmap getSeatmap() {
+        return seatmap;
+    }
+
+    public void setSeatmap(Seatmap seatmap) {
+        this.seatmap = seatmap;
+    }
 
     public Double getX() {
         return x;
@@ -97,6 +109,14 @@ public class SeatGroupArea {
 
     public void setSeatLabels(Set<SeatLabel> seatLabels) {
         this.seatLabels = seatLabels;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     @Override
