@@ -18,8 +18,8 @@
       </mat-expansion-panel-header>
       <tl-seatplan [seatmap]="getSeatmap(performance)"
                    [postfixId]="performance.id.toString()"
-                   (selectedSeatsChanged)="selectedSeatsChanged($event)"
-                   (selectedStandingAreaChanged)="selectedStandingAreasChanged($event)"
+                   (selectedSeatsChanged)="selectedSeatsChanged(performance,$event)"
+                   (selectedStandingAreaChanged)="selectedStandingAreasChanged(performance,$event)"
       ></tl-seatplan>
       <span *ngIf="isUserLoggedIn()">
         <button mat-raised-button (click)="buyTicket(false, performance)">Kaufen</button>

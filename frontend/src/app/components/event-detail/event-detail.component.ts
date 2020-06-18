@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { BookingDTO, EventApiService, EventDTO, PerformanceDTO, TicketApiService } from '../../../generated';
+import {
+  BookingRequestDTO,
+  EventApiService,
+  EventDTO,
+  PerformanceDTO,
+  TicketApiService
+} from '../../../generated';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,6 +13,7 @@ import { SeatRenderDTO } from '../seatplan/entities/seat-render-dto';
 import { StandingAreaSelection } from '../seatplan/entities/standing-area-selection';
 import { SeatmapOccupationDTO } from '../../../generated/model/seatmapOccupationDTO';
 import { EMPTY, Observable } from 'rxjs';
+import { Globals } from '../../global/globals';
 
 @Component({
   selector: 'tl-home',
@@ -19,11 +26,14 @@ export class EventDetailComponent implements OnInit {
 
   performances: PerformanceDTO[];
 
+  selectedSeats: Map<PerformanceDTO, [SeatRenderDTO[], StandingAreaSelection[]]> =
+    new Map<PerformanceDTO, [SeatRenderDTO[], StandingAreaSelection[]]>();
+
   public errorMsg?: string;
 
   constructor(private eventService: EventApiService, private ticketApiService: TicketApiService,
     private route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar, private globals: Globals) {
   }
 
   ngOnInit(): void {
@@ -60,14 +70,24 @@ export class EventDetailComponent implements OnInit {
     return EMPTY;
   }
 
-  selectedSeatsChanged(seats: SeatRenderDTO[]) {
-    // TODO
-    console.log(seats);
+  selectedSeatsChanged(performance: PerformanceDTO, newSeats: SeatRenderDTO[]) {
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [_, standing] = entry;
+      this.selectedSeats.set(performance, [newSeats, standing]);
+    } else {
+      this.selectedSeats.set(performance, [newSeats, []]);
+    }
   }
 
-  selectedStandingAreasChanged(standingAreas: StandingAreaSelection[]) {
-    // TODO
-    console.log(standingAreas);
+  selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaSelection[]) {
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [seats, _] = entry;
+      this.selectedSeats.set(performance, [seats, standingAreas]);
+    } else {
+      this.selectedSeats.set(performance, [[], standingAreas]);
+    }
   }
 
   isUserLoggedIn(): boolean {
@@ -75,15 +95,33 @@ export class EventDetailComponent implements OnInit {
   }
 
   buyTicket(reserve: boolean, performance: PerformanceDTO): void {
-    const bookingDto: BookingDTO = {};
+    const bookingDto: BookingRequestDTO = {};
     // TODO: replace these tickets with the real tickets, once the seatmap gets implemented.
-    bookingDto.freeSeats = [{ seatGroupId: 2, amount: 1}];
-    bookingDto.fixedSeats = [{ seatgroupId: 1, x: 23, y: 23}];
+    const entry = this.selectedSeats.get(performance);
+    let seats: SeatRenderDTO[] = [];
+    let standing: StandingAreaSelection[] = [];
+    if (entry && (entry[0].length + entry[1].length > 0)) {
+      [seats, standing] = entry;
+    } else {
+      this.snackBar.open('Bitte wählen Sie zuerst die gewünschten Plätze aus', 'OK', {
+        duration: this.globals.defaultSnackbarDuration
+      });
+      return;
+    }
+    console.log(standing);
+    console.log(seats.map(x => x.id));
+    bookingDto.seats = seats.map(x => x.id);
+    bookingDto.areas = [{ seatGroupId: 1, amount: 1 }];
+    bookingDto.areas = standing.map(x => {
+      return {seatGroupId: x.standingArea.id, amount: x.selectedPositions};
+    });
 
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
           .subscribe(() => {
-            this.snackBar.open('Kauf erfolgreich');
+            this.snackBar.open('Kauf erfolgreich', 'OK', {
+              duration: this.globals.defaultSnackbarDuration
+            });
             this.router.navigate(['/user/tickets']);
           });
     }
