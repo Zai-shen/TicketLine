@@ -27,7 +27,7 @@ public class TicketMapper {
             Seat s = seatService.byPosition(area,seated.getX().doubleValue(),seated.getY().doubleValue());
             SeatedTicket t = new SeatedTicket();
             t.setSeat(s);
-            t.setPrice(BigDecimal.valueOf(3.50));
+            t.setPrice(BigDecimal.valueOf(area.getPrice()));
             tickets.add(t);
         }
         for(FreeSeatgroupBookingDTO free : bookingDTO.getFreeSeats()) {
@@ -35,7 +35,7 @@ public class TicketMapper {
             StandingTicket t = new StandingTicket();
             t.setAmount(free.getAmount().longValue());
             t.setStandingArea(area);
-            t.setPrice(BigDecimal.valueOf(3.50));
+            t.setPrice(BigDecimal.valueOf(area.getPrice()));
             tickets.add(t);
         }
         return tickets;
