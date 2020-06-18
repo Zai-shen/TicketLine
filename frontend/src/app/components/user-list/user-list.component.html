@@ -26,7 +26,12 @@
   <mat-card *ngFor="let user of users" class="mat-elevation-z2">
     <mat-card-content class="flex-container">
       <div class="flex-large">{{user.email}}</div>
-      <div class="flex-small">{{user.role}}</div>
+      <div class="flex-small">
+        {{user.role}}
+        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="openChangeRoleDialog(user)">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
       <div class="flex-medium">{{user.wrongAttempts}}</div>
       <div class="flex-small locked-message">{{user.locked ? 'gesperrt' : ''}}</div>
       <button *ngIf="user.locked" class="flex-small" mat-stroked-button (click)="unlockUser(user.id)">Entsperren</button>
