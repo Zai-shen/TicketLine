@@ -43,7 +43,7 @@ public interface BookingMapper {
     default FreeSeatgroupBookingDTO getFreeSeatDTO(StandingTicket t) {
         FreeSeatgroupBookingDTO freeSeatgroupBookingDTO = new FreeSeatgroupBookingDTO();
         freeSeatgroupBookingDTO.setAmount(t.getAmount());
-        freeSeatgroupBookingDTO.setSeatGroupId(t.getSeatGroupArea().getId());
+        freeSeatgroupBookingDTO.setSeatGroupId(t.getStandingArea().getId());
         return freeSeatgroupBookingDTO;
     }
 }

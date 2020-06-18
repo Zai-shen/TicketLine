@@ -31,10 +31,10 @@ public class TicketMapper {
             tickets.add(t);
         }
         for(FreeSeatgroupBookingDTO free : bookingDTO.getFreeSeats()) {
-            SeatGroupArea area = seatService.getArea(free.getSeatGroupId());
+            StandingArea area = seatService.getStandingArea(free.getSeatGroupId());
             StandingTicket t = new StandingTicket();
             t.setAmount(free.getAmount().longValue());
-            t.setSeatGroupArea(area);
+            t.setStandingArea(area);
             t.setPrice(BigDecimal.valueOf(3.50));
             tickets.add(t);
         }

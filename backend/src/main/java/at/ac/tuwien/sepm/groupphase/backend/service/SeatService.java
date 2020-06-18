@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.SeatGroupArea;
+import at.ac.tuwien.sepm.groupphase.backend.entity.StandingArea;
 
 import javax.validation.constraints.NotNull;
 
@@ -28,4 +29,11 @@ public interface SeatService {
      * @return the area with this id
      */
     SeatGroupArea getArea(Long id);
+
+    /**
+     * Find a standing area by its id
+     * @param id id of the area
+     * @return the area with this id
+     */
+    StandingArea getStandingArea(Long id);
 }

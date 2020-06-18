@@ -10,7 +10,7 @@ public class StandingTicket extends Ticket {
     private Long amount;
 
     @ManyToOne
-    private SeatGroupArea seatGroupArea;
+    private StandingArea standingArea;
 
     public Long getAmount() {
         return amount;
@@ -20,11 +20,11 @@ public class StandingTicket extends Ticket {
         this.amount = amount;
     }
 
-    public SeatGroupArea getSeatGroupArea() {
-        return seatGroupArea;
+    public StandingArea getStandingArea() {
+        return standingArea;
     }
 
-    public void setSeatGroupArea(SeatGroupArea seatGroupArea) {
-        this.seatGroupArea = seatGroupArea;
+    public void setStandingArea(StandingArea standingArea) {
+        this.standingArea = standingArea;
     }
 }
