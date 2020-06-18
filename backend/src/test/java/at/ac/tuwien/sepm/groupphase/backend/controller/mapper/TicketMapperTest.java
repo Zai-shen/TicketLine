@@ -1,31 +1,32 @@
 package at.ac.tuwien.sepm.groupphase.backend.controller.mapper;
 
-import at.ac.tuwien.sepm.groupphase.backend.dto.*;
+import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.FreeSeatgroupBookingDTO;
+import at.ac.tuwien.sepm.groupphase.backend.dto.SeatgroupSeatDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Seat;
 import at.ac.tuwien.sepm.groupphase.backend.entity.SeatedTicket;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.service.SeatService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@ActiveProfiles("test")
+@ExtendWith(MockitoExtension.class)
 class TicketMapperTest {
 
+    @Mock
+    private SeatService seatService;
+    @InjectMocks
     private TicketMapper ticketMapper;
-
-    TicketMapperTest(SeatService seatService) {
-        ticketMapper = new TicketMapper(seatService);
-    }
 
     @Test
     void fromDto() {
@@ -37,7 +38,8 @@ class TicketMapperTest {
 
         List<Ticket> ticketList = ticketMapper.fromDto(bookingDTO);
 
-        assertThat(ticketList.size()).isEqualTo(4);
+        // We expect one standing and one seated ticket
+        assertThat(ticketList.size()).isEqualTo(2);
         assertThat(ticketList).contains(seatedTicket);
     }
 
