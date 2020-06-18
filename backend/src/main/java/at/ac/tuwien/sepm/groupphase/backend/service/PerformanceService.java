@@ -25,10 +25,9 @@ public interface PerformanceService {
     Long createPerformance(Long eventId, Performance performance) throws BusinessValidationException;
 
     /**
-     * Get the seatmap for a specific pperformance
-     * @param eventId
-     * @param performanceId
-     * @return
+     * Get the seatmap for a specific performance
+     * @param performanceId id of the performance
+     * @return SeatmapOccupationDTO containing free, reserved and sold seats as well as the amount of tickets sold for standing areas
      */
     SeatmapOccupationDTO getSeatmap(Long performanceId);
 }
