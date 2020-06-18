@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
 import at.ac.tuwien.sepm.groupphase.backend.service.LocationService;
 import at.ac.tuwien.sepm.groupphase.backend.service.PerformanceService;
+import at.ac.tuwien.sepm.groupphase.backend.util.DomainTestObjectFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -154,24 +155,8 @@ public class SeatmapOccupationTest {
         Location l = new Location();
         l.setDescription("Arena");
         l.setAddress(a);
-        Seatmap sm = null;
-        try {
-            sm = getSeatmap();
-        } catch (JsonProcessingException ex) {
-            // ignored since the json is always valid;
-        }
+        Seatmap sm = DomainTestObjectFactory.getSeatmap();
         l.setSeatmap(sm);
         return l;
-    }
-
-    private Seatmap getSeatmap() throws JsonProcessingException {
-        ObjectMapper om = new ObjectMapper();
-        LocationMapper lm = new LocationMapperImpl();
-        SeatmapDTO sdto = om.readValue(RAW_SEATMAP, SeatmapDTO.class);
-        Seatmap sm = lm.fromDto(sdto);
-        for(SeatGroupArea sga : sm.getSeatGroupAreas())
-            for(Seat s : sga.getSeats())
-                s.setSeatGroupArea(sga);
-        return sm;
     }
 }
