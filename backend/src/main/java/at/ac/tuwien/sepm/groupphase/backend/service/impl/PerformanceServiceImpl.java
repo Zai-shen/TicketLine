@@ -78,13 +78,7 @@ public class PerformanceServiceImpl implements PerformanceService {
                 Set<Seat> reserved = seatRepository.findReservedForPerformance(x, performance);
                 Set<Seat> sold = seatRepository.findSoldForPerformance(x, performance);
                 Set<Seat> free = seatRepository.findFreeForPerformance(x, performance);
-                SeatgroupOccupationDTO sgo = new SeatgroupOccupationDTO().seatLabels(seatMapper.fromEntity(x.getSeatLabels()))
-                    .x(x.getX())
-                    .y(x.getY())
-                    .height(x.getHeight())
-                    .width(x.getWidth())
-                    .name(x.getName())
-                    .id(x.getId());
+                SeatgroupOccupationDTO sgo = seatMapper.fromEntity(x);
                 sgo.setSeats(new LinkedList<>());
                 for (Seat s : reserved) {
                     SeatOccupationDTO so = seatMapper.fromEntity(s);
