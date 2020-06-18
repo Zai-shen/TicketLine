@@ -16,7 +16,7 @@
       <mat-expansion-panel-header>
         Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> <tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp>
       </mat-expansion-panel-header>
-      <tl-seatplan [seatmap]="getSeatmap(performance.id)"
+      <tl-seatplan [seatmap]="getSeatmap(performance)"
                    [postfixId]="performance.id.toString()"
                    (selectedSeatsChanged)="selectedSeatsChanged($event)"
                    (selectedStandingAreaChanged)="selectedStandingAreasChanged($event)"

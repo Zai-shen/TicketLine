@@ -18,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -80,7 +81,8 @@ public class BookingServiceImpl implements BookingService {
         for(Ticket ticket : booking.getTickets()) {
             String seat = "Freie Platzwahl";
             if (ticket instanceof SeatedTicket) {
-                seat = String.format("Reihe %d Platz %d",((SeatedTicket) ticket).getSeatRow(),((SeatedTicket) ticket).getSeatColumn());
+                Seat s = ((SeatedTicket) ticket).getSeat();
+                seat = String.format("Reihe %s Platz %s",s.getRowLabel(),s.getColLabel());
             }
             tickets.add(new TicketData(
                 booking.getPerformance().getEvent(),
@@ -97,5 +99,10 @@ public class BookingServiceImpl implements BookingService {
         User user = userService.getCurrentLoggedInUser();
         InvoiceData invoice = new InvoiceData(booking, user, cancel, companyProperties);
         return ticketService.renderInvoice(invoice);
+    }
+
+    @Override
+    public List<Booking> getBookingsForPerformance(@NotNull Performance p) {
+        return bookingRepository.findAllByPerformance(p);
     }
 }

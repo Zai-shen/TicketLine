@@ -65,14 +65,13 @@ export class SeatElement extends SeatGroupChild {
       });
   }
 
-  convertToSeatDto(price: number): SeatDTO {
+  convertToSeatDto(): SeatDTO {
     return {
       x: this.x,
       y: this.y,
       rowLabel: this.rowLabel,
       colLabel: this.colLabel,
       radius: this.radius,
-      price: price
     };
   }
 }

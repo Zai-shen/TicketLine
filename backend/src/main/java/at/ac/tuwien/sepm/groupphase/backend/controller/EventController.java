@@ -129,4 +129,10 @@ public class EventController implements EventApi {
             eventMapper.toDto(eventService.getTopTen(eventMapper.fromDto(eventCategory)))))
             .orElseGet(() -> ResponseEntity.ok(eventMapper.toDto(eventService.getTopTen(null))));
     }
+
+    @Override
+    public ResponseEntity<SeatmapOccupationDTO> getSeatmapOfPerformance(Long eventId, Long performanceId) {
+        LOGGER.info("Get seatmap for performance {}",performanceId);
+        return ResponseEntity.ok(performanceService.getSeatmap(performanceId));
+    }
 }

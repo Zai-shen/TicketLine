@@ -18,9 +18,6 @@ public class Ticket {
     @ManyToOne
     private Booking booking;
 
-    @OneToOne
-    @JoinColumn(name = "seat_id", referencedColumnName = "id")
-    private Seat seat;
 
     public Long getId() {
         return id;
@@ -50,14 +47,6 @@ public class Ticket {
         return new DecimalFormat("0.00").format(price.divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
     }
 
-    public Seat getSeat() {
-        return seat;
-    }
-
-    public void setSeat(Seat seat) {
-        this.seat = seat;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -67,12 +56,11 @@ public class Ticket {
             return false;
         }
         Ticket ticket = (Ticket) o;
-        return Objects.equals(id, ticket.id) && Objects.equals(booking, ticket.booking) &&
-            Objects.equals(seat, ticket.seat);
+        return Objects.equals(id, ticket.id) && Objects.equals(booking, ticket.booking);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, booking, seat);
+        return Objects.hash(id, booking);
     }
 }

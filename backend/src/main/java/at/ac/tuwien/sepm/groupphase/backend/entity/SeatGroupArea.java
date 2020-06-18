@@ -36,6 +36,17 @@ public class SeatGroupArea {
     @JoinColumn(name = "seatgroup_id")
     private Set<SeatLabel> seatLabels;
 
+    @ManyToOne
+    private Seatmap seatmap;
+
+    public Seatmap getSeatmap() {
+        return seatmap;
+    }
+
+    public void setSeatmap(Seatmap seatmap) {
+        this.seatmap = seatmap;
+    }
+
     public Double getX() {
         return x;
     }
@@ -107,7 +118,6 @@ public class SeatGroupArea {
     public void setPrice(Double price) {
         this.price = price;
     }
-
 
     @Override
     public boolean equals(Object o) {

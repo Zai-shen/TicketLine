@@ -2,10 +2,12 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import org.springframework.security.access.AccessDeniedException;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface BookingService {
@@ -43,4 +45,11 @@ public interface BookingService {
      * @return pdf document contains invoice for all tickets
      */
     ByteArrayFile renderInvoice(Booking booking, boolean cancel);
+
+    /**
+     * Fetch all bookings for a specific event
+     * @param p Performance to retrieve the events for
+     * @return list of bookings for the event
+     */
+    List<Booking> getBookingsForPerformance(@NotNull Performance p);
 }
