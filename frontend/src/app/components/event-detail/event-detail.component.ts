@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { BookingDTO, EventApiService, EventDTO, PerformanceDTO, TicketApiService } from '../../../generated';
+import {
+  BookingDTO,
+  EventApiService,
+  EventDTO,
+  PerformanceDTO,
+  SeatmapOccupationDTO,
+  TicketApiService
+} from '../../../generated';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SeatRenderDTO } from '../seatplan/entities/seat-render-dto';
 import { StandingAreaSelection } from '../seatplan/entities/standing-area-selection';
-import { SeatmapOccupationDTO } from '../../../generated/model/seatmapOccupationDTO';
 import { EMPTY, Observable } from 'rxjs';
+import { Globals } from '../../global/globals';
 
 @Component({
   selector: 'tl-home',
@@ -23,7 +30,7 @@ export class EventDetailComponent implements OnInit {
 
   constructor(private eventService: EventApiService, private ticketApiService: TicketApiService,
     private route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar, private globals: Globals) {
   }
 
   ngOnInit(): void {
@@ -77,13 +84,15 @@ export class EventDetailComponent implements OnInit {
   buyTicket(reserve: boolean, performance: PerformanceDTO): void {
     const bookingDto: BookingDTO = {};
     // TODO: replace these tickets with the real tickets, once the seatmap gets implemented.
-    bookingDto.freeSeats = [{ seatGroupId: 2, amount: 1}];
-    bookingDto.fixedSeats = [{ seatgroupId: 1, x: 23, y: 23}];
+    bookingDto.freeSeats = [{ seatGroupId: 2, amount: 1 }];
+    bookingDto.fixedSeats = [{ seatgroupId: 1, x: 23, y: 23 }];
 
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
           .subscribe(() => {
-            this.snackBar.open('Kauf erfolgreich');
+            this.snackBar.open('Kauf erfolgreich', undefined, {
+              duration: this.globals.defaultSnackbarDuration
+            });
             this.router.navigate(['/user/tickets']);
           });
     }
