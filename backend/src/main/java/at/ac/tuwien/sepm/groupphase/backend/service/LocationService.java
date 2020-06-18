@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Seatmap;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,4 +41,11 @@ public interface LocationService {
      * @return list of perforrmances at this location
      */
     List<Performance> performancesForLocation(Long locationId);
+
+    /**
+     * Get Seatmap for a specific location
+     * @param location location to fetch the seatmap for
+     * @return seatmap of the location
+     */
+    Seatmap getSeatMapForLocation(Location location);
 }

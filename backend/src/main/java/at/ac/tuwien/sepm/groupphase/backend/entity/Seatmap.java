@@ -19,6 +19,9 @@ public class Seatmap {
     @JoinColumn(name = "seatmap_id")
     private Set<StandingArea> standingAreas;
 
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "seatmap")
+    private Location location;
+
     public Long getId() {
         return id;
     }
@@ -41,6 +44,14 @@ public class Seatmap {
 
     public void setStandingAreas(Set<StandingArea> standingAreas) {
         this.standingAreas = standingAreas;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override
