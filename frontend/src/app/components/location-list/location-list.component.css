@@ -47,3 +47,8 @@ mat-form-field {margin-right: 2rem}
   display: flex;
   flex-display: column;
 }
+
+.mat-h3 {
+margin: 30px 0 30px 0;
+color: #7e7e7e;
+}
