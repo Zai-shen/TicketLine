@@ -3,7 +3,7 @@ import {
   BookingRequestDTO,
   EventApiService,
   EventDTO,
-  PerformanceDTO,
+  PerformanceDTO, SeatmapOccupationDTO,
   TicketApiService
 } from '../../../generated';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SeatRenderDTO } from '../seatplan/entities/seat-render-dto';
 import { StandingAreaSelection } from '../seatplan/entities/standing-area-selection';
-import { SeatmapOccupationDTO } from '../../../generated/model/seatmapOccupationDTO';
 import { EMPTY, Observable } from 'rxjs';
 import { Globals } from '../../global/globals';
 

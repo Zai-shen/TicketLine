@@ -165,6 +165,9 @@ export class SeatgroupElement {
     if (this.isStandingArea) {
       return;
     }
+    if (this.seatRadius <= 0 || this.seatColDistance <= 0 || this.seatRowDistance <=0) {
+      return;
+    }
     const diameter = this.seatRadius * 2;
     const rows = Math.floor(this.height / (diameter * this.seatRowDistance));
     const cols = Math.floor(this.width / (diameter * this.seatColDistance));
