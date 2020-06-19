@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.service;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.Location;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Seatmap;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +26,22 @@ public interface LocationService {
      * @return list of locations at requested page number
      */
     Page<Location> getLocationList(Pageable page);
+
+    /**
+     * Get all locations without pagination.
+     * Used for dropdown search when creating new event.
+     * @return list of all locations
+     */
+    List<Location> getAllLocations();
     /**
      * Search locations base on description and address.
+     * Results are paginated (e.g. 25 results per page)
      *
      * @param location example of a location to be queried
+     * @param page the page number (default: 0)
      * @return queried location entries
      */
-    List<Location> searchLocations(Location location);
+    Page<Location> searchLocations(Location location, Pageable page);
 
     /**
      * Get performances of a specific location
@@ -40,4 +50,11 @@ public interface LocationService {
      * @return list of perforrmances at this location
      */
     List<Performance> performancesForLocation(Long locationId);
+
+    /**
+     * Get Seatmap for a specific location
+     * @param location location to fetch the seatmap for
+     * @return seatmap of the location
+     */
+    Seatmap getSeatMapForLocation(Location location);
 }

@@ -14,7 +14,7 @@ public class Location {
     @Column(nullable=false,length = 1024)
     private String description;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "seatmap_id", referencedColumnName = "id")
     private Seatmap seatmap;
 

@@ -1,9 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
-import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
-import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.impl.BookingServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -63,7 +60,8 @@ class BookingServiceTest {
             IllegalArgumentException.class);    }
 
     private List<Ticket> getTickets() {
-        Ticket ticket = new Ticket();
+        StandingTicket ticket = new StandingTicket();
+        ticket.setAmount(2L);
         ticket.setId(1L);
         return Collections.singletonList(ticket);
     }

@@ -25,8 +25,8 @@ public class Seat {
     @Column(nullable = false)
     private Double radius;
 
-    @Column(nullable = false)
-    private Double price;
+    @ManyToOne(optional = false)
+    private SeatGroupArea seatGroupArea;
 
     public Long getId() {
         return id;
@@ -76,12 +76,12 @@ public class Seat {
         this.radius = radius;
     }
 
-    public Double getPrice() {
-        return price;
+    public SeatGroupArea getSeatGroupArea() {
+        return seatGroupArea;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setSeatGroupArea(SeatGroupArea seatGroupArea) {
+        this.seatGroupArea = seatGroupArea;
     }
 
     @Override
@@ -95,11 +95,11 @@ public class Seat {
         Seat seat = (Seat) o;
         return Objects.equals(id, seat.id) && Objects.equals(x, seat.x) && Objects.equals(y, seat.y) &&
             Objects.equals(rowLabel, seat.rowLabel) && Objects.equals(colLabel, seat.colLabel) &&
-            Objects.equals(radius, seat.radius) && Objects.equals(price, seat.price);
+            Objects.equals(radius, seat.radius);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, x, y, rowLabel, colLabel, radius, price);
+        return Objects.hash(id, x, y, rowLabel, colLabel, radius);
     }
 }

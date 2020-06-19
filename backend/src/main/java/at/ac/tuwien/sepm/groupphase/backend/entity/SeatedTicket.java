@@ -1,41 +1,20 @@
 package at.ac.tuwien.sepm.groupphase.backend.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class SeatedTicket extends Ticket {
+    @OneToOne
+    @JoinColumn(name = "seat_id", referencedColumnName = "id")
+    private Seat seat;
 
-    @Column
-    private Long seatGroupId;
-
-    @Column
-    private Integer seatColumn;
-
-    @Column
-    private Integer seatRow;
-
-    public Long getSeatGroupId() {
-        return seatGroupId;
+    public Seat getSeat() {
+        return seat;
     }
 
-    public void setSeatGroupId(Long seatGroupId) {
-        this.seatGroupId = seatGroupId;
-    }
-
-    public Integer getSeatColumn() {
-        return seatColumn;
-    }
-
-    public void setSeatColumn(Integer seatColumn) {
-        this.seatColumn = seatColumn;
-    }
-
-    public Integer getSeatRow() {
-        return seatRow;
-    }
-
-    public void setSeatRow(Integer seatRow) {
-        this.seatRow = seatRow;
+    public void setSeat(Seat seat) {
+        this.seat = seat;
     }
 }

@@ -165,6 +165,9 @@ export class SeatgroupElement {
     if (this.isStandingArea) {
       return;
     }
+    if (this.seatRadius <= 0 || this.seatColDistance <= 0 || this.seatRowDistance <=0) {
+      return;
+    }
     const diameter = this.seatRadius * 2;
     const rows = Math.floor(this.height / (diameter * this.seatRowDistance));
     const cols = Math.floor(this.width / (diameter * this.seatColDistance));
@@ -339,7 +342,8 @@ export class SeatgroupElement {
         width: this.width,
         height: this.height,
         name: this.name,
-        seats: this.seats.filter(seat => seat instanceof SeatElement).map(seat => (seat as SeatElement).convertToSeatDto(this.price)),
+        price: this.price,
+        seats: this.seats.filter(seat => seat instanceof SeatElement).map(seat => (seat as SeatElement).convertToSeatDto()),
         seatLabels: this.seats.filter(seat => seat instanceof SeatLabel).map(seat => (seat as SeatLabel).convertToSeatLabelDto())
       };
     }

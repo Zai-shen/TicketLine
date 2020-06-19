@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { EventDTO, LocationApiService, LocationDTO, PerformanceDTO } from '../../../../generated';
 import { Router } from '@angular/router';
@@ -15,7 +15,8 @@ export class LocationPerformancesSheetComponent implements OnInit {
     @Inject(MAT_BOTTOM_SHEET_DATA) public location: LocationDTO,
     private locationApiService: LocationApiService,
     private bottomSheetRef: MatBottomSheetRef<LocationPerformancesSheetComponent>,
-    private router: Router
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class LocationPerformancesSheetComponent implements OnInit {
         (performances: PerformanceDTO[]) => {
           this.performances = performances;
           this.loading = false;
+          this.changeDetectorRef.detectChanges();
         }
       );
     }
