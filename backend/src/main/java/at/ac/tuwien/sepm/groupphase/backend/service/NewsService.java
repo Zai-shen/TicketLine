@@ -36,9 +36,9 @@ public interface NewsService {
      * Publish a single news entry
      *
      * @param news to publish
-     * @return published news entry
+     * @return published news entry id
      */
-    News publishNews(News news);
+    Long publishNews(News news);
 
     /**
      * Add read news entry to the set of read news

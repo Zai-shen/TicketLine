@@ -9,6 +9,7 @@ import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -64,11 +67,17 @@ public class NewsController implements NewsApi {
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
-    public ResponseEntity<Void> createNews(@Valid NewsDTO newsDTO) {
+    public ResponseEntity<Long> createNews(@Valid NewsDTO newsDTO) {
         LOGGER.info("Create news with title {}", newsDTO.getTitle());
-        News news = newsMapper.toEntity(newsDTO);
-        newsService.publishNews(news);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            newsService.publishNews(newsMapper.toEntity(newsDTO)));
+    }
+
+    @Override
+    public ResponseEntity<String> uploadPictureForNews(Long newsId, @Valid Resource body) {
+        LOGGER.info("Save image for news with id {}", newsId);
+        //body.getFile();
+        return null;
     }
 
 }

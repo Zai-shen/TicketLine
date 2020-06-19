@@ -392,7 +392,13 @@ paths:
       responses:
         201:
           description: Created news entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created news
         400:
           description: Invalid input
           content:
