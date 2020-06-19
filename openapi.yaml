@@ -302,6 +302,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /user/readNews:
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - user
+      summary: Save read news for the currently logged in user
+      operationId: addReadNewsOfUser
+      requestBody:
+        description: Read news to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsDTO'
+        required: true
+      responses:
+        200:
+          description: Successfully added read news
+          content: {}
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Cannot find user to modify
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /news:
     get:
       tags:
@@ -310,13 +341,12 @@ paths:
       operationId: getNewsList
       parameters:
         - in: query
-          name: unreadBy
+          name: inclRead
           required: false
           schema:
-            type: integer
-            format: int64
-          description: ID of a user to list only unread news of the user
-          example: 3
+            type: boolean
+          description: Also include news entries that are read by the user
+          example: true
         - in: query
           name: page
           required: false

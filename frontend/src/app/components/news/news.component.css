@@ -30,7 +30,9 @@ mat-card {
   margin-bottom: 1rem;
   cursor: pointer;
 }
-mat-form-field {margin-right: 2rem}
+mat-form-field {
+  margin-right: 2rem
+}
 
 .news-body {
   background-color: white;
