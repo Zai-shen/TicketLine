@@ -98,7 +98,7 @@ export class EventDetailComponent implements OnInit {
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [seats, _] = entry;
-      return seats.map(x => `Reihe ${x.rowLabel} Platz ${x.colLabel}`);
+      return seats.map(x => `Reihe ${x.rowLabel} Platz ${x.colLabel} - ${x.area.price}€`);
     }
     return [];
   }
@@ -107,7 +107,7 @@ export class EventDetailComponent implements OnInit {
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [_, standing] = entry;
-      return standing.map(x => x.selectedPositions > 1 ? `${x.selectedPositions} Stehplätze` : `${x.selectedPositions} Stehplatz`);
+      return standing.map(x => (x.selectedPositions > 1 ? `${x.selectedPositions} Stehplätze` : `${x.selectedPositions} Stehplatz`) + ` - ${x.selectedPositions * x.standingArea.price}€`);
     }
     return [];
   }

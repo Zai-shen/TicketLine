@@ -1841,6 +1841,10 @@ components:
         name:
           type: string
           example: 'Haupttribüne'
+        price:
+          type: number
+          format: double
+          example: 3.50
         seats:
           type: array
           items:
