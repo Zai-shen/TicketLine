@@ -20,7 +20,7 @@ export class CreateNewsComponent implements OnInit {
   submitted: boolean = false;
   newsForm: FormGroup;
   private base64PictureString: string;
-  private binaryPictureString: Blob;
+  private binaryPictureString: any;
 
   constructor(private formBuilder: FormBuilder, private newsService: NewsService,
               private authService: AuthService, private userService: UserService,
@@ -81,8 +81,14 @@ export class CreateNewsComponent implements OnInit {
   }
 
   uploadPicture(newsId: number): void {
-    console.log('newsId: ' + newsId);
-    this.newsService.uploadPictureForNewsWithId(newsId, this.binaryPictureString);
+    if (this.binaryPictureString !== undefined && this.binaryPictureString !== null) {
+      this.newsService.uploadPictureForNewsWithId(newsId, this.binaryPictureString).subscribe(
+        string => {
+          console.log('answer from server: ' + string);
+        },
+        error => () => this.errorMessageComponent.defaultServiceErrorHandling(error)
+      );
+    }
   }
 
   onUploadChange(eVent: any) {
@@ -90,19 +96,13 @@ export class CreateNewsComponent implements OnInit {
 
     if (file) {
       const reader = new FileReader();
-
       reader.onload = this.handleReaderLoaded.bind(this);
       reader.readAsBinaryString(file);
     }
   }
 
   handleReaderLoaded(readerEvent: any) {
-    // const binaryString = readerEvent.target.result;
-    // this.base64textString = btoa(binaryString);
-    // this.base64textString = ('data:image/png;base64,' + btoa(readerEvent.target.result));
     this.binaryPictureString = readerEvent.target.result;
     this.base64PictureString = (btoa(readerEvent.target.result));
-    // this.newsForm.controls['image'].setValue('abc');
-    // console.log(this.base64PictureString);
   }
 }
