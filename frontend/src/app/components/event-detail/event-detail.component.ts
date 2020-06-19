@@ -82,6 +82,7 @@ export class EventDetailComponent implements OnInit {
 
   selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaSelection[]) {
     const entry = this.selectedSeats.get(performance);
+    standingAreas = standingAreas.filter(x => x.selectedPositions > 0);
     if (entry) {
       const [seats, _] = entry;
       this.selectedSeats.set(performance, [seats, standingAreas]);
@@ -94,9 +95,26 @@ export class EventDetailComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
+  formatSeats(performance: PerformanceDTO): string[] {
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [seats, _] = entry;
+      return seats.map(x => `Reihe ${x.rowLabel} Platz ${x.colLabel}`);
+    }
+    return [];
+  }
+
+  formatStanding(performance: PerformanceDTO): string[] {
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [_, standing] = entry;
+      return standing.map(x => x.selectedPositions > 1 ? `${x.selectedPositions} Stehplätze` : `${x.selectedPositions} Stehplatz`);
+    }
+    return [];
+  }
+
   buyTicket(reserve: boolean, performance: PerformanceDTO): void {
     const bookingDto: BookingRequestDTO = {};
-    // TODO: replace these tickets with the real tickets, once the seatmap gets implemented.
     const entry = this.selectedSeats.get(performance);
     let seats: SeatRenderDTO[] = [];
     let standing: StandingAreaSelection[] = [];
