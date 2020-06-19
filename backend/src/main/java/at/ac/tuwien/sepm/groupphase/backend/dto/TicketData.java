@@ -20,13 +20,15 @@ import java.util.UUID;
 public class TicketData {
     private final Event event;
     private final String seat;
+    private final String area;
     private final UUID uuid;
     private final Performance performance;
     private final BigDecimal price;
 
-    public TicketData(Event event, String seat, Performance performance, UUID uuid, BigDecimal price) {
+    public TicketData(Event event, String seat, String area, Performance performance, UUID uuid, BigDecimal price) {
         this.event = event;
         this.seat = seat;
+        this.area = area;
         this.performance = performance;
         this.uuid = uuid;
         this.price = price;
@@ -38,6 +40,10 @@ public class TicketData {
 
     public String getSeat() {
         return seat;
+    }
+
+    public String getArea() {
+        return area;
     }
 
     public UUID getUUID() {

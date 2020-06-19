@@ -2,12 +2,12 @@ package at.ac.tuwien.sepm.groupphase.backend.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
 public class SeatedTicket extends Ticket {
-    @OneToOne
-    @JoinColumn(name = "seat_id", referencedColumnName = "id")
+    @ManyToOne
     private Seat seat;
 
     public Seat getSeat() {

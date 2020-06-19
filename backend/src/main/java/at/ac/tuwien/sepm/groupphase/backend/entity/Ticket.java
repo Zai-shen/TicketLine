@@ -15,7 +15,7 @@ public class Ticket {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Booking booking;
 
 

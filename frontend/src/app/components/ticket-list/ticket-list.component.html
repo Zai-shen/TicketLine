@@ -7,12 +7,12 @@
   </mat-button-toggle-group>
   <mat-card *ngFor="let booking of filteredBookings">
     <mat-card-title >{{booking.performance.event.title}}</mat-card-title>
-    <mat-card-subtitle><mat-icon>access_time</mat-icon><tl-timestamp [timestamp]="booking.performance.dateTime"></tl-timestamp></mat-card-subtitle>
+    <mat-card-subtitle><mat-icon>access_time</mat-icon>Gekauft <tl-timestamp [timestamp]="booking.performance.dateTime"></tl-timestamp></mat-card-subtitle>
     <mat-card-subtitle><mat-icon>location_on</mat-icon>{{ booking.performance.location.description }}</mat-card-subtitle>
     <mat-card-content>
       <mat-list>
         <mat-list-item *ngIf="booking.fixedSeats.length > 0">Sitzplätze: {{ booking.fixedSeats.length }}</mat-list-item>
-        <mat-list-item *ngIf="booking.freeSeats.amount > 0">Stehplätze: {{ booking.freeSeats.amount }}</mat-list-item>
+        <mat-list-item *ngIf="booking.freeSeats.length > 0">Stehplätze: {{ sumStanding(booking.freeSeats) }}</mat-list-item>
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
