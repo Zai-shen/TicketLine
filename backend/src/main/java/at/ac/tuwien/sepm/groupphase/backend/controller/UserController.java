@@ -4,12 +4,17 @@ import at.ac.tuwien.sepm.groupphase.backend.api.UserApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.BookingMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserMapper;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.*;
+import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.UserInfoMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
+import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
+import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
+import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,15 +47,19 @@ public class UserController implements UserApi {
     private final UserInfoMapper userInfoMapper;
     private final BookingService bookingService;
     private final BookingMapper bookingMapper;
+    private final NewsService newsService;
+    private final NewsMapper newsMapper;
 
     @Autowired
     public UserController(UserMapper userMapper, UserInfoMapper userInfoMapper, UserService userService,
-        BookingService bookingService, BookingMapper bookingMapper) {
+        BookingService bookingService, BookingMapper bookingMapper, NewsService newsService, NewsMapper newsMapper) {
         this.userMapper = userMapper;
         this.userInfoMapper = userInfoMapper;
         this.userService = userService;
         this.bookingService = bookingService;
         this.bookingMapper = bookingMapper;
+        this.newsService = newsService;
+        this.newsMapper = newsMapper;
     }
 
     @Override
@@ -170,6 +179,15 @@ public class UserController implements UserApi {
     public ResponseEntity<Void> removeMyAccount() {
         LOGGER.info("Remove self");
         userService.removeUser();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<Void> addReadNewsOfUser(@Valid NewsDTO newsDTO) {
+        LOGGER.info("Add read news with id {}", newsDTO.getId());
+        News news = newsMapper.toEntity(newsDTO);
+        newsService.saveReadNewsForCurrentUser(news.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

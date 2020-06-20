@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.groupphase.backend.service;
 
+import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.BusinessValidationException;
 import at.ac.tuwien.sepm.groupphase.backend.exception.DuplicateEntityException;
@@ -97,5 +98,4 @@ public interface UserService extends UserDetailsService {
      * @throws NotFoundException when the user doesn't exist
      */
     void removeUser();
-
 }

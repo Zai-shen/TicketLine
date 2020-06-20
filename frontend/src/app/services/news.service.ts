@@ -14,8 +14,8 @@ export class NewsService {
     return this.newsApiService.getNews(id);
   }
 
-  getNewsList(page: number): Observable<HttpResponse<Array<NewsDTO>>> {
-    return this.newsApiService.getNewsList(0, page, 'response');
+  getNewsList(inclRead: boolean, page: number): Observable<HttpResponse<Array<NewsDTO>>> {
+    return this.newsApiService.getNewsList(inclRead, page, 'response');
   }
 
   createNews(news: NewsDTO): Observable<any> {

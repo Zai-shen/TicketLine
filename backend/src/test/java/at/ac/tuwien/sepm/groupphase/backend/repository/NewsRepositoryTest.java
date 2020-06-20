@@ -1,15 +1,21 @@
 package at.ac.tuwien.sepm.groupphase.backend.repository;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
+import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.util.DomainTestObjectFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -26,6 +32,9 @@ public class NewsRepositoryTest {
 
     @Autowired
     private NewsRepository newsRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void givenNothing_whenSaveNews_thenFindListWithOneElementAndFindNewsById() {
@@ -77,6 +86,31 @@ public class NewsRepositoryTest {
             () -> assertNotNull(newsRepository.findById(newsTwo.getId())),
             () -> assertNotNull(newsRepository.findById(newsThree.getId()))
         );
+    }
+
+    @Test
+    public void testFindAllUnreadNewsOfUser() {
+        final News news = DomainTestObjectFactory.getNews();
+        news.setId(null);
+        final News unreadNews = DomainTestObjectFactory.getNews();
+        unreadNews.setId(null);
+        final User user = DomainTestObjectFactory.getUser();
+        user.setId(null);
+        final User otherUser = DomainTestObjectFactory.getUser();
+        otherUser.setEmail("otherTestUser@example.com");
+        otherUser.setId(null);
+
+        userRepository.save(otherUser);
+        userRepository.saveAndFlush(user);
+        news.getReadByUsers().add(user);
+        news.getReadByUsers().add(otherUser);
+        unreadNews.getReadByUsers().add(otherUser);
+        newsRepository.save(news);
+        newsRepository.saveAndFlush(unreadNews);
+
+        final Page<News> result = newsRepository.findAllUnreadNewsOfUser(user, Pageable.unpaged());
+
+        assertThat(result).containsExactly(unreadNews);
     }
 
 }
