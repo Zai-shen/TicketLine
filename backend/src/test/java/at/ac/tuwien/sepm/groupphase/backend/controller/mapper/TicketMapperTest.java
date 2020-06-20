@@ -33,12 +33,13 @@ class TicketMapperTest {
 
         SeatedTicket seatedTicket = getSeatedTicket();
 
-        when(seatService.byPosition(any(),any(),any())).thenReturn(new Seat());
-        SeatGroupArea sga = new SeatGroupArea();
-        sga.setPrice(3.50);
+        Seat mockSeat = new Seat();
+        SeatGroupArea mockArea = new SeatGroupArea();
+        mockArea.setPrice(3.50);
+        mockSeat.setSeatGroupArea(mockArea);
+        when(seatService.getSeat(any())).thenReturn(mockSeat);
         StandingArea sa = new StandingArea();
         sa.setPrice(3.50);
-        when(seatService.getArea(any())).thenReturn(sga);
         when(seatService.getStandingArea(any())).thenReturn(sa);
         List<Ticket> ticketList = ticketMapper.fromDto(bookingDTO);
 
@@ -46,7 +47,6 @@ class TicketMapperTest {
         assertThat(ticketList.size()).isEqualTo(2);
         assertThat(ticketList).contains(seatedTicket);
         verify(seatService,times(1)).getSeat(1L);
-        verify(seatService,times(1)).getArea(any());
         verify(seatService,times(1)).getStandingArea(any());
     }
 
