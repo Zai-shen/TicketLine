@@ -1,6 +1,12 @@
 <mat-card>
 <div class="results">
-  <p *ngIf="news"><b>{{newsFound}} News gefunden</b></p>
+  <p *ngIf="news"><b>{{totalAmountOfNews}} News gefunden</b></p>
+  <mat-slide-toggle
+    color="primary"
+    [(ngModel)]="alsoShowReadNews"
+    (change)="onShowReadNewsToggleSwitch()">
+    Gelesene anzeigen
+  </mat-slide-toggle>
   <button *ngIf="isAdmin()" routerLink="/news/addNews" type="button" mat-stroked-button color="primary">News hinzufügen</button>
 </div>
 </mat-card>
@@ -14,7 +20,7 @@
   </mat-card-content>
 </mat-card>
 
-<mat-paginator [length]="amountOfPages"
+<mat-paginator [length]="totalAmountOfNews"
                [pageSize]="NEWS_LIST_PAGE_SIZE"
                [pageSizeOptions]="[NEWS_LIST_PAGE_SIZE]"
                (page)="onPaginationChange($event)">

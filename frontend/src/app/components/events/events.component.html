@@ -55,8 +55,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-paginator [length]="amountOfPages"
-                 [pageIndex]="currentPage"
+  <mat-paginator [length]="totalAmountOfEvents"
                  [pageSize]="EVENT_LIST_PAGE_SIZE"
                  [pageSizeOptions]="[EVENT_LIST_PAGE_SIZE]"
                  (page)="onPaginationChange($event)">

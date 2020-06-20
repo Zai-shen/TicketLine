@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoginDTO, UserApiService, UserDTO, UserUpdateDTO, UserInfoDTO } from '../../generated';
+import { LoginDTO, UserApiService, UserDTO, UserUpdateDTO, UserInfoDTO, NewsDTO } from '../../generated';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 
@@ -40,5 +40,9 @@ export class UserService {
 
   removeUser(): Observable<any> {
     return this.userApiService.removeMyAccount();
+  }
+
+  addReadNewsOfUser(newsDTO: NewsDTO): Observable<any> {
+    return this.userApiService.addReadNewsOfUser(newsDTO);
   }
 }

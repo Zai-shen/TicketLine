@@ -2,12 +2,10 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ArtistApiService, ArtistDTO, ErrorType, EventCategory, EventDTO, SearchEventDTO } from '../../../generated';
 import { AuthService } from '../../services/auth.service';
 import { EventService } from '../../services/event.service';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
-import { merge, Observable } from 'rxjs';
-import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -29,13 +27,15 @@ export class EventsComponent implements OnInit {
 
 
   events: EventDTO[];
-  currentPage = 0;
-  amountOfPages = 1;
+  totalAmountOfEvents = 0;
   searchForm: FormGroup;
-  artistId: Observable<number | null>;
+  private currentPage = 0;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
+
+  @ViewChild(MatPaginator)
+  private paginator: MatPaginator;
 
   get eventCategories(): string[] {
     return Object.keys(EventCategory);
@@ -80,7 +80,7 @@ export class EventsComponent implements OnInit {
   }
 
   searchEvents(): void {
-    this.currentPage = 0;
+    this.paginator.firstPage();
     this.reload();
   }
 
@@ -99,7 +99,7 @@ export class EventsComponent implements OnInit {
         .subscribe(events => {
             if (events.body !== null) {
               this.events = events.body;
-              this.amountOfPages = Number(events.headers.get('X-Total-Count')) || 1;
+              this.totalAmountOfEvents = Number(events.headers.get('X-Total-Count')) || 0;
             } else {
               this.errorMessageComponent.throwCustomError('Ungültige Antwort vom Server in der Eventabfrage',
                 ErrorType.FATAL);

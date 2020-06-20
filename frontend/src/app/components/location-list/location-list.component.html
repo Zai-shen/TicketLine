@@ -44,7 +44,7 @@
     </div>
   </form>
 
-  <h3 class="mat-h3">{{locationsFound}} Orte gefunden</h3>
+  <h3 class="mat-h3">{{totalAmountOfLocations}} Orte gefunden</h3>
 
   <mat-card *ngFor="let location of locations" (click)="openDetails(location)">
     <mat-card-title>{{location.description}}</mat-card-title>
@@ -57,7 +57,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-paginator [length]="locationsFound"
+  <mat-paginator [length]="totalAmountOfLocations"
                  [pageSize]="LIST_PAGE_SIZE"
                  [pageSizeOptions]="[LIST_PAGE_SIZE]"
                  (page)="onPaginationChange($event)">

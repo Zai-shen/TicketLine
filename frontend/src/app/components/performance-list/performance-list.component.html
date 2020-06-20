@@ -3,16 +3,16 @@
   <form [formGroup]="performanceSearch" (ngSubmit)="newSearch()">
     <mat-form-field class="date-time" appearance="standard">
       <mat-label>Datum</mat-label>
-      <input matInput [min]="minDate" [matDatepicker]="datepicker" (dateChange)="dateChange($event)" name="date" formControlName="date" placeholder="Datum">
+      <input matInput [matDatepicker]="datepicker" (dateChange)="dateChange($event)" name="date" formControlName="date" placeholder="Datum">
       <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
       <mat-datepicker #datepicker></mat-datepicker>
-      <mat-error *ngIf="submitted && performanceForm.get('date').errors" class="error">
-        <div *ngIf="performanceForm.get('date').errors.required">
+      <mat-error *ngIf="searched && performanceSearch.get('date').errors" class="error">
+        <div *ngIf="performanceSearch.get('date').errors.required; else invalidDate">
           Datum ist ein Pflichtfeld!
         </div>
-        <div *ngIf="!performanceSearch.get('date').errors.required">
-          Datum ungültig!
-        </div>
+        <ng-template #invalidDate>
+          <div>Datum ungültig!</div>
+        </ng-template>
       </mat-error>
     </mat-form-field>
 
@@ -21,7 +21,7 @@
       <input matInput [ngxTimepicker]="timepicker" [format]="24" (ngModelChange)="timeChange($event)" disableClick="true" placeholder="Uhrzeit" formControlName="time" />
       <ngx-material-timepicker-toggle matSuffix [for]="timepicker"></ngx-material-timepicker-toggle>
       <ngx-material-timepicker #timepicker (timeSet)="timeChange($event)" [minutesGap]="5"></ngx-material-timepicker>
-      <mat-error *ngIf="submitted && performanceForm.get('time').errors" class="error">
+      <mat-error *ngIf="searched && performanceSearch.get('time').errors" class="error">
         Zeit muss auf einen gültigen Wert gesetzt werden!
       </mat-error>
     </mat-form-field>
@@ -50,7 +50,7 @@
     <button *ngIf="searched" mat-raised-button color="secondary" type="button" (click)="clearSearch()">Suche zurücksetzen</button>
   </form>
 
-  <h3 class="mat-h3">{{performancesFound}} Aufführungen gefunden</h3>
+  <h3 class="mat-h3">{{totalAmountOfPerformances}} Aufführungen gefunden</h3>
 
   <mat-card *ngFor="let performance of performances" [routerLink]="['/events',performance.event.id]">
     <mat-card-title>{{performance.event.title}}</mat-card-title>
@@ -66,7 +66,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-paginator [length]="amountOfPages"
+  <mat-paginator [length]="totalAmountOfPerformances"
                  [pageSize]="LIST_PAGE_SIZE"
                  [pageSizeOptions]="[LIST_PAGE_SIZE]"
                  (page)="onPaginationChange($event)">
