@@ -87,7 +87,7 @@ public class BookingServiceImpl implements BookingService {
                 area = s.getSeatGroupArea().getName();
             } else if (ticket instanceof StandingTicket) {
                 area = ((StandingTicket) ticket).getStandingArea().getName();
-                seat = String.format("%dx Freihe Platzwahl", ((StandingTicket) ticket).getAmount());
+                seat = String.format("%dx Freie Platzwahl", ((StandingTicket) ticket).getAmount());
             }
             tickets.add(new TicketData(
                 booking.getPerformance().getEvent(),
