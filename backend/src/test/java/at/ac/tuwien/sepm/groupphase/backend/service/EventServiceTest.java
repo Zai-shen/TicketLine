@@ -78,7 +78,7 @@ public class EventServiceTest {
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
         eventService.cancelBooking(1L);
 
-        assertThat(user.getBookings()).isEmpty();
+        assertThat(booking.getCanceled()).isTrue();
     }
 
     @Test
