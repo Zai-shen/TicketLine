@@ -98,9 +98,9 @@ public class EventController implements EventApi {
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Long> createTicket(Long eventId, Long performanceId, @Valid Optional<Boolean> reserve,
-        @Valid BookingDTO bookingDTO) {
+        @Valid BookingRequestDTO bookingRequestDTO) {
         LOGGER.info("Create ticket for performance {}", performanceId);
-        bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingDTO));
+        bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingRequestDTO));
         return ResponseEntity.ok(0L);
     }
 

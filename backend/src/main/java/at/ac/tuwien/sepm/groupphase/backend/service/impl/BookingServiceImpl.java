@@ -80,17 +80,23 @@ public class BookingServiceImpl implements BookingService {
     public ByteArrayFile renderBooking(Booking booking) {
         List<TicketData> tickets = new LinkedList<>();
         for(Ticket ticket : booking.getTickets()) {
-            String seat = "Freie Platzwahl";
+            String area = null;
+            String seat = null;
             if (ticket instanceof SeatedTicket) {
                 Seat s = ((SeatedTicket) ticket).getSeat();
                 seat = String.format("Reihe %s Platz %s",s.getRowLabel(),s.getColLabel());
+                area = s.getSeatGroupArea().getName();
+            } else if (ticket instanceof StandingTicket) {
+                area = ((StandingTicket) ticket).getStandingArea().getName();
+                seat = String.format("%dx Freie Platzwahl", ((StandingTicket) ticket).getAmount());
             }
             tickets.add(new TicketData(
                 booking.getPerformance().getEvent(),
                 seat,
+                area,
                 booking.getPerformance(),
                 ticket.getUuid(),
-                BigDecimal.valueOf(3.50)));
+                ticket.getPrice()));
         }
         return ticketService.renderTickets(tickets);
     }

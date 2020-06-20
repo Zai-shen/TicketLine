@@ -32,7 +32,7 @@ public class SeatGroupArea {
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY,mappedBy = "seatGroupArea")
     private Set<Seat> seats;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "seatgroup_id")
     private Set<SeatLabel> seatLabels;
 

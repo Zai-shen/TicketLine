@@ -53,7 +53,7 @@
                 ${ticket.event.title}
             </h1>
             <h2>
-                ${ticket.seat}
+                ${ticket.area}<br/>${ticket.seat}
             </h2>
         </div>
         <div>

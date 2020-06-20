@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TicketApiService, BookingDTO } from '../../../generated';
+import { TicketApiService, BookingDTO, FreeSeatgroupBookingDTO } from '../../../generated';
 import { format, formatDistanceToNow } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { BookingService } from '../../services/booking.service';
@@ -25,13 +25,7 @@ export class TicketListComponent implements OnInit {
     return this.bookings.filter(b => b.reservation === this.reserved);
   }
 
-  public formatTimestamp(timestamp: string): string {
-    return formatDistanceToNow(new Date(timestamp), {locale: de, addSuffix: true});
-  }
 
-  public formatAbsolute(timestamp: string): string {
-    return format(new Date(timestamp), 'd MMM y - HH:mm', {locale: de});
-  }
 
   ngOnInit() {
     this.ticketService.getTicketsOfUser().subscribe(value => {
@@ -43,7 +37,13 @@ export class TicketListComponent implements OnInit {
     this.bookingService.renderInvoice(ticketId);
   }
 
+  sumStanding(free: FreeSeatgroupBookingDTO[]): number {
+    return free.reduce((a, b) => a + b.amount, 0);
+  }
+
   downloadTicket(booking: BookingDTO) {
-    this.bookingService.renderTicket(booking.id!!);
+    if (booking.id) {
+      this.bookingService.renderTicket(booking.id);
+    }
   }
 }

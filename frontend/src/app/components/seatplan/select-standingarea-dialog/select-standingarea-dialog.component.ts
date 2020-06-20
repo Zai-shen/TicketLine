@@ -18,7 +18,7 @@ export class SelectStandingareaDialogComponent implements OnInit {
   get availablePlaces() {
     const totalPlaces = this.standingAreaSelection.standingArea.maxPeople;
     const soldPlaces = this.standingAreaSelection.standingArea.sold;
-    const reservedPlaces = this.standingAreaSelection.standingArea.sold;
+    const reservedPlaces = this.standingAreaSelection.standingArea.reserved;
     const selectedPlaces = this.standingAreaSelection.selectedPositions;
     return  totalPlaces - soldPlaces - reservedPlaces - selectedPlaces;
   }
