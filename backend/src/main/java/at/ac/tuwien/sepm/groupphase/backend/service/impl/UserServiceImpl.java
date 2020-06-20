@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
     public void removeUser() {
         User user = getCurrentLoggedInUser();
 
-        if (!user.getBookings().isEmpty()) {
+        if (user.getBookings().stream().anyMatch(booking -> !booking.getCanceled())) {
             throw new BusinessValidationException(
                 "Bevor der User gelöscht werden kann, müssen alle Tickets und Reservierungen storniert werden");
         }

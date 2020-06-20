@@ -18,11 +18,14 @@ public class Booking {
     @ManyToOne
     private Performance performance;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "booking")
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
     private List<Ticket> tickets;
 
     @Column(nullable = false)
     private LocalDate date;
+
+    @Column
+    private Boolean canceled;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -73,6 +76,14 @@ public class Booking {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        this.canceled = canceled;
     }
 
     @Override

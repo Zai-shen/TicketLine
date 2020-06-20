@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StandingAreaRepository extends JpaRepository<StandingArea, Long> {
 
-    @Query("SELECT sum(t.amount) FROM StandingArea sa JOIN StandingTicket t ON t.standingArea = sa JOIN Booking b ON t.booking=b WHERE sa=?1 AND b.performance=?2 AND b.isReservation = FALSE")
+    @Query("SELECT sum(t.amount) FROM StandingArea sa JOIN StandingTicket t ON t.standingArea = sa JOIN Booking b ON t.booking=b WHERE sa=?1 AND b.performance=?2 AND b.isReservation = FALSE AND b.canceled = FALSE")
     Integer sumSold(StandingArea sa, Performance p);
-    @Query("SELECT sum(t.amount) FROM StandingArea sa JOIN StandingTicket t ON t.standingArea = sa JOIN Booking b ON t.booking=b WHERE sa=?1 AND b.performance=?2 AND b.isReservation = TRUE")
+    @Query("SELECT sum(t.amount) FROM StandingArea sa JOIN StandingTicket t ON t.standingArea = sa JOIN Booking b ON t.booking=b WHERE sa=?1 AND b.performance=?2 AND b.isReservation = TRUE AND b.canceled = FALSE")
     Integer sumReserved(StandingArea sa, Performance p);
 }

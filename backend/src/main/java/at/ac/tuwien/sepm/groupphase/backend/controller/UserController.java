@@ -133,7 +133,7 @@ public class UserController implements UserApi {
     public ResponseEntity<Resource> getInvoice(Long bookingId, @Valid Optional<Boolean> cancel) {
         LOGGER.info("Get the invoice for {}", bookingId);
         Booking booking = bookingService.getBookingOfCurrentUser(bookingId);
-        ByteArrayFile pdf = bookingService.renderInvoice(booking, cancel.orElse(false));
+        ByteArrayFile pdf = bookingService.renderInvoice(booking);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.invoke.MethodHandles;
 import java.time.OffsetDateTime;
@@ -80,6 +81,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    @Transactional
     public void cancelBooking(Long bookingId) {
         User user = userService.getCurrentLoggedInUser();
 
@@ -89,7 +91,6 @@ public class EventServiceImpl implements EventService {
         }
 
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(NotFoundException::new);
-        user.getBookings().remove(booking);
-        bookingRepository.delete(booking);
+        booking.setCanceled(true);
     }
 }
