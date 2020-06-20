@@ -150,7 +150,7 @@ public class UserController implements UserApi {
         Booking booking = bookingService.getBookingOfCurrentUser(bookingId);
 
         if (booking.getReservation() != null && booking.getReservation()) {
-            throw new BusinessValidationException("reservierte Tickets können nicht geducked werden.");
+            throw new BusinessValidationException("reservierte Tickets können nicht gedruckt werden.");
         }
 
         ByteArrayFile pdf = bookingService.renderBooking(booking);
