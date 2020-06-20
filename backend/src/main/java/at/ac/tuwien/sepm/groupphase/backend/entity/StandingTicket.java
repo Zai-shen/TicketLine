@@ -27,4 +27,9 @@ public class StandingTicket extends Ticket {
     public void setStandingArea(StandingArea standingArea) {
         this.standingArea = standingArea;
     }
+
+    @Override
+    public Long formatAmount() {
+        return this.amount;
+    }
 }

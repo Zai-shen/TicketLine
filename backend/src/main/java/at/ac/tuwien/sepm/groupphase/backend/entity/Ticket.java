@@ -49,9 +49,6 @@ public class Ticket {
     }
 
     public Long formatAmount() {
-        if (this instanceof StandingTicket) {
-            return ((StandingTicket) this).getAmount();
-        }
         return 1L;
     }
 
