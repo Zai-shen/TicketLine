@@ -819,8 +819,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
-  /event/{eventId}/performance/{performanceId}/ticket/cancel:
-    post:
+  /event/booking/{bookingId}:
+    delete:
       security:
         - ticketline_auth: []
       tags:
@@ -829,36 +829,17 @@ paths:
       operationId: cancelTickets
       parameters:
         - in: path
-          name: eventId
+          name: bookingId
           schema:
             type: integer
             format: int64
           description: ID of the event of the performance
           required: true
           example: 73
-        - in: path
-          name: performanceId
-          schema:
-            type: integer
-            format: int64
-          description: ID of the performance to cancel tickets from
-          required: true
-          example: 66
-      requestBody:
-        description: Booked seats to cancel
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingDTO'
       responses:
         200:
-          description: Canceled Tickets
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: integer
+          description: Cancelation Successfuel
+          content: {}
         400:
           description: Invalid input
           content:
@@ -1863,6 +1844,8 @@ components:
         performance:
           $ref: '#/components/schemas/PerformanceDTO'
         reservation:
+          type: boolean
+        canceled:
           type: boolean
         fixedSeats:
           type: array

@@ -16,7 +16,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button color="warn">Stornieren</button>
+      <button mat-button color="warn" (click)="cancelBooking(booking)">Stornieren</button>
       <button mat-button *ngIf="!booking.reservation" (click)="downloadTicket(booking)">Ticket Download</button>
       <button mat-button *ngIf="booking.reservation" color="primary">Ticket Kaufen</button>
       <button mat-button *ngIf="!booking.reservation" (click)="downloadInvoice(booking.id)">Rechnung Download</button>

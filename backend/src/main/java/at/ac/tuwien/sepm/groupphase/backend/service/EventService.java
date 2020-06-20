@@ -48,4 +48,11 @@ public interface EventService {
      */
     List<Event> getTopTen(CategoryEnum category);
 
+    /**
+     * cancels all tickets in a booking
+     * @param bookingId if of the booking to be canceled
+     * @throws BusinessValidationException when the booking does not belong to the user
+     */
+    void cancelBooking(Long bookingId);
+
 }

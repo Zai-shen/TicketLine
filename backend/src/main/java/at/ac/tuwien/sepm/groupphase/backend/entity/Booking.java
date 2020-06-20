@@ -18,7 +18,7 @@ public class Booking {
     @ManyToOne
     private Performance performance;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "booking")
     private List<Ticket> tickets;
 
     @Column(nullable = false)
@@ -75,11 +75,6 @@ public class Booking {
         this.user = user;
     }
 
-    public Boolean isCanceled() {
-        // TODO: 09.06.2020 implement with ticket/reservation cancelation
-        return false;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -88,8 +83,8 @@ public class Booking {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Booking location = (Booking) o;
-        return java.util.Objects.equals(id, location.id);
+        Booking booking = (Booking) o;
+        return java.util.Objects.equals(id, booking.id);
     }
 
     @Override
