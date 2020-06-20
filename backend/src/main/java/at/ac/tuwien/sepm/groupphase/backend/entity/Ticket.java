@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.UUID;
 
 @Entity
 public class Ticket {
@@ -18,6 +19,8 @@ public class Ticket {
     @ManyToOne
     private Booking booking;
 
+    @Column
+    private UUID uuid;
 
     public Long getId() {
         return id;
@@ -45,6 +48,14 @@ public class Ticket {
 
     public String formatPriceExclVAT() {
         return new DecimalFormat("0.00").format(price.divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override
