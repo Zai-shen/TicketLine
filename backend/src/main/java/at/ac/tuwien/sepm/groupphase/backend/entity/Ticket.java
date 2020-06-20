@@ -15,7 +15,7 @@ public class Ticket {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Booking booking;
 
 
@@ -44,7 +44,12 @@ public class Ticket {
     }
 
     public String formatPriceExclVAT() {
-        return new DecimalFormat("0.00").format(price.divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
+        BigDecimal sum = this.price.multiply(BigDecimal.valueOf(this.formatAmount()));
+        return new DecimalFormat("0.00").format(sum.divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
+    }
+
+    public Long formatAmount() {
+        return 1L;
     }
 
     @Override

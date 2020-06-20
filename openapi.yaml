@@ -821,7 +821,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BookingDTO'
+              $ref: '#/components/schemas/BookingRequestDTO'
       responses:
         201:
           description: Created Tickets
@@ -1904,6 +1904,10 @@ components:
         name:
           type: string
           example: 'Haupttribüne'
+        price:
+          type: number
+          format: double
+          example: 3.50
         seats:
           type: array
           items:
@@ -1928,6 +1932,17 @@ components:
           items:
             $ref: '#/components/schemas/SeatgroupSeatDTO'
         freeSeats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+    BookingRequestDTO:
+      properties:
+        seats:
+          type: array
+          items:
+            type: integer
+            format: int64
+        areas:
           type: array
           items:
             $ref: '#/components/schemas/FreeSeatgroupBookingDTO'

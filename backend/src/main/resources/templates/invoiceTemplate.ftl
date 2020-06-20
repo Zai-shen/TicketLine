@@ -65,7 +65,7 @@
         </tr>
         <#list data.booking.tickets as ticket>
             <tr>
-                <td>1</td>
+                <td>${ticket.formatAmount()}</td>
                 <td>${data.booking.performance.event.title}</td>
                 <td class="align-right">${ticket.formatPriceExclVAT()} €</td>
             </tr>
