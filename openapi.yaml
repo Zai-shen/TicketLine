@@ -838,7 +838,7 @@ paths:
           example: 73
       responses:
         200:
-          description: Cancelation Successfuel
+          description: Cancelation Successful
           content: {}
         400:
           description: Invalid input
