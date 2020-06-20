@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ErrorType, EventCategory, EventDTO, SearchEventDTO } from '../../../generated';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ArtistApiService, ArtistDTO, ErrorType, EventCategory, EventDTO, SearchEventDTO } from '../../../generated';
 import { AuthService } from '../../services/auth.service';
 import { EventService } from '../../services/event.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime, map, switchMap, tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'tl-events',
@@ -14,6 +16,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class EventsComponent implements OnInit {
 
   readonly EVENT_LIST_PAGE_SIZE = 25;
+
+  constructor(
+    private readonly eventService: EventService,
+    private readonly authService: AuthService,
+    private formBuilder: FormBuilder,
+    private readonly artistService: ArtistApiService,
+    private readonly route: ActivatedRoute) {
+  }
+
 
   events: EventDTO[];
   totalAmountOfEvents = 0;
@@ -26,23 +37,38 @@ export class EventsComponent implements OnInit {
   @ViewChild(MatPaginator)
   private paginator: MatPaginator;
 
-  constructor(private readonly eventService: EventService,
-    private readonly authService: AuthService, private formBuilder: FormBuilder) {
-  }
-
   get eventCategories(): string[] {
     return Object.keys(EventCategory);
   }
 
   ngOnInit(): void {
-    this.reload();
     this.searchForm = this.formBuilder.group({
       title: [''],
       category: [null],
       duration: [''],
-      description: ['']
+      description: [''],
+      artist: [''],
     });
+    const artistCtrl = this.searchForm.get('artist');
+    this.route.queryParamMap
+        .pipe(map(params => params.get('artist_id')))
+        .subscribe(
+          (value: string | null) => {
+            if (value !== null && !isNaN(+value)) {
+              this.artistService.getArtist(+value).subscribe(
+                (artist: ArtistDTO) => {
+                  if (artistCtrl !== null) {
+                    artistCtrl.setValue(artist);
+                    this.reload();
+                  }
+                }
+              );
+            }
+          }
+        );
+    this.reload();
   }
+
 
   isAdminLoggedIn(): boolean {
     return this.authService.isAdminLoggedIn();
@@ -60,9 +86,13 @@ export class EventsComponent implements OnInit {
 
   private reload(): void {
     let searchEventDTO: SearchEventDTO = {};
-
+    console.log(this.searchForm.value);
     if (this.searchForm) {
       searchEventDTO = Object.assign({}, this.searchForm.value);
+      // noinspection SuspiciousTypeOfGuard
+      if (!searchEventDTO.artist?.id) {
+        searchEventDTO.artist = undefined;
+      }
     }
 
     this.eventService.searchEvents(searchEventDTO, this.currentPage)
@@ -77,5 +107,4 @@ export class EventsComponent implements OnInit {
           },
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
   }
-
 }

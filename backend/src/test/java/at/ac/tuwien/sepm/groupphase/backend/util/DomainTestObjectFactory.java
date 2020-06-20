@@ -83,6 +83,7 @@ public class DomainTestObjectFactory {
         event.setCategory(CategoryEnum.FESTIVAL);
         event.setDescription("description");
         event.setDuration(10L);
+        event.setArtist(getArtist());
         return event;
     }
 

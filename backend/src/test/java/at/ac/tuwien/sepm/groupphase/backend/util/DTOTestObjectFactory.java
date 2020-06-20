@@ -67,6 +67,7 @@ public class DTOTestObjectFactory {
             .category(EventCategory.FESTIVAL)
             .description("description")
             .duration(10L)
+            .artist(getArtistDTO())
             .id(1L);
     }
 
@@ -74,7 +75,12 @@ public class DTOTestObjectFactory {
         return new SearchEventDTO().title("Event-Title")
             .category(EventCategory.FESTIVAL)
             .description("description")
-            .duration(10L);
+            .duration(10L)
+            .artist(getArtistDTO());
+    }
+
+    public static ArtistDTO getArtistDTO() {
+        return new ArtistDTO().firstname("Wolfgang").lastname("Mozart").id(1L);
     }
 
     public static PerformanceDTO getPerformanceDTO() {

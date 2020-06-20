@@ -24,6 +24,13 @@ public interface ArtistService {
     Page<Artist> searchArtists(Artist artist, Pageable pageable);
 
     /**
+     * Retrieve an artist entity from storage
+     * @param artistId id of the artist to fetch
+     * @return Artist entity with the specified ID
+     */
+    Artist getArtist(Long artistId);
+
+    /**
      * Creates a new artist
      * @param artist the Artist to be created
      * @throws BusinessValidationException when the artist is incomplete
