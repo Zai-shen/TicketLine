@@ -96,13 +96,14 @@ export class UserListComponent implements OnInit {
 
   openChangeRoleDialog(user: UserInfoDTO): void {
     const openDialog = this.matDialog.open(SelectRoleDialogComponent, {
-      width: '30%',
+      width: '20%',
       data: user
     });
-    openDialog.afterClosed().subscribe(hasChanged => {
-      if (hasChanged) {
-        this.reload();
+    openDialog.afterClosed().subscribe(result => {
+      if (result !== true) {
+        this.errorMessageComponent.defaultServiceErrorHandling(result)
       }
+      this.reload();
     });
   }
 
