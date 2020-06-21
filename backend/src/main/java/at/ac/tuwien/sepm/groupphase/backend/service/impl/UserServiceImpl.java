@@ -159,10 +159,12 @@ public class UserServiceImpl implements UserService {
             user.setAddress(updateUser.getAddress());
             user.getAddress().setId(addressId);
         }
-        if (updateUser.getRole() != null && !userId.equals(currentUser.getId())) {
-            user.setRole(updateUser.getRole());
-        } else {
-            throw new AccessDeniedException("Der aktuelle Benutzer kann seine Rolle nicht selbst ändern");
+        if (updateUser.getRole() != null) {
+            if (!userId.equals(currentUser.getId())) {
+                user.setRole(updateUser.getRole());
+            } else {
+                throw new AccessDeniedException("Der aktuelle Benutzer kann seine Rolle nicht selbst ändern");
+            }
         }
         new UpdateUserValidator().build(user).validate();
         return userRepository.saveAndFlush(user);
