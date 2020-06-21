@@ -28,6 +28,8 @@
              id="description" placeholder="Inhalt"/>
     </mat-form-field>
 
+    <tl-artist-dropdown formControlName="artist" placeholder="Künstler" id="artist" name="artist" appearance="standard"></tl-artist-dropdown>
+
     <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
   </form>
 
@@ -46,11 +48,14 @@
         <mat-icon>list</mat-icon>
         {{event.category}}
       </p>
+      <p>
+        <mat-icon>stars</mat-icon>
+        {{ event.artist.firstname }} {{ event.artist.lastname }}
+      </p>
     </mat-card-content>
   </mat-card>
 
-  <mat-paginator [length]="amountOfPages"
-                 [pageIndex]="currentPage"
+  <mat-paginator [length]="totalAmountOfEvents"
                  [pageSize]="EVENT_LIST_PAGE_SIZE"
                  [pageSizeOptions]="[EVENT_LIST_PAGE_SIZE]"
                  (page)="onPaginationChange($event)">

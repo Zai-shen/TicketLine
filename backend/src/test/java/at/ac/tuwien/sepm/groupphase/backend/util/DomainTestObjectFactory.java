@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 
 public class DomainTestObjectFactory {
 
@@ -24,6 +25,8 @@ public class DomainTestObjectFactory {
         user.setEmail("hans.mueller@example.com");
         user.setPassword("secretPassword");
         user.setId(14L);
+        user.setLocked(false);
+        user.setWrongAttempts(1);
         return user;
     }
 
@@ -61,6 +64,7 @@ public class DomainTestObjectFactory {
         news.setContent("Today we discovered, that I am to lazy to write more content.");
         news.setPublishedAt(LocalDateTime.of(2002, 1, 13, 12, 55, 59));
         news.setAuthor("Doris Duftler");
+        news.setReadByUsers(new HashSet<>());
         return news;
     }
 
@@ -79,6 +83,7 @@ public class DomainTestObjectFactory {
         event.setCategory(CategoryEnum.FESTIVAL);
         event.setDescription("description");
         event.setDuration(10L);
+        event.setArtist(getArtist());
         return event;
     }
 
@@ -87,7 +92,6 @@ public class DomainTestObjectFactory {
         performance.setId(1L);
         performance.setDateTime(OffsetDateTime.now().plusDays(1));
         performance.setLocation(getLocation());
-        ;
         performance.setEvent(getEvent());
         return performance;
     }

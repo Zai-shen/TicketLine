@@ -302,6 +302,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /user/readNews:
+    post:
+      security:
+        - ticketline_auth: []
+      tags:
+        - user
+      summary: Save read news for the currently logged in user
+      operationId: addReadNewsOfUser
+      requestBody:
+        description: Read news to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsDTO'
+        required: true
+      responses:
+        200:
+          description: Successfully added read news
+          content: {}
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Cannot find user to modify
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /news:
     get:
       tags:
@@ -310,13 +341,12 @@ paths:
       operationId: getNewsList
       parameters:
         - in: query
-          name: unreadBy
+          name: inclRead
           required: false
           schema:
-            type: integer
-            format: int64
-          description: ID of a user to list only unread news of the user
-          example: 3
+            type: boolean
+          description: Also include news entries that are read by the user
+          example: true
         - in: query
           name: page
           required: false
@@ -791,7 +821,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BookingDTO'
+              $ref: '#/components/schemas/BookingRequestDTO'
       responses:
         201:
           description: Created Tickets
@@ -1214,62 +1244,91 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /artist:
-      get:
-        tags:
+    get:
+      tags:
+      - artist
+      summary: Return a list of artists
+      operationId: getArtistList
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+          description: Pagination number
+          example: 0
+      responses:
+        200:
+          description: List of artists
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArtistDTO'
+
+    post:
+      tags:
         - artist
-        summary: Return a list of artists
-        operationId: getArtistList
-        parameters:
-          - in: query
-            name: page
-            required: false
+      summary: create new artist
+      operationId: createArtist
+      requestBody:
+        description: Artist information to be created
+        content:
+          application/json:
             schema:
-              type: integer
-            description: Pagination number
-            example: 0
-        responses:
-          200:
-            description: List of artists
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/ArtistDTO'
-      post:
-        tags:
-          - artist
-        summary: create new artist
-        operationId: createArtist
-        requestBody:
-          description: Artist information to be created
+              $ref: '#/components/schemas/ArtistDTO'
+        required: true
+      responses:
+        201:
+          description: Created Artist
+          content: {}
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        403:
+          description: Not logged in or insufficient permission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        422:
+          description: Failed validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /artist/{artistId}:
+    get:
+      tags:
+        - artist
+      summary: Return a list of artists
+      operationId: getArtist
+      parameters:
+        - in: path
+          name: artistId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the artist to fetch
+          required: true
+          example: 22
+      responses:
+        200:
+          description: Queried artist
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ArtistDTO'
-          required: true
-        responses:
-          201:
-            description: Created Artist
-            content: {}
-          400:
-            description: Invalid input
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorDTO'
-          403:
-            description: Not logged in or insufficient permission
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorDTO'
-          422:
-            description: Failed validation
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find artist entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /artist/search:
     post:
       tags:
@@ -1497,6 +1556,8 @@ components:
         description:
           type: string
           example: Awesome concert of the best band in the best location!
+        artist:
+          $ref: '#/components/schemas/ArtistDTO'
       required:
         - title
         - category
@@ -1554,6 +1615,8 @@ components:
         title:
           type: string
           example: 'event title'
+        artist:
+          $ref: '#/components/schemas/ArtistDTO'
         category:
           $ref: '#/components/schemas/EventCategory'
     ArtistDTO:
@@ -1841,6 +1904,10 @@ components:
         name:
           type: string
           example: 'Haupttribüne'
+        price:
+          type: number
+          format: double
+          example: 3.50
         seats:
           type: array
           items:
@@ -1865,6 +1932,17 @@ components:
           items:
             $ref: '#/components/schemas/SeatgroupSeatDTO'
         freeSeats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+    BookingRequestDTO:
+      properties:
+        seats:
+          type: array
+          items:
+            type: integer
+            format: int64
+        areas:
           type: array
           items:
             $ref: '#/components/schemas/FreeSeatgroupBookingDTO'

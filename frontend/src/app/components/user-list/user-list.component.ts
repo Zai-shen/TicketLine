@@ -5,8 +5,8 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { PageEvent } from '@angular/material/paginator';
 import { SelectRoleDialogComponent } from './select-role-dialog/select-role-dialog.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'tl-user-list',
@@ -19,12 +19,15 @@ export class UserListComponent implements OnInit {
 
   users: UserInfoDTO[] = [];
   searchEmail: string;
-  amountOfPages = 1;
+  totalAmountOfUsers = 1;
   private showOnlyLockedUsers: boolean;
-  currentPage = 0;
+  private currentPage = 0;
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
+
+  @ViewChild(MatPaginator)
+  private paginator: MatPaginator;
 
   constructor(private userService: UserService, private matDialog: MatDialog) {
   }
@@ -35,12 +38,12 @@ export class UserListComponent implements OnInit {
 
   onLockedToggleChanged(event: MatButtonToggleChange): void {
     this.showOnlyLockedUsers = event.value === 'true';
-    this.currentPage = 0;
+    this.paginator.firstPage();
     this.reload();
   }
 
   onSearchEmailChange(): void {
-    this.currentPage = 0;
+    this.paginator.firstPage();
     this.reload();
   }
 
@@ -82,7 +85,7 @@ export class UserListComponent implements OnInit {
         .subscribe(users => {
             if (users.body !== null) {
               this.users = users.body;
-              this.amountOfPages = Number(users.headers.get('X-Total-Count')) || 1;
+              this.totalAmountOfUsers = Number(users.headers.get('X-Total-Count')) || 0;
             } else {
               this.errorMessageComponent.throwCustomError('Ungültige Antwort vom Server in der Nutzerabfrage',
                 ErrorType.FATAL);

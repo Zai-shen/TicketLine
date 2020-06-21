@@ -46,11 +46,17 @@ public class NewsController implements NewsApi {
 
     @Override
     @Secured(AuthorizationRole.USER_ROLE)
-    public ResponseEntity<List<NewsDTO>> getNewsList(@Valid Optional<Long> unreadBy,
+    public ResponseEntity<List<NewsDTO>> getNewsList(@Valid Optional<Boolean> inclRead,
         @Valid Optional<Integer> page) {
-        LOGGER.info("Get all news");
+        LOGGER.info("Get all news, include read ones: {}", inclRead);
 
-        Page<News> news = newsService.findAll(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        Page<News> news;
+
+        if (inclRead.orElse(false)) {
+            news = newsService.findAll(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        } else {
+            news = newsService.findAllUnread(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        }
         return ResponseEntity.ok()
             .header("X-Total-Count", String.valueOf(news.getTotalElements()))
             .body(newsMapper.toDtoList(news.getContent()));

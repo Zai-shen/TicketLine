@@ -1,43 +1,44 @@
 <mat-card>
   <mat-card-title>Eigenschaften</mat-card-title>
   <mat-card-content>
-  <div *ngIf="seatGroup">
+  <div *ngIf="seatGroup" >
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput type="text" [(ngModel)]="seatGroup.name">
     </mat-form-field>
     <br>
-    <mat-form-field class="price-input-wrapper">
+    <mat-form-field class="price-input-wrapper" [formGroup]="seatgroupForm">
       <mat-label>Preis</mat-label>
       <input matInput matprefix="€"
              type="number"
              id="priceInput"
              class="price-input"
+             formControlName="price"
              [(ngModel)]="seatGroup.price">
       <span matPrefix>€</span>
     </mat-form-field>
     <mat-tab-group animationDuration="0ms" [(selectedIndex)]="seatGroupPropertiesSelectedIndex">
       <mat-tab label="Sitzplätze">
         <div class="mat-tab-content">
-          <mat-form-field>
+          <mat-form-field [formGroup]="seatgroupForm">
             <mat-label>Radius</mat-label>
-            <input matInput type="number" [(ngModel)]="seatRadius">
+            <input matInput type="number" formControlName="radius" [(ngModel)]="seatRadius">
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field [formGroup]="seatgroupForm">
             <mat-label>Spaltenabstand</mat-label>
-            <input matInput type="number" [(ngModel)]="seatColDistance">
+            <input matInput type="number" formControlName="seatColDistance" [(ngModel)]="seatColDistance">
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field [formGroup]="seatgroupForm">
             <mat-label>Reihenabstand</mat-label>
-            <input matInput type="number" [(ngModel)]="seatRowDistance">
+            <input matInput type="number" formControlName="seatRowDistance" [(ngModel)]="seatRowDistance">
           </mat-form-field>
         </div>
       </mat-tab>
       <mat-tab label="Stehplätze">
         <div class="mat-tab-content">
-          <mat-form-field>
+          <mat-form-field [formGroup]="seatgroupForm">
             <mat-label for="standingPlacesInput">Stehplätze</mat-label>
-            <input matInput type="number" id="standingPlacesInput" [(ngModel)]="seatGroup.standingPlaceCount">
+            <input matInput type="number" id="standingPlacesInput" formControlName="standingPlaceCount" [(ngModel)]="seatGroup.standingPlaceCount">
           </mat-form-field>
         </div>
       </mat-tab>

@@ -89,7 +89,7 @@ public class InvoiceData {
     public BigDecimal getPrice() {
         BigDecimal sum = BigDecimal.valueOf(0);
         for (Ticket ticket : booking.getTickets()) {
-            sum = sum.add(ticket.getPrice().divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
+            sum = sum.add(BigDecimal.valueOf(ticket.formatAmount()).multiply(ticket.getPrice()).divide(BigDecimal.valueOf(1.13), 2, RoundingMode.HALF_UP));
         }
         return sum;
     }

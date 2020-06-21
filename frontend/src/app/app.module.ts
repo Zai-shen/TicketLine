@@ -67,6 +67,8 @@ import { TopTenComponent } from './components/top-ten/top-ten.component';
 import { ConfirmUserDeletionModalComponent } from './components/user-detail/confirm-user-deletion-modal/confirm-user-deletion-modal.component';
 import { SelectRoleDialogComponent } from './components/user-list/select-role-dialog/select-role-dialog.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { ArtistDropdownComponent } from './components/artist-dropdown/artist-dropdown.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -103,6 +105,7 @@ import { MatRadioModule } from '@angular/material/radio';
     SelectStandingareaDialogComponent,
     ConfirmUserDeletionModalComponent,
     SelectRoleDialogComponent
+    ArtistDropdownComponent
   ],
   imports: [
     BrowserModule,
@@ -140,6 +143,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatTooltipModule,
     MatTabsModule,
     MatRadioModule
+    MatSlideToggleModule
   ],
   providers: [
     {

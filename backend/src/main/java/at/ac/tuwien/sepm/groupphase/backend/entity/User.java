@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -41,6 +42,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<Booking> bookings;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "readByUsers")
+    private Set<News> readNews;
 
     public User() {
     }
@@ -131,6 +135,14 @@ public class User {
         this.bookings = bookings;
     }
 
+    public Set<News> getReadNews() {
+        return readNews;
+    }
+
+    public void setReadNews(Set<News> readNews) {
+        this.readNews = readNews;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -146,5 +158,11 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", email='" + email + '\'' + ", firstname='" + firstname + '\'' + ", lastname='" +
+            lastname + '\'' + ", role=" + role + ", address=" + address + '}';
     }
 }

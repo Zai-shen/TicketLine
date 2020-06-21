@@ -42,6 +42,10 @@ public class SearchEventSpecification implements Specification<Event> {
                     filterDuration + DURATION_OFFSET);
             searchCriteria.add(durationSearch);
         }
+        if (filter.getArtist() != null) {
+            Expression<Boolean> artistSearch = criteriaBuilder.equal(root.get("artist"),filter.getArtist());
+            searchCriteria.add(artistSearch);
+        }
 
         return predicate;
     }

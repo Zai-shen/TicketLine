@@ -34,6 +34,7 @@ export class CreateEventComponent implements OnInit {
       category: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required]),
       duration: new FormControl(null, [Validators.required, Validators.min(0)]),
+      artist: new FormControl(null, [Validators.required]),
     });
   }
 
