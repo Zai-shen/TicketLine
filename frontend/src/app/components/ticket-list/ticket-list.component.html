@@ -5,7 +5,7 @@
     <mat-button-toggle (click)="reserved = false" [checked]="true">Gekauft</mat-button-toggle>
     <mat-button-toggle (click)="reserved = true">Reserviert</mat-button-toggle>
   </mat-button-toggle-group>
-  <div *ngIf="reserved == true" class="reservation-info">
+  <div *ngIf="reserved" class="reservation-info">
     <p class="aligned-icons"><mat-icon [inline]="true">info</mat-icon>Bei einer Reservierung müssen Sie die Karten 30 Minuten vor der Veranstaltung abholen, ansonsten verfällt ihr Ticket.</p>
   </div>
   <mat-card *ngFor="let booking of filteredBookings">
