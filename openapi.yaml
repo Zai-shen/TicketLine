@@ -820,7 +820,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /event/booking/{bookingId}:
-    delete:
+    post:
       security:
         - ticketline_auth: []
       tags:

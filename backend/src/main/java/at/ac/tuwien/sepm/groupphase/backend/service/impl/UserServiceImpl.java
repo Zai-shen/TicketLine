@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void unlockUser(Long userId) {
-        LOGGER.debug("Unlock user with id " + userId);
+        LOGGER.debug("Unlock user with id {}", userId);
         User user = userRepository.findUserById(userId);
         user.setWrongAttempts(0);
         user.setLocked(false);
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void lockUser(Long userId) {
-        LOGGER.debug("Lock user with id " + userId);
+        LOGGER.debug("Lock user with id {}", userId);
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserById(userId);
         if (!username.equals(user.getEmail())) {

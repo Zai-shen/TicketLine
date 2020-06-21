@@ -18,7 +18,7 @@ public class Booking {
     @ManyToOne
     private Performance performance;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "booking")
     private List<Ticket> tickets;
 
     @Column(nullable = false)
