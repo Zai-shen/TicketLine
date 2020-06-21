@@ -30,6 +30,9 @@
       <span *ngIf="isUserLoggedIn()">
         <button mat-raised-button (click)="buyTicket(false, performance)">Kaufen</button>
         <button mat-raised-button (click)="buyTicket(true, performance)">Reservieren</button>
+        <div class="reservation-info">
+          <p><mat-icon [inline]="true">info</mat-icon>Bei einer Reservierung müssen Sie die Karten 30 Minuten vor der Veranstaltung abholen, ansonsten verfällt ihr Ticket.</p>
+        </div>
       </span>
       <span *ngIf="!isUserLoggedIn()">
         Bitte melden Sie sich an um Tickets zu kaufen oder zu reservieren
