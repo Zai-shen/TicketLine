@@ -1,3 +1,8 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-indigo, 500);
+
 .details {
   background-color: #ffffff;
   margin-top: 5em;
@@ -18,4 +23,16 @@ mat-spinner {
 
 .facts {
   margin: 1em;
+}
+
+.reservation-info {
+  border: 1px solid mat-color($primary);
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 3px;
+
+  p {
+    color: mat-color($primary);
+    margin: 0;
+  }
 }

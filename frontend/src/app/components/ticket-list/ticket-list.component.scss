@@ -1,6 +1,24 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-indigo, 500);
+
 mat-card {
   margin-bottom: 1em;
 }
 mat-button-toggle-group {
   margin: 1em;
+}
+
+.reservation-info {
+  border: 1px solid mat-color($primary);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 3px;
+
+  p {
+    color: mat-color($primary);
+    margin: 0;
+  }
 }
