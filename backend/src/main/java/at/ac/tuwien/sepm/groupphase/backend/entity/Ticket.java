@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.UUID;
 
 @Entity
 public class Ticket {
@@ -18,6 +19,8 @@ public class Ticket {
     @ManyToOne(fetch = FetchType.LAZY)
     private Booking booking;
 
+    @Column
+    private UUID uuid;
 
     public Long getId() {
         return id;
@@ -50,6 +53,14 @@ public class Ticket {
 
     public Long formatAmount() {
         return 1L;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override

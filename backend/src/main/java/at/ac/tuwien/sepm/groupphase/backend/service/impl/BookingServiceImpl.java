@@ -54,11 +54,12 @@ public class BookingServiceImpl implements BookingService {
         booking.setTickets(tickets);
         booking.setDate(LocalDate.now());
         for (Ticket t : tickets) {
+            t.setUuid(UUID.randomUUID());
             t.setBooking(booking);
         }
-        User currentuser = userService.getCurrentLoggedInUser();
-        booking.setUser(currentuser);
-        currentuser.getBookings().add(booking);
+        User currentUser = userService.getCurrentLoggedInUser();
+        booking.setUser(currentUser);
+        currentUser.getBookings().add(booking);
     }
 
     @Override
@@ -94,7 +95,7 @@ public class BookingServiceImpl implements BookingService {
                 seat,
                 area,
                 booking.getPerformance(),
-                UUID.randomUUID(),
+                ticket.getUuid(),
                 ticket.getPrice()));
         }
         return ticketService.renderTickets(tickets);

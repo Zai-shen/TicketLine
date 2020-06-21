@@ -32,6 +32,8 @@ public class SearchPerformanceTest {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired ArtistRepository artistRepository;
+
     @Test
     void testSearchPerformanceSpecification() {
         Performance performancesToFind = insertTestPerformances();
@@ -41,13 +43,14 @@ public class SearchPerformanceTest {
 
         Page<Performance> result = performanceRepository.findAll(specification, Pageable.unpaged());
 
-        assertThat(result.getContent()).containsExactlyInAnyOrder(performancesToFind);
+        assertThat(result.getContent()).containsExactly(performancesToFind);
     }
 
     private Performance insertTestPerformances() {
         Event event = DomainTestObjectFactory.getEvent();
         event.setId(null);
         Performance performancesToFind = performanceFrom(OffsetDateTime.now(), event, null);
+        artistRepository.saveAndFlush(event.getArtist());
         eventRepository.saveAndFlush(event);
         performanceRepository.saveAndFlush(performancesToFind);
 
