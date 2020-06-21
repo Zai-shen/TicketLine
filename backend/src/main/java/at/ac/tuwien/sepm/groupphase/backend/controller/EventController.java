@@ -11,6 +11,7 @@ import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
 import at.ac.tuwien.sepm.groupphase.backend.dto.SearchEventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
@@ -134,5 +135,12 @@ public class EventController implements EventApi {
     public ResponseEntity<SeatmapOccupationDTO> getSeatmapOfPerformance(Long eventId, Long performanceId) {
         LOGGER.info("Get seatmap for performance {}",performanceId);
         return ResponseEntity.ok(performanceService.getSeatmap(performanceId));
+    }
+
+    @Override
+    public ResponseEntity<EventSoldDTO> getEventSold(Long eventId) {
+        LOGGER.info("Get sold for event {}",eventId);
+        Event e = eventService.getEvent(eventId).orElseThrow(NotFoundException::new);
+        return ResponseEntity.ok(new EventSoldDTO().sold(eventService.getSold(e)));
     }
 }

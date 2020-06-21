@@ -625,6 +625,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
+  /event/{eventId}/sold:
+    get:
+      tags:
+        - event
+      summary: Get the amount of tickets sold in this month
+      operationId: getEventSold
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the event to get the statistics for
+          required: true
+          example: 73
+      responses:
+        200:
+          description: Amount of tickets sold in this month
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventSoldDTO'
+        404:
+          description: Couldn't find event entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
   /event/search:
     post:
       tags:
@@ -1536,6 +1564,15 @@ components:
         author:
           type: string
           example: Peter Pan
+    EventSoldDTO:
+      type: object
+      properties:
+        sold:
+          type: integer
+          format: int64
+          example: 20
+      required:
+        - sold
     EventDTO:
       type: object
       properties:
@@ -1548,6 +1585,10 @@ components:
           example: CLF Band danube island concert
         category:
           $ref: '#/components/schemas/EventCategory'
+        sold:
+          type: integer
+          format: int64
+          example: 20
         duration:
           type: integer
           format: int64

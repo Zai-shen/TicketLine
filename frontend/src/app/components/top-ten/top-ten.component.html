@@ -16,8 +16,9 @@
   <div *ngFor="let event of events; let i = index" class="ranked">
     <span class="mat-title">{{i+1}}.</span>
     <mat-card  [routerLink]="['/events', event.id]"
-               mat-ripple>
+               mat-ripple [ngStyle]="getStyle(event)">
       <mat-card-title>{{event.title}}</mat-card-title>
+      <mat-card-subtitle> {{ event.sold}} Tickets bereits vergriffen </mat-card-subtitle>
       <mat-card-content>
         <p>
           <mat-icon>av_timer</mat-icon>

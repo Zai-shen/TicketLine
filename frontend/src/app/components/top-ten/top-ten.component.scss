@@ -21,3 +21,7 @@ mat-select {
     height: 100%;
   }
 }
+@for $i from 1 through 3 {
+  .fill-percent-#{$i} {
+  }
+}
