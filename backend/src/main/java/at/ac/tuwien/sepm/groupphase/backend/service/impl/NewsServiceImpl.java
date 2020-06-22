@@ -2,11 +2,13 @@ package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
+import at.ac.tuwien.sepm.groupphase.backend.exception.GlobalExceptionHandler;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewNewsValidator;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,9 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -72,6 +78,30 @@ public class NewsServiceImpl implements NewsService {
         news.getReadByUsers().add(currentUser);
 
         newsRepository.save(news);
+    }
+
+    @Override
+    public String saveImageForNewsWithId(Long newsId, String base64Image){
+        News currentNews = findOne(newsId);
+        LOGGER.debug("Save image for news with id {}", newsId);
+
+        //base64 validator?
+
+        //mocking ATM
+        currentNews.setPicturePath("\\images\\" + (ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId + ".png");
+
+        //save image in directory
+        byte[] imageByte = Base64.decodeBase64(base64Image);
+        String directory = System.getProperty("user.dir") + currentNews.getPicturePath();
+        try (OutputStream stream = new FileOutputStream(directory)) {
+            stream.write(imageByte);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
+        LOGGER.info(currentNews.getPicturePath());
+
+        return currentNews.getPicturePath();
     }
 
 

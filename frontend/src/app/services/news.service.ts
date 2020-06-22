@@ -22,7 +22,7 @@ export class NewsService {
     return this.newsApiService.createNews(news);
   }
 
-   uploadPictureForNewsWithId(newsId: number, body: Blob): Observable<any> {
-    return this.newsApiService.uploadPictureForNews(newsId, body);
+   uploadPictureForNewsWithId(newsId: number, base64: string): Observable<string> {
+    return this.newsApiService.uploadPictureForNews(newsId, base64);
   }
 }

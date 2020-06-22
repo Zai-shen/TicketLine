@@ -45,4 +45,11 @@ public interface NewsService {
      * @param newsId the read news id to be saved for the current user
      */
     void saveReadNewsForCurrentUser(Long newsId);
+
+    /**
+     * Save image in the public folder of our server for given news
+     * @param newsId the news id of corresponding news
+     * @param base64Image the image to be saved, encoded in base64
+     */
+    String saveImageForNewsWithId(Long newsId, String base64Image);
 }

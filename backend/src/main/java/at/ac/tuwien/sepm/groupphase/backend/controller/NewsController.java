@@ -75,9 +75,10 @@ public class NewsController implements NewsApi {
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
-    public ResponseEntity<String> uploadPictureForNews(Long newsId, @Valid Resource body) {
+    public ResponseEntity<String> uploadPictureForNews(Long newsId, @Valid String base64Image) {
         LOGGER.info("Save image for news with id {}", newsId);
-        return ResponseEntity.ok("NOT_IMPLEMENTED_YET");
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            newsService.saveImageForNewsWithId(newsId, base64Image));
     }
 
 }

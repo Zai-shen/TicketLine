@@ -81,12 +81,25 @@ export class CreateNewsComponent implements OnInit {
   }
 
   uploadPicture(newsId: number): void {
-    if (this.binaryPictureString !== undefined && this.binaryPictureString !== null) {
-      this.newsService.uploadPictureForNewsWithId(newsId, this.binaryPictureString).subscribe(
-        string => {
-          console.log('answer from server: ' + string);
+    // if (this.binaryPictureString !== undefined && this.binaryPictureString !== null) {
+    //   this.newsService.uploadPictureForNewsWithId(newsId, this.binaryPictureString).subscribe(
+    //     string => {
+    //       console.log('answer from server: ' + string);
+    //     },
+    //     error => () => this.errorMessageComponent.defaultServiceErrorHandling(error)
+    //   );
+    // }
+    // console.log(this.base64PictureString);
+    console.log(this.base64PictureString !== undefined && this.base64PictureString !== null);
+    if (this.base64PictureString !== undefined && this.base64PictureString !== null) {
+      this.newsService.uploadPictureForNewsWithId(newsId, this.base64PictureString).subscribe(
+        answer => {
+          console.log('answer from server: ');
+          console.log(answer);
         },
-        error => () => this.errorMessageComponent.defaultServiceErrorHandling(error)
+        error => () => {this.errorMessageComponent.defaultServiceErrorHandling(error);
+        console.log('error!');
+        }
       );
     }
   }
