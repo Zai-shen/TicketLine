@@ -56,27 +56,27 @@ public class SeatmapOccupationTest {
 
     @Test
     void testOccupation() {
-        Location l = getLocation();
-        locationRepository.save(l);
-        Performance p = new Performance();
-        Event e = new Event();
-        e.setDescription("Test Event");
-        e.setTitle("Test Name");
-        e.setCategory(CategoryEnum.FESTIVAL);
-        e.setDuration(200L);
-        p.setLocation(l);
-        p.setDateTime(OffsetDateTime.now());
-        p.setEvent(e);
-        eventRepository.save(e);
-        performanceRepository.save(p);
+        Location location = getLocation();
+        locationRepository.save(location);
+        Performance performance = new Performance();
+        Event event = new Event();
+        event.setDescription("Test Event");
+        event.setTitle("Test Name");
+        event.setCategory(CategoryEnum.FESTIVAL);
+        event.setDuration(200L);
+        performance.setLocation(location);
+        performance.setDateTime(OffsetDateTime.now());
+        performance.setEvent(event);
+        eventRepository.save(event);
+        performanceRepository.save(performance);
 
-        SeatGroupArea sga = l.getSeatmap().getSeatGroupAreas().stream().findFirst().get();
-        StandingArea sa = l.getSeatmap().getStandingAreas().stream().findFirst().get();
-        Set<Seat> freeSeats = seatRepository.findFreeForPerformance(sga,p);
-        Set<Seat> soldSeats = seatRepository.findSoldForPerformance(sga,p);
-        Set<Seat> reservedSeats = seatRepository.findReservedForPerformance(sga,p);
-        Integer standingReserved = standingAreaRepository.sumReserved(sa,p);
-        Integer standingSold = standingAreaRepository.sumSold(sa,p);
+        SeatGroupArea sga = location.getSeatmap().getSeatGroupAreas().stream().findFirst().get();
+        StandingArea sa = location.getSeatmap().getStandingAreas().stream().findFirst().get();
+        Set<Seat> freeSeats = seatRepository.findFreeForPerformance(sga,performance);
+        Set<Seat> soldSeats = seatRepository.findSoldForPerformance(sga,performance);
+        Set<Seat> reservedSeats = seatRepository.findReservedForPerformance(sga,performance);
+        Integer standingReserved = standingAreaRepository.sumReserved(sa,performance);
+        Integer standingSold = standingAreaRepository.sumSold(sa,performance);
         assertThat(freeSeats.size()).isEqualTo(36);
         assertThat(soldSeats.size()).isEqualTo(0);
         assertThat(reservedSeats.size()).isEqualTo(0);
@@ -85,9 +85,10 @@ public class SeatmapOccupationTest {
 
         // Perform a ticket purchase
         Booking b = new Booking();
-        b.setPerformance(p);
+        b.setPerformance(performance);
         b.setReservation(false);
         b.setDate(LocalDate.now());
+        b.setCanceled(false);
         List<Ticket> tickets = new ArrayList<>(2);
         SeatedTicket ticket1 = new SeatedTicket();
         ticket1.setBooking(b);
@@ -102,11 +103,11 @@ public class SeatmapOccupationTest {
         tickets.add(ticket2);
         b.setTickets(tickets);
         bookingRepository.save(b);
-        freeSeats = seatRepository.findFreeForPerformance(sga,p);
-        soldSeats = seatRepository.findSoldForPerformance(sga,p);
-        reservedSeats = seatRepository.findReservedForPerformance(sga,p);
-        standingReserved = standingAreaRepository.sumReserved(sa,p);
-        standingSold = standingAreaRepository.sumSold(sa,p);
+        freeSeats = seatRepository.findFreeForPerformance(sga,performance);
+        soldSeats = seatRepository.findSoldForPerformance(sga,performance);
+        reservedSeats = seatRepository.findReservedForPerformance(sga,performance);
+        standingReserved = standingAreaRepository.sumReserved(sa,performance);
+        standingSold = standingAreaRepository.sumSold(sa,performance);
         assertThat(freeSeats.size()).isEqualTo(35);
         assertThat(soldSeats.size()).isEqualTo(1);
         assertThat(reservedSeats.size()).isEqualTo(0);
@@ -116,7 +117,8 @@ public class SeatmapOccupationTest {
         // Perform a ticket reservation
         b = new Booking();
         b.setReservation(true);
-        b.setPerformance(p);
+        b.setCanceled(false);
+        b.setPerformance(performance);
         b.setDate(LocalDate.now());
         tickets = new ArrayList<>(2);
         ticket1 = new SeatedTicket();
@@ -133,11 +135,11 @@ public class SeatmapOccupationTest {
         b.setTickets(tickets);
         bookingRepository.save(b);
 
-        freeSeats = seatRepository.findFreeForPerformance(sga,p);
-        soldSeats = seatRepository.findSoldForPerformance(sga,p);
-        reservedSeats = seatRepository.findReservedForPerformance(sga,p);
-        standingReserved = standingAreaRepository.sumReserved(sa,p);
-        standingSold = standingAreaRepository.sumSold(sa,p);
+        freeSeats = seatRepository.findFreeForPerformance(sga,performance);
+        soldSeats = seatRepository.findSoldForPerformance(sga,performance);
+        reservedSeats = seatRepository.findReservedForPerformance(sga,performance);
+        standingReserved = standingAreaRepository.sumReserved(sa,performance);
+        standingSold = standingAreaRepository.sumSold(sa,performance);
         assertThat(freeSeats.size()).isEqualTo(34);
         assertThat(soldSeats.size()).isEqualTo(1);
         assertThat(reservedSeats.size()).isEqualTo(1);
@@ -146,17 +148,17 @@ public class SeatmapOccupationTest {
     }
 
     private Location getLocation() {
-        Address a = new Address();
-        a.setCountry("Austria");
-        a.setCity("Wien");
-        a.setPostalcode("1030");
-        a.setHousenr("80");
-        a.setStreet("Baumgasse");
-        Location l = new Location();
-        l.setDescription("Arena");
-        l.setAddress(a);
+        Address address = new Address();
+        address.setCountry("Austria");
+        address.setCity("Wien");
+        address.setPostalcode("1030");
+        address.setHousenr("80");
+        address.setStreet("Baumgasse");
+        Location location = new Location();
+        location.setDescription("Arena");
+        location.setAddress(address);
         Seatmap sm = DomainTestObjectFactory.getSeatmap();
-        l.setSeatmap(sm);
-        return l;
+        location.setSeatmap(sm);
+        return location;
     }
 }

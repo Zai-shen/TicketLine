@@ -6,6 +6,7 @@ $primary: mat-palette($mat-indigo, 500);
 mat-card {
   margin-bottom: 1em;
 }
+
 mat-button-toggle-group {
   margin: 1em;
 }
@@ -21,4 +22,8 @@ mat-button-toggle-group {
     color: mat-color($primary);
     margin: 0;
   }
+}
+
+.canceled {
+  color: red
 }

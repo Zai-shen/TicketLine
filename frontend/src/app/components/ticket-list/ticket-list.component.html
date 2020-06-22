@@ -13,18 +13,25 @@
     <mat-card-subtitle *ngIf="reserved">Reservierungsnummer: {{booking.id}}</mat-card-subtitle>
     <mat-card-subtitle class="aligned-icons"><mat-icon>access_time</mat-icon><tl-timestamp [timestamp]="booking.performance.dateTime"></tl-timestamp></mat-card-subtitle>
     <mat-card-subtitle class="aligned-icons"><mat-icon>location_on</mat-icon>{{ booking.performance.location.description }}</mat-card-subtitle>
+    <mat-card-subtitle class="canceled" *ngIf="booking.canceled">[storniert]</mat-card-subtitle>
     <mat-card-content>
       <mat-list>
         <mat-list-item *ngIf="booking.fixedSeats.length > 0">Sitzplätze: {{ booking.fixedSeats.length }}</mat-list-item>
         <mat-list-item *ngIf="booking.freeSeats.length > 0">Stehplätze: {{ sumStanding(booking.freeSeats) }}</mat-list-item>
       </mat-list>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-button color="warn">Stornieren</button>
+    <mat-card-actions *ngIf="!booking.canceled; else canceled">
+      <button mat-button color="warn" (click)="cancelBooking(booking)">Stornieren</button>
       <button mat-button *ngIf="!booking.reservation" (click)="downloadTicket(booking)">Ticket Download</button>
       <button mat-button *ngIf="booking.reservation" color="primary">Ticket Kaufen</button>
       <button mat-button *ngIf="!booking.reservation" (click)="downloadInvoice(booking.id)">Rechnung Download</button>
     </mat-card-actions>
+    <ng-template #canceled>
+      <mat-card-actions>
+        <button mat-button *ngIf="!booking.reservation" (click)="downloadInvoice(booking.id)">Stornorechnung Download</button>
+      </mat-card-actions>
+    </ng-template>
+
   </mat-card>
 
 </div>
