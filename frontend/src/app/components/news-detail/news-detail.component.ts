@@ -14,6 +14,7 @@ import { UserService } from '../../services/user.service';
 export class NewsDetailComponent implements AfterViewInit {
 
   news: NewsDTO;
+  imageSource: string = 'https://picsum.photos/800/200';
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
@@ -33,6 +34,7 @@ export class NewsDetailComponent implements AfterViewInit {
         this.newsService.getNews(+params['id']).subscribe(
           (news: NewsDTO) => {
             this.news = news;
+            this.updateImage();
             this.addReadNews();
           },
           error => {
@@ -42,6 +44,12 @@ export class NewsDetailComponent implements AfterViewInit {
         );
       }
     });
+  }
+
+  updateImage(): void {
+    if (this.news.picturePath !== undefined && this.news.picturePath !== null) {
+      this.imageSource = '/static/' + this.news.picturePath + '.png';
+    }
   }
 
   addReadNews(): void {

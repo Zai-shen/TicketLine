@@ -85,21 +85,20 @@ public class NewsServiceImpl implements NewsService {
         News currentNews = findOne(newsId);
         LOGGER.debug("Save image for news with id {}", newsId);
 
-        //base64 validator?
-
-        //mocking ATM
-        currentNews.setPicturePath("\\images\\" + (ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId + ".png");
+        //currentNews.setPicturePath("\\images\\" + (ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId + ".png");
+        currentNews.setPicturePath((ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId.toString());
 
         //save image in directory
         byte[] imageByte = Base64.decodeBase64(base64Image);
-        String directory = System.getProperty("user.dir") + currentNews.getPicturePath();
+        String directory = System.getProperty("user.dir") + "\\images\\" + currentNews.getPicturePath() + ".png";
         try (OutputStream stream = new FileOutputStream(directory)) {
             stream.write(imageByte);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
 
-        LOGGER.info(currentNews.getPicturePath());
+        //update current news
+        newsRepository.saveAndFlush(currentNews);
 
         return currentNews.getPicturePath();
     }
