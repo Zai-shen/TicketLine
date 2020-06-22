@@ -53,6 +53,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setReservation(reserve);
         booking.setTickets(tickets);
         booking.setDate(LocalDate.now());
+        booking.setCanceled(false);
         for (Ticket t : tickets) {
             t.setUuid(UUID.randomUUID());
             t.setBooking(booking);
@@ -102,9 +103,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public ByteArrayFile renderInvoice(Booking booking, boolean cancel) {
+    public ByteArrayFile renderInvoice(Booking booking) {
         User user = userService.getCurrentLoggedInUser();
-        InvoiceData invoice = new InvoiceData(booking, user, cancel, companyProperties);
+        InvoiceData invoice = new InvoiceData(booking, user, booking.getCanceled(), companyProperties);
         return ticketService.renderInvoice(invoice);
     }
 

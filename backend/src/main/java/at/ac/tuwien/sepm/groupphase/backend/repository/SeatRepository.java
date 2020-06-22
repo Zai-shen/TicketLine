@@ -14,10 +14,10 @@ import java.util.Set;
 public interface SeatRepository extends JpaRepository<Seat, Long> {
     Seat findBySeatGroupAreaAndXAndY(SeatGroupArea seatGroupArea,Double x, Double y);
     List<Seat> findBySeatGroupArea(SeatGroupArea seatGroupArea);
-    @Query("SELECT s FROM Seat s JOIN SeatedTicket t ON t.seat=s JOIN Booking b ON t.booking=b WHERE b.performance = ?2 AND s.seatGroupArea = ?1 AND b.isReservation = FALSE")
+    @Query("SELECT s FROM Seat s JOIN SeatedTicket t ON t.seat=s JOIN Booking b ON t.booking=b WHERE b.performance = ?2 AND s.seatGroupArea = ?1 AND b.isReservation = FALSE AND b.canceled = FALSE")
     Set<Seat> findSoldForPerformance(SeatGroupArea sga, Performance p);
-    @Query("SELECT s FROM Seat s JOIN SeatedTicket t ON t.seat=s JOIN Booking b ON t.booking=b WHERE b.performance = ?2 AND s.seatGroupArea = ?1 AND b.isReservation = TRUE")
+    @Query("SELECT s FROM Seat s JOIN SeatedTicket t ON t.seat=s JOIN Booking b ON t.booking=b WHERE b.performance = ?2 AND s.seatGroupArea = ?1 AND b.isReservation = TRUE AND b.canceled = FALSE")
     Set<Seat> findReservedForPerformance(SeatGroupArea sga, Performance p);
-    @Query("SELECT s FROM Seat s WHERE s.seatGroupArea = ?1 AND  s NOT IN (SELECT s FROM Seat s JOIN SeatedTicket t ON t.seat=s JOIN Booking b ON t.booking=b WHERE b.performance = ?2 AND s.seatGroupArea = ?1)")
+    @Query("SELECT s FROM Seat s WHERE s.seatGroupArea = ?1 AND  s NOT IN (SELECT s FROM Seat s JOIN SeatedTicket t ON t.seat=s JOIN Booking b ON t.booking=b WHERE b.performance = ?2 AND s.seatGroupArea = ?1 AND b.canceled = FALSE)")
     Set<Seat> findFreeForPerformance(SeatGroupArea sga, Performance p);
 }

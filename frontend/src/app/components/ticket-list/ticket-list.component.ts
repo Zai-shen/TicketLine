@@ -24,14 +24,11 @@ export class TicketListComponent implements OnInit {
   }
 
 
-
   ngOnInit() {
-    this.ticketService.getTicketsOfUser().subscribe(value => {
-      this.bookings = value;
-    });
+    this.updateTickets();
   }
 
-  downloadInvoice(ticketId: Number): void {
+  downloadInvoice(ticketId: number): void {
     this.bookingService.renderInvoice(ticketId);
   }
 
@@ -39,9 +36,24 @@ export class TicketListComponent implements OnInit {
     return free.reduce((a, b) => a + b.amount, 0);
   }
 
+  cancelBooking(booking: BookingDTO) {
+    if (booking.id) {
+      this.ticketService.cancelTickets(booking.id).subscribe(() => {
+        this.updateTickets();
+      });
+    }
+  }
+
   downloadTicket(booking: BookingDTO) {
     if (booking.id) {
       this.bookingService.renderTicket(booking.id);
     }
   }
+
+  private updateTickets() {
+    this.ticketService.getTicketsOfUser().subscribe(value => {
+      this.bookings = value;
+    });
+  }
+
 }
