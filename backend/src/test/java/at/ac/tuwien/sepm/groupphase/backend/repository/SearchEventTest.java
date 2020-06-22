@@ -63,6 +63,7 @@ public class SearchEventTest {
                 b.setDate(LocalDate.now());
                 b.setReservation(false);
                 b.setPerformance(p);
+                b.setCanceled(false);
                 List<Ticket> tickets = new LinkedList<>();
                 Ticket t = new Ticket();
                 t.setPrice(BigDecimal.valueOf(20.0));
