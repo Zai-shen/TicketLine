@@ -41,6 +41,7 @@ export class TopTenComponent implements OnInit {
   }
 
   private reload(): void {
+    this.maxSold = 0;
     this.eventService.getTopTen(this.searchForm.get('category')?.value)
         .subscribe(events => {
             this.events = events;
