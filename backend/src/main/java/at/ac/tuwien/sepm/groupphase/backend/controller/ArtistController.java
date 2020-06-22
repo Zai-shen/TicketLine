@@ -54,6 +54,10 @@ public class ArtistController implements ArtistApi {
     }
 
     @Override
+    public ResponseEntity<ArtistDTO> getArtist(Long artistId) {
+        LOGGER.info("get artist {}", artistId);
+        return ResponseEntity.ok(artistMapper.toDto(artistService.getArtist(artistId)));
+    }
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Void> createArtist(@Valid ArtistDTO artistDTO) {
         LOGGER.info("create artist");

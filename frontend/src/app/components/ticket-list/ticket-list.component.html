@@ -5,10 +5,14 @@
     <mat-button-toggle (click)="reserved = false" [checked]="true">Gekauft</mat-button-toggle>
     <mat-button-toggle (click)="reserved = true">Reserviert</mat-button-toggle>
   </mat-button-toggle-group>
+  <div *ngIf="reserved" class="reservation-info">
+    <p class="aligned-icons"><mat-icon [inline]="true">info</mat-icon>Bei einer Reservierung müssen Sie die Karten 30 Minuten vor der Veranstaltung abholen, ansonsten verfällt ihr Ticket.</p>
+  </div>
   <mat-card *ngFor="let booking of filteredBookings">
     <mat-card-title >{{booking.performance.event.title}}</mat-card-title>
-    <mat-card-subtitle><mat-icon>access_time</mat-icon>Gekauft <tl-timestamp [timestamp]="booking.performance.dateTime"></tl-timestamp></mat-card-subtitle>
-    <mat-card-subtitle><mat-icon>location_on</mat-icon>{{ booking.performance.location.description }}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="reserved">Reservierungsnummer: {{booking.id}}</mat-card-subtitle>
+    <mat-card-subtitle class="aligned-icons"><mat-icon>access_time</mat-icon><tl-timestamp [timestamp]="booking.performance.dateTime"></tl-timestamp></mat-card-subtitle>
+    <mat-card-subtitle class="aligned-icons"><mat-icon>location_on</mat-icon>{{ booking.performance.location.description }}</mat-card-subtitle>
     <mat-card-subtitle class="canceled" *ngIf="booking.canceled">[storniert]</mat-card-subtitle>
     <mat-card-content>
       <mat-list>

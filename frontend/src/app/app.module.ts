@@ -65,6 +65,8 @@ import { SeatplanComponent } from './components/seatplan/seatplan.component';
 import { SelectStandingareaDialogComponent } from './components/seatplan/select-standingarea-dialog/select-standingarea-dialog.component';
 import { TopTenComponent } from './components/top-ten/top-ten.component';
 import { ConfirmUserDeletionModalComponent } from './components/user-detail/confirm-user-deletion-modal/confirm-user-deletion-modal.component';
+import { ArtistDropdownComponent } from './components/artist-dropdown/artist-dropdown.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -99,7 +101,8 @@ import { ConfirmUserDeletionModalComponent } from './components/user-detail/conf
     TopTenComponent,
     SeatplanComponent,
     SelectStandingareaDialogComponent,
-    ConfirmUserDeletionModalComponent
+    ConfirmUserDeletionModalComponent,
+    ArtistDropdownComponent
   ],
   imports: [
     BrowserModule,
@@ -135,7 +138,8 @@ import { ConfirmUserDeletionModalComponent } from './components/user-detail/conf
     MatBottomSheetModule,
     MatListModule,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSlideToggleModule
   ],
   providers: [
     {

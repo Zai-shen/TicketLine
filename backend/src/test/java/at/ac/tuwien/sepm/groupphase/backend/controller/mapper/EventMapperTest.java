@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EventMapperTest {
 
-    private EventMapper eventMapper = new EventMapperImpl();
+    private EventMapper eventMapper = new EventMapperImpl(new ArtistMapperImpl());
 
     @Test
     void testToDto() {

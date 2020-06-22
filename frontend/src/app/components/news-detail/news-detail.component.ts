@@ -1,9 +1,10 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { ErrorType, NewsDTO } from '../../../generated';
+import { ErrorType, NewsDTO, UserDTO } from '../../../generated';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { NewsService } from '../../services/news.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'tl-news-detail',
@@ -18,12 +19,12 @@ export class NewsDetailComponent implements AfterViewInit {
   private errorMessageComponent: ErrorMessageComponent;
 
   constructor(private newsService: NewsService, private authService: AuthService,
-    private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef) {
+    private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
+    private userService: UserService) {
   }
 
   ngAfterViewInit(): void {
     this.route.params.subscribe(params => {
-
       const id: number = +params['id'];
       if (isNaN(id)) {
         this.errorMessageComponent.throwCustomError('Die bereitgestellte News ID ist nicht valide', ErrorType.FATAL);
@@ -32,6 +33,7 @@ export class NewsDetailComponent implements AfterViewInit {
         this.newsService.getNews(+params['id']).subscribe(
           (news: NewsDTO) => {
             this.news = news;
+            this.addReadNews();
           },
           error => {
             this.errorMessageComponent.defaultServiceErrorHandling(error);
@@ -40,6 +42,18 @@ export class NewsDetailComponent implements AfterViewInit {
         );
       }
     });
+  }
+
+  addReadNews(): void {
+    this.userService.addReadNewsOfUser(this.news).subscribe(
+      (_success: any) => {
+        console.log('Daten Gespeichert für News mit ID' + this.news.id);
+      },
+      error => {
+        this.errorMessageComponent.defaultServiceErrorHandling(error);
+        this.changeDetectorRef.detectChanges();
+      }
+    );
   }
 
   formatDate(theDate: string): string {

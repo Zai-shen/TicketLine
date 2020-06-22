@@ -55,11 +55,12 @@ public class BookingServiceImpl implements BookingService {
         booking.setDate(LocalDate.now());
         booking.setCanceled(false);
         for (Ticket t : tickets) {
+            t.setUuid(UUID.randomUUID());
             t.setBooking(booking);
         }
-        User currentuser = userService.getCurrentLoggedInUser();
-        booking.setUser(currentuser);
-        currentuser.getBookings().add(booking);
+        User currentUser = userService.getCurrentLoggedInUser();
+        booking.setUser(currentUser);
+        currentUser.getBookings().add(booking);
     }
 
     @Override
@@ -88,14 +89,14 @@ public class BookingServiceImpl implements BookingService {
                 area = s.getSeatGroupArea().getName();
             } else if (ticket instanceof StandingTicket) {
                 area = ((StandingTicket) ticket).getStandingArea().getName();
-                seat = String.format("%dx Freihe Platzwahl", ((StandingTicket) ticket).getAmount());
+                seat = String.format("%dx Freie Platzwahl", ((StandingTicket) ticket).getAmount());
             }
             tickets.add(new TicketData(
                 booking.getPerformance().getEvent(),
                 seat,
                 area,
                 booking.getPerformance(),
-                UUID.randomUUID(),
+                ticket.getUuid(),
                 ticket.getPrice()));
         }
         return ticketService.renderTickets(tickets);
