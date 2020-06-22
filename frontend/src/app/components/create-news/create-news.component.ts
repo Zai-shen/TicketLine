@@ -97,8 +97,9 @@ export class CreateNewsComponent implements OnInit {
           console.log('answer from server: ');
           console.log(answer);
         },
-        error => () => {this.errorMessageComponent.defaultServiceErrorHandling(error);
-        console.log('error!');
+        error => {
+          console.log('error!');
+          this.errorMessageComponent.defaultServiceErrorHandling(error);
         }
       );
     }
