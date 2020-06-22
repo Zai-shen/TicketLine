@@ -20,6 +20,7 @@
                    [postfixId]="performance.id.toString()"
                    (selectedSeatsChanged)="selectedSeatsChanged(performance,$event)"
                    (selectedStandingAreaChanged)="selectedStandingAreasChanged(performance,$event)"
+                   [preSelected]="reservedBooking"
       ></tl-seatplan>
       <div>
         <ul>

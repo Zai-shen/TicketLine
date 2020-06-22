@@ -1,26 +1,24 @@
 package at.ac.tuwien.sepm.groupphase.backend.service.impl;
 
 import at.ac.tuwien.sepm.groupphase.backend.config.properties.CompanyProperties;
-import at.ac.tuwien.sepm.groupphase.backend.dto.InvoiceData;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Booking;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Ticket;
 import at.ac.tuwien.sepm.groupphase.backend.dto.ByteArrayFile;
+import at.ac.tuwien.sepm.groupphase.backend.dto.InvoiceData;
 import at.ac.tuwien.sepm.groupphase.backend.dto.TicketData;
 import at.ac.tuwien.sepm.groupphase.backend.entity.*;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.BookingRepository;
 import at.ac.tuwien.sepm.groupphase.backend.repository.PerformanceRepository;
+import at.ac.tuwien.sepm.groupphase.backend.repository.TicketRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.TicketService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -32,23 +30,30 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final TicketService ticketService;
     private CompanyProperties companyProperties;
+    private final TicketRepository ticketRepository;
 
     public BookingServiceImpl(PerformanceRepository performanceRepository, UserService userService,
-        BookingRepository bookingRepository, TicketService ticketService, CompanyProperties companyProperties) {
+        BookingRepository bookingRepository, TicketService ticketService, CompanyProperties companyProperties,
+        TicketRepository ticketRepository) {
         this.performanceRepository = performanceRepository;
         this.userService = userService;
         this.bookingRepository = bookingRepository;
         this.ticketService = ticketService;
         this.companyProperties = companyProperties;
+        this.ticketRepository = ticketRepository;
     }
 
     @Override
-    @Transactional
-    public void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets) {
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets, Long reservationId) {
         Performance performance = performanceRepository.findById(performanceId).
             orElseThrow(() -> new IllegalArgumentException("Performance not found"));
+        Booking booking =
+            reservationId == null ? new Booking() : bookingRepository.findById(reservationId).orElse(new Booking());
+        if (booking.getTickets() != null) {
+            ticketRepository.deleteAll(booking.getTickets());
+        }
 
-        Booking booking = new Booking();
         booking.setPerformance(performance);
         booking.setReservation(reserve);
         booking.setTickets(tickets);
@@ -70,34 +75,30 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public Booking getBookingOfCurrentUser(Long bookingId) throws AccessDeniedException,NotFoundException {
+    public Booking getBookingOfCurrentUser(Long bookingId) throws AccessDeniedException, NotFoundException {
         var b = bookingRepository.findById(bookingId).orElseThrow(NotFoundException::new);
-        if(b != null && !userService.getCurrentLoggedInUser().getId().equals(b.getUser().getId()))
+        if (b != null && !userService.getCurrentLoggedInUser().getId().equals(b.getUser().getId())) {
             throw new AccessDeniedException("Nur eigene Buchungen können abgerufen werden");
+        }
         return b;
     }
 
     @Override
     public ByteArrayFile renderBooking(Booking booking) {
         List<TicketData> tickets = new LinkedList<>();
-        for(Ticket ticket : booking.getTickets()) {
+        for (Ticket ticket : booking.getTickets()) {
             String area = null;
             String seat = null;
             if (ticket instanceof SeatedTicket) {
                 Seat s = ((SeatedTicket) ticket).getSeat();
-                seat = String.format("Reihe %s Platz %s",s.getRowLabel(),s.getColLabel());
+                seat = String.format("Reihe %s Platz %s", s.getRowLabel(), s.getColLabel());
                 area = s.getSeatGroupArea().getName();
             } else if (ticket instanceof StandingTicket) {
                 area = ((StandingTicket) ticket).getStandingArea().getName();
                 seat = String.format("%dx Freie Platzwahl", ((StandingTicket) ticket).getAmount());
             }
-            tickets.add(new TicketData(
-                booking.getPerformance().getEvent(),
-                seat,
-                area,
-                booking.getPerformance(),
-                ticket.getUuid(),
-                ticket.getPrice()));
+            tickets.add(new TicketData(booking.getPerformance().getEvent(), seat, area, booking.getPerformance(),
+                ticket.getUuid(), ticket.getPrice()));
         }
         return ticketService.renderTickets(tickets);
     }

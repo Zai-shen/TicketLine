@@ -19,7 +19,7 @@ import { SeatmapRenderData } from './entities/seatmap-render-data';
 import { SeatRenderDTO } from './entities/seat-render-dto';
 import { SeatLabelRenderDTO } from './entities/seat-label-render-dto';
 import { SeatingAreaRenderDTO } from './entities/seating-area-render-dto';
-import { SeatmapOccupationDTO } from '../../../generated';
+import { BookingDTO, SeatmapOccupationDTO } from '../../../generated';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -34,6 +34,9 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
 
   @Input()
   postfixId: string = '';
+
+  @Input()
+  preSelected: BookingDTO;
 
   @Output()
   selectedSeatsChanged: EventEmitter<SeatRenderDTO[]> = new EventEmitter<SeatRenderDTO[]>();
@@ -50,8 +53,9 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
 
   fullyInitialized = false;
   drawMapAfterFullInit = false;
+
   constructor(private readonly dialog: MatDialog,
-  private readonly cd: ChangeDetectorRef) {
+    private readonly cd: ChangeDetectorRef) {
   }
 
   seatGroups: SeatingAreaRenderDTO[];
@@ -83,6 +87,37 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
       return { standingArea: area, selectedPositions: 0 };
     });
 
+    if (!!this.preSelected?.fixedSeats) {
+      const fixedIds = this.preSelected.fixedSeats.map((it) => it.id);
+      this.seatGroups.forEach(
+        (it) => {
+          it.seats.filter((seat) => fixedIds.includes(seat.id)).forEach((seat) => {
+            this.selectedSeats.push(seat);
+            seat.reserved = false;
+            seat.selected = true;
+          });
+        });
+      this.selectedSeatsChanged.emit(this.selectedSeats);
+    }
+
+    if (!!this.preSelected?.freeSeats) {
+      this.selectedStandingAreaChanged.emit(this.preSelected.freeSeats.map((selected) => {
+        const area = this.standingAreas.find((it) => it.id === selected.seatGroupId);
+
+        const selectedStandingIndex = this.selectedStandingAreaPlaces.findIndex(
+          (selectedArea) => selectedArea.standingArea.id === selected.seatGroupId );
+
+        this.selectedStandingAreaPlaces[selectedStandingIndex].selectedPositions = selected.amount;
+
+        const standingAreaSelection = new StandingAreaSelection();
+        if (area !== undefined) {
+          standingAreaSelection.standingArea = area;
+        }
+        standingAreaSelection.selectedPositions = selected.amount;
+        return standingAreaSelection;
+      }));
+    }
+
     if (this.fullyInitialized) {
       this.drawMap();
       this.registerClickHandlers();
@@ -93,24 +128,24 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
 
   drawMap() {
     this.wrapperSelection = d3.select(this.seatmapVal.nativeElement)
-                  .append('svg')
-                  .attr('id', 'seating-map' + this.postfixId)
-                  .attr('class', 'svg-container')
-                  .attr('width', '100%')
-                  .attr('height', '500px');
+                              .append('svg')
+                              .attr('id', 'seating-map' + this.postfixId)
+                              .attr('class', 'svg-container')
+                              .attr('width', '100%')
+                              .attr('height', '500px');
     const board = this.wrapperSelection.append('g')
-                     .attr('id', 'board' + this.postfixId)
-                     .attr('width', '100%')
-                     .attr('height', '500px')
-                     .attr('board', 'true');
+                      .attr('id', 'board' + this.postfixId)
+                      .attr('width', '100%')
+                      .attr('height', '500px')
+                      .attr('board', 'true');
     this.wrapperSelection.call(d3.zoom()
-              .extent([[0, 0], [500, 500]])
-              .scaleExtent([0.2, 8])
-              .on('zoom', () => board.attr('transform', d3.event.transform)));
+                                 .extent([[0, 0], [500, 500]])
+                                 .scaleExtent([0.2, 8])
+                                 .on('zoom', () => board.attr('transform', d3.event.transform)));
 
     board.selectAll('rect')
-      .data(this.seatGroups).enter()
-      .append('rect').each(
+         .data(this.seatGroups).enter()
+         .append('rect').each(
       function (d) {
         d3.select(this)
           .attr('id', d.renderId)
@@ -123,8 +158,8 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
           .attr('ry', 5);
       });
     this.wrapperSelection.select('#board' + this.postfixId).selectAll('g')
-      .data(this.seatGroups).enter()
-      .append('g').each(
+        .data(this.seatGroups).enter()
+        .append('g').each(
       function (d) {
         d3.select(this)
           .attr('class', 'seat-container')
@@ -140,19 +175,20 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
               .attr('r', s.radius)
               .attr('sold', s.sold)
               .attr('reserved', s.reserved)
-              .attr('seat', true);
+              .attr('seat', true)
+              .attr('selected', s.selected);
           }
         );
         d3.select(this).selectAll('rect').data(d.seatLabels || []).enter().append('text').each(
           function (l: SeatLabelRenderDTO) {
             d3.select(this)
-          .attr('x', l.x + d.x)
-          .attr('y', l.y + d.y)
-          .attr('class', 'seat-label')
-          .attr('text-anchor', 'middle')
-          .attr('dominant-baseline', 'middle')
-          .attr('font-size', l.size * 1.5)
-          .text(l.text);
+              .attr('x', l.x + d.x)
+              .attr('y', l.y + d.y)
+              .attr('class', 'seat-label')
+              .attr('text-anchor', 'middle')
+              .attr('dominant-baseline', 'middle')
+              .attr('font-size', l.size * 1.5)
+              .text(l.text);
           });
       });
 
@@ -195,7 +231,7 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
     }
     seat.selected = !seat.selected;
     this.wrapperSelection.select('#' + seat.renderId)
-      .attr('selected', seat.selected);
+        .attr('selected', seat.selected);
     if (seat.selected) {
       this.selectedSeats.push(seat);
     } else {
@@ -219,7 +255,7 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(
       () => {
         this.wrapperSelection.select('#' + standingArea.renderId)
-          .attr('selected', this.selectedStandingAreaPlaces[selectedStandingIndex].selectedPositions > 0);
+            .attr('selected', this.selectedStandingAreaPlaces[selectedStandingIndex].selectedPositions > 0);
         this.selectedStandingAreaChanged.emit(this.selectedStandingAreaPlaces);
       });
   }

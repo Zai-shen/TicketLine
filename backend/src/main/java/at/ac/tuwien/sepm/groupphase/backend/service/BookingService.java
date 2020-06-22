@@ -16,8 +16,9 @@ public interface BookingService {
      * @param performanceId Performance for which to book tickets
      * @param reserve should the tickets be reserved or bought
      * @param tickets a list of tickets to buy
+     * @param reservationId if th booking overwrites a reservation, set this id
      */
-    void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets);
+    void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets, Long reservationId);
 
     /**
      * @return list of all bookings of a user

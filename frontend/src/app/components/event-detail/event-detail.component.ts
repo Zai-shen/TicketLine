@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  BookingDTO,
   BookingRequestDTO,
   EventApiService,
   EventDTO,
@@ -35,14 +36,12 @@ export class EventDetailComponent implements OnInit {
     private snackBar: MatSnackBar, private globals: Globals) {
   }
 
+  reservedBooking: BookingDTO = { fixedSeats: [], freeSeats: [] };
+
   ngOnInit(): void {
-
     if (!!history.state.performance) {
-      this.selectedSeats.set(history.state.performance, [seats, standingAreas]);
+      this.reservedBooking = history.state;
     }
-
-    console.log(history.state);
-
     this.route.params.subscribe(params => {
       this.eventService.getEvent(+params['id']).subscribe(
         (event: EventDTO) => {
@@ -77,6 +76,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   selectedSeatsChanged(performance: PerformanceDTO, newSeats: SeatRenderDTO[]) {
+    console.log(newSeats);
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [_, standing] = entry;
@@ -141,6 +141,7 @@ export class EventDetailComponent implements OnInit {
     bookingDto.areas = standing.map(x => {
       return { seatGroupId: x.standingArea.id, amount: x.selectedPositions };
     });
+    bookingDto.reservationId = this.reservedBooking.id;
 
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
