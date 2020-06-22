@@ -36,6 +36,13 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (!!history.state.performance) {
+      this.selectedSeats.set(history.state.performance, [seats, standingAreas]);
+    }
+
+    console.log(history.state);
+
     this.route.params.subscribe(params => {
       this.eventService.getEvent(+params['id']).subscribe(
         (event: EventDTO) => {
@@ -98,7 +105,7 @@ export class EventDetailComponent implements OnInit {
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [seats, _] = entry;
-      return seats.map(x => `Reihe ${x.rowLabel} Platz ${x.colLabel} - ${x.area.price}€`);
+      return seats.map(x => `Reihe ${ x.rowLabel } Platz ${ x.colLabel } - ${ x.area.price }€`);
     }
     return [];
   }
@@ -107,7 +114,9 @@ export class EventDetailComponent implements OnInit {
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [_, standing] = entry;
-      return standing.map(x => (x.selectedPositions > 1 ? `${x.selectedPositions} Stehplätze` : `${x.selectedPositions} Stehplatz`) + ` - ${x.selectedPositions * x.standingArea.price}€`);
+      return standing.map(
+        x => (x.selectedPositions > 1 ? `${ x.selectedPositions } Stehplätze` : `${ x.selectedPositions } Stehplatz`) +
+          ` - ${ x.selectedPositions * x.standingArea.price }€`);
     }
     return [];
   }
@@ -130,7 +139,7 @@ export class EventDetailComponent implements OnInit {
     bookingDto.seats = seats.map(x => x.id);
     bookingDto.areas = [{ seatGroupId: 1, amount: 1 }];
     bookingDto.areas = standing.map(x => {
-      return {seatGroupId: x.standingArea.id, amount: x.selectedPositions};
+      return { seatGroupId: x.standingArea.id, amount: x.selectedPositions };
     });
 
     if (!!this.event.id && !!performance.id) {

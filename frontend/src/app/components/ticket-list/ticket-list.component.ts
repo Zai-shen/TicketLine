@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TicketApiService, BookingDTO, FreeSeatgroupBookingDTO } from '../../../generated';
-import { format, formatDistanceToNow } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { BookingDTO, FreeSeatgroupBookingDTO, TicketApiService } from '../../../generated';
 import { BookingService } from '../../services/booking.service';
 
 @Component({
