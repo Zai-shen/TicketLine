@@ -5,13 +5,9 @@ import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.EventMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
-import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
-import at.ac.tuwien.sepm.groupphase.backend.dto.BookingDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.EventDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.PerformanceDTO;
-import at.ac.tuwien.sepm.groupphase.backend.dto.SearchEventDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
 import at.ac.tuwien.sepm.groupphase.backend.service.EventService;
@@ -85,15 +81,15 @@ public class EventController implements EventApi {
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Long> createEvent(@Valid EventDTO eventDTO) {
         LOGGER.info("Create event");
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            this.eventService.createEvent(eventMapper.fromDto(eventDTO)));
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(this.eventService.createEvent(eventMapper.fromDto(eventDTO)));
     }
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
     public ResponseEntity<Long> createPerformance(Long eventId, @Valid PerformanceDTO performanceDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            performanceService.createPerformance(eventId, performanceMapper.fromDto(performanceDTO)));
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(performanceService.createPerformance(eventId, performanceMapper.fromDto(performanceDTO)));
     }
 
     @Override
@@ -108,21 +104,25 @@ public class EventController implements EventApi {
     @Override
     public ResponseEntity<List<PerformanceDTO>> getAllPerformances(@Valid Optional<Integer> page) {
         LOGGER.info("get all performances");
-        Page<Performance> performances = performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE));
+        Page<Performance> performances =
+            performanceService.getAllPerformances(PageRequest.of(page.orElse(0), PAGE_SIZE));
         return ResponseEntity.ok()
             .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
             .body(performanceMapper.toDto(performances.getContent()));
     }
 
     @Override
-    public ResponseEntity<List<PerformanceDTO>> searchPerformances(@Valid SearchPerformanceDTO searchPerformanceDTO, @Valid Optional<Integer> page) {
+    public ResponseEntity<List<PerformanceDTO>> searchPerformances(@Valid SearchPerformanceDTO searchPerformanceDTO,
+        @Valid Optional<Integer> page) {
         LOGGER.info("search for performances");
         Page<Performance> performances =
-            performanceService.searchPerformances(performanceMapper.fromDto(searchPerformanceDTO), PageRequest.of(page.orElse(0), PAGE_SIZE));
+            performanceService.searchPerformances(performanceMapper.fromDto(searchPerformanceDTO),
+                PageRequest.of(page.orElse(0), PAGE_SIZE));
         return ResponseEntity.ok()
             .header("X-Total-Count", String.valueOf(performances.getTotalElements()))
             .body(performanceMapper.toDto(performances.getContent()));
     }
+
     @Override
     public ResponseEntity<List<EventDTO>> getTopTenEvents(@Valid Optional<EventCategory> category) {
         LOGGER.info("Get top ten events");
@@ -133,7 +133,7 @@ public class EventController implements EventApi {
 
     @Override
     public ResponseEntity<SeatmapOccupationDTO> getSeatmapOfPerformance(Long eventId, Long performanceId) {
-        LOGGER.info("Get seatmap for performance {}",performanceId);
+        LOGGER.info("Get seatmap for performance {}", performanceId);
         return ResponseEntity.ok(performanceService.getSeatmap(performanceId));
     }
 
@@ -142,5 +142,12 @@ public class EventController implements EventApi {
         LOGGER.info("Get sold for event {}",eventId);
         Event e = eventService.getEvent(eventId).orElseThrow(NotFoundException::new);
         return ResponseEntity.ok(new EventSoldDTO().sold(eventService.getSold(e)));
+    }
+
+    @Secured(AuthorizationRole.USER_ROLE)
+    public ResponseEntity<Void> cancelTickets(Long bookingId) {
+        LOGGER.info("Delete Booking {}", bookingId);
+        eventService.cancelBooking(bookingId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -41,6 +41,7 @@ class BookingServiceTest {
         List<Ticket> createdTickets = user.getBookings().get(0).getTickets();
         assertThat(user.getBookings().get(0).getReservation()).isFalse();
         assertThat(createdTickets.size()).isEqualTo(getTickets().size());
+        assertThat(createdTickets.stream().anyMatch(t -> t.getUuid() == null)).isFalse();
     }
 
     @Test

@@ -54,4 +54,11 @@ public interface EventService {
      * @return the amount of tickets sold for this event
      */
     Long getSold(Event event);
+
+    /**
+     * cancels all tickets in a booking
+     * @param bookingId if of the booking to be canceled
+     * @throws BusinessValidationException when the booking does not belong to the user
+     */
+    void cancelBooking(Long bookingId);
 }
