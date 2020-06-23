@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.repository.UserRepository;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import com.github.javafaker.Faker;
+import jdk.jfr.Name;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -16,11 +17,11 @@ import java.lang.invoke.MethodHandles;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Profile("generateData")
-@Component
+@Component(value = "UserDataGenerator")
 public class UserDataGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final int NUMBER_OF_USERS_TO_GENERATE = 30;
+    private static final int NUMBER_OF_USERS_TO_GENERATE = 1000;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -39,7 +40,7 @@ public class UserDataGenerator {
             LOGGER.debug("generating {} user entries", NUMBER_OF_USERS_TO_GENERATE);
             for (int i = 0; i < NUMBER_OF_USERS_TO_GENERATE; i++) {
                 User user = new User();
-                user.setEmail(f.name().firstName() + "." + f.name().lastName() + "@example.com");
+                user.setEmail(f.name().firstName() + "." + f.name().lastName() + i + "@example.com");
                 user.setPassword(passwordEncoder.encode("12345678"));
                 user.setFirstname(f.name().firstName());
                 user.setLastname(f.name().lastName());
