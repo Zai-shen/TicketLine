@@ -1417,6 +1417,9 @@ components:
           example: Mustermann
         address:
           $ref: '#/components/schemas/AddressDTO'
+        role:
+          type: string
+          example: USER
     UserInfoDTO:
       type: object
       properties:

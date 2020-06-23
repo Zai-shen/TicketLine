@@ -146,20 +146,28 @@ public class UserServiceImpl implements UserService {
             throw new AccessDeniedException(
                 "Der aktuelle Benutzer hat keine Berechtigung um andere Nutzer zu bearbeiten");
         }
+        User user = userRepository.findUserById(userId);
         LOGGER.debug("Update User");
         if (updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty()) {
-            currentUser.setFirstname(updateUser.getFirstname());
+            user.setFirstname(updateUser.getFirstname());
         }
         if (updateUser.getLastname() != null && !updateUser.getLastname().isEmpty()) {
-            currentUser.setLastname(updateUser.getLastname());
+            user.setLastname(updateUser.getLastname());
         }
-        long addressId = currentUser.getAddress().getId();
+        long addressId = user.getAddress().getId();
         if (updateUser.getAddress() != null) {
-            currentUser.setAddress(updateUser.getAddress());
-            currentUser.getAddress().setId(addressId);
+            user.setAddress(updateUser.getAddress());
+            user.getAddress().setId(addressId);
         }
-        new UpdateUserValidator().build(currentUser).validate();
-        return userRepository.saveAndFlush(currentUser);
+        if (updateUser.getRole() != null) {
+            if (!userId.equals(currentUser.getId())) {
+                user.setRole(updateUser.getRole());
+            } else {
+                throw new AccessDeniedException("Der aktuelle Benutzer kann seine Rolle nicht selbst ändern");
+            }
+        }
+        new UpdateUserValidator().build(user).validate();
+        return userRepository.saveAndFlush(user);
     }
 
     @Override
