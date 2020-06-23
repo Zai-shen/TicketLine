@@ -66,7 +66,7 @@ export class TopTenComponent implements OnInit {
     if (event.sold && this.maxSold >= event.sold) {
       const percent = Math.round((event.sold/this.maxSold) * 100);
       return {
-        'background-image': `linear-gradient(to right, #ebebeb ${percent}%, #ffffff ${percent}%)`,
+        'background-image': `linear-gradient(to right, #C5CAE9 ${percent}%, #ffffff ${percent}%)`,
       };
     }
     return {};
