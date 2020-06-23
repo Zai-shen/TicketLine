@@ -48,7 +48,18 @@ export class NewsDetailComponent implements AfterViewInit {
 
   updateImage(): void {
     if (this.news.picturePath !== undefined && this.news.picturePath !== null) {
-      this.imageSource = '/static/' + this.news.picturePath + '.png';
+      if (this.news.id !== undefined && this.news.id !== null) {
+        // this.imageSource = '/static/' + this.news.picturePath + '.png';
+        this.newsService.getPictureOfNewsWithId(this.news.id).subscribe(
+          (base64image: string) => {
+              console.log(base64image);
+          },
+          error => {
+            this.errorMessageComponent.defaultServiceErrorHandling(error);
+            this.changeDetectorRef.detectChanges();
+          }
+        );
+      }
     }
   }
 

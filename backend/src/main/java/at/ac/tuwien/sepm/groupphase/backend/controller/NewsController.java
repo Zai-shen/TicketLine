@@ -81,4 +81,10 @@ public class NewsController implements NewsApi {
             newsService.saveImageForNewsWithId(newsId, base64Image));
     }
 
+    @Override
+    public ResponseEntity<String> getPictureOfNews(Long newsId) {
+        LOGGER.info("Get image for news with id {}", newsId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            newsService.getImageOfNewsWithId(newsId));
+    }
 }

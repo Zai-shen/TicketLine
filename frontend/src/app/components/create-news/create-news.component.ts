@@ -20,7 +20,6 @@ export class CreateNewsComponent implements OnInit {
   submitted: boolean = false;
   newsForm: FormGroup;
   private base64PictureString: string;
-  private binaryPictureString: any;
 
   constructor(private formBuilder: FormBuilder, private newsService: NewsService,
               private authService: AuthService, private userService: UserService,
@@ -84,10 +83,9 @@ export class CreateNewsComponent implements OnInit {
     if (this.base64PictureString !== undefined && this.base64PictureString !== null) {
       this.newsService.uploadPictureForNewsWithId(newsId, this.base64PictureString).subscribe(
         answer => {
-          console.log('answer from server: ' + answer);
+          // console.log('answer from server: ' + answer);
         },
         error => {
-          console.log('error!');
           this.errorMessageComponent.defaultServiceErrorHandling(error);
         }
       );
@@ -105,7 +103,6 @@ export class CreateNewsComponent implements OnInit {
   }
 
   handleReaderLoaded(readerEvent: any) {
-    this.binaryPictureString = readerEvent.target.result;
-    this.base64PictureString = (btoa(readerEvent.target.result));
+    this.base64PictureString = 'data:image/png;base64,' + (btoa(readerEvent.target.result));
   }
 }

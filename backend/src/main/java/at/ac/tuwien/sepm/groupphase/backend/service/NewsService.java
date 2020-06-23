@@ -52,4 +52,12 @@ public interface NewsService {
      * @param base64Image the image to be saved, encoded in base64
      */
     String saveImageForNewsWithId(Long newsId, String base64Image);
+
+    /**
+     * Get image of given news
+     * @param newsId the id of the news of wanted picture
+     * @return picture encoded in base64
+     */
+    String getImageOfNewsWithId(Long newsId);
+
 }

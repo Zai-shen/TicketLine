@@ -452,6 +452,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /news/{newsId}/picture:
+    get:
+      tags:
+        - news
+      summary: Get the picture of one news article
+      operationId: getPictureOfNews
+      parameters:
+        - in: path
+          name: newsId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the news entity with given picture
+          required: true
+          example: 14
+      responses:
+        200:
+          description: Content of the news article
+          content:
+            image/png:
+              schema:
+                type: string
+                format: base64
+            image/jpeg:
+              schema:
+                type: string
+                format: base64
+        403:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find news entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
     post:
       security:
         - ticketline_auth: []

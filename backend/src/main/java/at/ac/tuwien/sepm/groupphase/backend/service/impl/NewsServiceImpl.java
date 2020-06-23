@@ -8,7 +8,6 @@ import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewNewsValidator;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,11 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -88,8 +86,7 @@ public class NewsServiceImpl implements NewsService {
         //currentNews.setPicturePath("\\images\\" + (ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId + ".png");
         currentNews.setPicturePath((ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId.toString());
 
-        //save image in directory
-        byte[] imageByte = Base64.decodeBase64(base64Image);
+        byte[] imageByte = Base64.getDecoder().decode(base64Image.substring(22));
         String directory = System.getProperty("user.dir") + "\\images\\" + currentNews.getPicturePath() + ".png";
         try (OutputStream stream = new FileOutputStream(directory)) {
             stream.write(imageByte);
@@ -97,11 +94,27 @@ public class NewsServiceImpl implements NewsService {
             throw new RuntimeException(e);
         }
 
-        //update current news
         newsRepository.saveAndFlush(currentNews);
-
         return currentNews.getPicturePath();
     }
 
+    @Override
+    public String getImageOfNewsWithId(Long newsId) {
+        News currentNews = findOne(newsId);
+        LOGGER.debug("Get image for news with id {}", newsId);
+        String location = System.getProperty("user.dir") + "\\images\\" + currentNews.getPicturePath() + ".png";
 
+        String base64File = "";
+        File file = new File(location);
+
+        try (FileInputStream imageInFile = new FileInputStream(file)) {
+            byte fileData[] = new byte[(int) file.length()];
+            imageInFile.read(fileData);
+            base64File = Base64.getEncoder().encodeToString(fileData);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+
+        return "data:image/png;base64," + base64File;
+    }
 }
