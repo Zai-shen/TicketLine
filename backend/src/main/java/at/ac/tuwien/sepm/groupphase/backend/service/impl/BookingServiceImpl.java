@@ -44,7 +44,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+    @Transactional
     public void bookTickets(Long performanceId, boolean reserve, List<Ticket> tickets, Long reservationId) {
         Performance performance = performanceRepository.findById(performanceId).
             orElseThrow(() -> new IllegalArgumentException("Performance not found"));

@@ -14,6 +14,7 @@ import { SeatRenderDTO } from '../seatplan/entities/seat-render-dto';
 import { StandingAreaSelection } from '../seatplan/entities/standing-area-selection';
 import { EMPTY, Observable } from 'rxjs';
 import { Globals } from '../../global/globals';
+import { StandingAreaRenderDTO } from '../seatplan/entities/standing-area-render-dto';
 
 @Component({
   selector: 'tl-home',
@@ -86,14 +87,20 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaSelection[]) {
+  selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaRenderDTO[]) {
     const entry = this.selectedSeats.get(performance);
-    standingAreas = standingAreas.filter(x => x.selectedPositions > 0);
+    const standingAreaDtos = standingAreas.filter(x => x.selected > 0).map((it) => {
+        const standingAreaSelection = new StandingAreaSelection();
+        standingAreaSelection.standingArea = it;
+        standingAreaSelection.selectedPositions = it.selected;
+        return standingAreaSelection;
+      }
+    );
     if (entry) {
       const [seats, _] = entry;
-      this.selectedSeats.set(performance, [seats, standingAreas]);
+      this.selectedSeats.set(performance, [seats, standingAreaDtos]);
     } else {
-      this.selectedSeats.set(performance, [[], standingAreas]);
+      this.selectedSeats.set(performance, [[], standingAreaDtos]);
     }
   }
 

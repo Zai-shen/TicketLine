@@ -1,20 +1,19 @@
 import {
   AfterViewInit,
   ChangeDetectorRef,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges, ViewChild
+  ViewChild
 } from '@angular/core';
 import * as d3 from 'd3';
-import { cloneDeep, remove } from 'lodash-es';
+import { remove } from 'lodash-es';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectStandingareaDialogComponent } from './select-standingarea-dialog/select-standingarea-dialog.component';
 import { StandingAreaRenderDTO } from './entities/standing-area-render-dto';
-import { StandingAreaSelection } from './entities/standing-area-selection';
 import { SeatmapRenderData } from './entities/seatmap-render-data';
 import { SeatRenderDTO } from './entities/seat-render-dto';
 import { SeatLabelRenderDTO } from './entities/seat-label-render-dto';
@@ -42,7 +41,7 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
   selectedSeatsChanged: EventEmitter<SeatRenderDTO[]> = new EventEmitter<SeatRenderDTO[]>();
 
   @Output()
-  selectedStandingAreaChanged: EventEmitter<StandingAreaSelection[]> = new EventEmitter<StandingAreaSelection[]>();
+  selectedStandingAreaChanged: EventEmitter<StandingAreaRenderDTO[]> = new EventEmitter<StandingAreaRenderDTO[]>();
 
   seatmapInternal: SeatmapRenderData;
 
@@ -61,7 +60,6 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
   seatGroups: SeatingAreaRenderDTO[];
   standingAreas: StandingAreaRenderDTO[];
   selectedSeats: SeatRenderDTO[] = [];
-  selectedStandingAreaPlaces: StandingAreaSelection[];
 
   ngOnInit(): void {
     this.seatmap.subscribe(
@@ -83,9 +81,7 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
     this.seatmapInternal = new SeatmapRenderData(seatmap, this.postfixId);
     this.seatGroups = this.seatmapInternal.seatGroupAreas || [];
     this.standingAreas = this.seatmapInternal.standingAreas || [];
-    this.selectedStandingAreaPlaces = this.standingAreas.map((area) => {
-      return { standingArea: area, selectedPositions: 0 };
-    });
+    this.standingAreas.forEach((area) => area.selected = 0);
 
     if (!!this.preSelected?.fixedSeats) {
       const fixedIds = this.preSelected.fixedSeats.map((it) => it.id);
@@ -101,21 +97,15 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
     }
 
     if (!!this.preSelected?.freeSeats) {
-      this.selectedStandingAreaChanged.emit(this.preSelected.freeSeats.map((selected) => {
-        const area = this.standingAreas.find((it) => it.id === selected.seatGroupId);
+      const areas = this.preSelected.freeSeats.map((selected) => {
+        return this.standingAreas.filter((it) => it.id === selected.seatGroupId)
+                   .map((area) => {
+                     area.selected = selected.amount;
+                     return area;
+                   })[0];
+      }).filter((it) => it != null);
+      this.selectedStandingAreaChanged.emit(areas);
 
-        const selectedStandingIndex = this.selectedStandingAreaPlaces.findIndex(
-          (selectedArea) => selectedArea.standingArea.id === selected.seatGroupId );
-
-        this.selectedStandingAreaPlaces[selectedStandingIndex].selectedPositions = selected.amount;
-
-        const standingAreaSelection = new StandingAreaSelection();
-        if (area !== undefined) {
-          standingAreaSelection.standingArea = area;
-        }
-        standingAreaSelection.selectedPositions = selected.amount;
-        return standingAreaSelection;
-      }));
     }
 
     if (this.fullyInitialized) {
@@ -208,7 +198,8 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
           .attr('y', d.y)
           .attr('rx', 5)
           .attr('ry', 5)
-          .attr('sold-out', (d.maxPeople - d.sold - d.reserved) <= 1);
+          .attr('sold-out', (d.maxPeople - d.sold - d.reserved) <= 1)
+          .attr('selected', d.selected > 0);
       });
   }
 
@@ -242,10 +233,8 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
 
   onClickStandingGroup(standingArea: any) {
     this.wrapperSelection.select('#' + standingArea.renderId);
-    const selectedStandingIndex = this.selectedStandingAreaPlaces.findIndex(
-      (area) => area.standingArea.id === standingArea.id);
     const dialogRef = this.dialog.open(SelectStandingareaDialogComponent, {
-      data: this.selectedStandingAreaPlaces[selectedStandingIndex],
+      data: standingArea,
       position: {
         left: d3.event.clientX + 'px',
         top: d3.event.clientY + 'px'
@@ -255,8 +244,8 @@ export class SeatplanComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(
       () => {
         this.wrapperSelection.select('#' + standingArea.renderId)
-            .attr('selected', this.selectedStandingAreaPlaces[selectedStandingIndex].selectedPositions > 0);
-        this.selectedStandingAreaChanged.emit(this.selectedStandingAreaPlaces);
+            .attr('selected', standingArea.selected > 0);
+        this.selectedStandingAreaChanged.emit(this.standingAreas);
       });
   }
 }
