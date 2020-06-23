@@ -12,7 +12,7 @@
   <mat-divider></mat-divider>
   <h2>Saalplan</h2>
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let performance of performances" >
+    <mat-expansion-panel *ngFor="let performance of performances" [expanded]="reservedBooking?.performance?.id === performance.id">
       <mat-expansion-panel-header>
         Aufführung im <b>&nbsp;{{performance.location.description}}&nbsp;</b> <tl-timestamp [timestamp]="performance.dateTime"></tl-timestamp>
       </mat-expansion-panel-header>
@@ -20,6 +20,7 @@
                    [postfixId]="performance.id.toString()"
                    (selectedSeatsChanged)="selectedSeatsChanged(performance,$event)"
                    (selectedStandingAreaChanged)="selectedStandingAreasChanged(performance,$event)"
+                   [preSelected]="reservedBooking"
       ></tl-seatplan>
       <div>
         <ul>

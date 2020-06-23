@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  BookingDTO,
   BookingRequestDTO,
   EventApiService,
   EventDTO,
@@ -13,6 +14,7 @@ import { SeatRenderDTO } from '../seatplan/entities/seat-render-dto';
 import { StandingAreaSelection } from '../seatplan/entities/standing-area-selection';
 import { EMPTY, Observable } from 'rxjs';
 import { Globals } from '../../global/globals';
+import { StandingAreaRenderDTO } from '../seatplan/entities/standing-area-render-dto';
 
 @Component({
   selector: 'tl-home',
@@ -35,7 +37,12 @@ export class EventDetailComponent implements OnInit {
     private snackBar: MatSnackBar, private globals: Globals) {
   }
 
+  reservedBooking: BookingDTO = { fixedSeats: [], freeSeats: [] };
+
   ngOnInit(): void {
+    if (!!history.state.performance) {
+      this.reservedBooking = history.state;
+    }
     this.route.params.subscribe(params => {
       this.eventService.getEvent(+params['id']).subscribe(
         (event: EventDTO) => {
@@ -70,6 +77,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   selectedSeatsChanged(performance: PerformanceDTO, newSeats: SeatRenderDTO[]) {
+    console.log(newSeats);
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [_, standing] = entry;
@@ -79,14 +87,20 @@ export class EventDetailComponent implements OnInit {
     }
   }
 
-  selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaSelection[]) {
+  selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaRenderDTO[]) {
     const entry = this.selectedSeats.get(performance);
-    standingAreas = standingAreas.filter(x => x.selectedPositions > 0);
+    const standingAreaDtos = standingAreas.filter(x => x.selected > 0).map((it) => {
+        const standingAreaSelection = new StandingAreaSelection();
+        standingAreaSelection.standingArea = it;
+        standingAreaSelection.selectedPositions = it.selected;
+        return standingAreaSelection;
+      }
+    );
     if (entry) {
       const [seats, _] = entry;
-      this.selectedSeats.set(performance, [seats, standingAreas]);
+      this.selectedSeats.set(performance, [seats, standingAreaDtos]);
     } else {
-      this.selectedSeats.set(performance, [[], standingAreas]);
+      this.selectedSeats.set(performance, [[], standingAreaDtos]);
     }
   }
 
@@ -98,7 +112,7 @@ export class EventDetailComponent implements OnInit {
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [seats, _] = entry;
-      return seats.map(x => `Reihe ${x.rowLabel} Platz ${x.colLabel} - ${x.area.price}€`);
+      return seats.map(x => `Reihe ${ x.rowLabel } Platz ${ x.colLabel } - ${ x.area.price }€`);
     }
     return [];
   }
@@ -107,7 +121,9 @@ export class EventDetailComponent implements OnInit {
     const entry = this.selectedSeats.get(performance);
     if (entry) {
       const [_, standing] = entry;
-      return standing.map(x => (x.selectedPositions > 1 ? `${x.selectedPositions} Stehplätze` : `${x.selectedPositions} Stehplatz`) + ` - ${x.selectedPositions * x.standingArea.price}€`);
+      return standing.map(
+        x => (x.selectedPositions > 1 ? `${ x.selectedPositions } Stehplätze` : `${ x.selectedPositions } Stehplatz`) +
+          ` - ${ x.selectedPositions * x.standingArea.price }€`);
     }
     return [];
   }
@@ -130,8 +146,9 @@ export class EventDetailComponent implements OnInit {
     bookingDto.seats = seats.map(x => x.id);
     bookingDto.areas = [{ seatGroupId: 1, amount: 1 }];
     bookingDto.areas = standing.map(x => {
-      return {seatGroupId: x.standingArea.id, amount: x.selectedPositions};
+      return { seatGroupId: x.standingArea.id, amount: x.selectedPositions };
     });
+    bookingDto.reservationId = this.reservedBooking.id;
 
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)

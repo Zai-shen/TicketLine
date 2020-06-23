@@ -30,25 +30,28 @@
 
     <tl-artist-dropdown formControlName="artist" placeholder="Künstler" id="artist" name="artist" appearance="standard"></tl-artist-dropdown>
 
-    <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+    <div class="results">
+      <button mat-raised-button color="primary" class="searchbutton" type="submit">Suche</button>
+      <button mat-raised-button *ngIf="isAdminLoggedIn()" class="new-event-button" routerLink="/event/newEvent"
+              type="button">Event erstellen
+      </button>
+    </div>
   </form>
 
-  <button mat-raised-button *ngIf="isAdminLoggedIn()" class="new-event-button" routerLink="/event/newEvent"
-          type="button">Event erstellen
-  </button>
+
   <mat-card class="mdc-layout-grid" *ngFor="let event of events" [routerLink]="['/events', event.id]"
             mat-ripple>
     <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{event.title}}</mat-card-title>
     <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">
-      <p>
+      <p class="aligned-icons">
         <mat-icon>av_timer</mat-icon>
         {{event.duration}} minuten
       </p>
-      <p>
+      <p class="aligned-icons">
         <mat-icon>list</mat-icon>
         {{event.category}}
       </p>
-      <p>
+      <p class="aligned-icons">
         <mat-icon>stars</mat-icon>
         {{ event.artist.firstname }} {{ event.artist.lastname }}
       </p>

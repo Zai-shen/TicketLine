@@ -43,6 +43,7 @@ export class SeatmapRenderData {
             maxPeople: standingArea.maxPeople || 0,
             price: standingArea.price || 0,
             sold: standingArea.sold || 0,
+            selected: 0,
             reserved: standingArea.reserved || 0,
             soldOut: ((standingArea.maxPeople || 0 )
               - (standingArea.sold || 0)

@@ -97,7 +97,8 @@ public class EventController implements EventApi {
     public ResponseEntity<Long> createTicket(Long eventId, Long performanceId, @Valid Optional<Boolean> reserve,
         @Valid BookingRequestDTO bookingRequestDTO) {
         LOGGER.info("Create ticket for performance {}", performanceId);
-        bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingRequestDTO));
+        bookingService.bookTickets(performanceId, reserve.orElse(false), ticketMapper.fromDto(bookingRequestDTO),
+            bookingRequestDTO.getReservationId());
         return ResponseEntity.ok(0L);
     }
 

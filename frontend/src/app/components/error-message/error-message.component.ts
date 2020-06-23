@@ -3,7 +3,8 @@ import { ErrorDTO, ErrorType } from '../../../generated';
 
 @Component({
   selector: 'tl-error-message',
-  templateUrl: './error-message.component.html'
+  templateUrl: './error-message.component.html',
+  styleUrls: ['./error-message.component.scss']
 })
 export class ErrorMessageComponent implements OnInit {
 
