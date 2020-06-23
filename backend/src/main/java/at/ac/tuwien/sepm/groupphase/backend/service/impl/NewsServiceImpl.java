@@ -17,9 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -79,17 +84,19 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public String saveImageForNewsWithId(Long newsId, String base64Image){
+    public String saveImageForNewsWithId(Long newsId, String imageData){
         News currentNews = findOne(newsId);
         LOGGER.debug("Save image for news with id {}", newsId);
-
-        //currentNews.setPicturePath("\\images\\" + (ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId + ".png");
-        currentNews.setPicturePath((ThreadLocalRandom.current().nextInt(1, Integer.MAX_VALUE)) + newsId.toString());
-
-        byte[] imageByte = Base64.getDecoder().decode(base64Image.substring(22));
-        String directory = System.getProperty("user.dir") + "\\images\\" + currentNews.getPicturePath() + ".png";
-        try (OutputStream stream = new FileOutputStream(directory)) {
-            stream.write(imageByte);
+        currentNews.setPicturePath(UUID.randomUUID() + newsId.toString());
+        String base64Image = imageData.split(",")[1];
+        byte[] imageByte = Base64.getDecoder().decode(base64Image.getBytes(StandardCharsets.UTF_8));
+        String path = System.getProperty("user.dir") + "\\images\\";
+        String filename = currentNews.getPicturePath() + ".png";
+        Path destinationFile = Paths.get(path, filename);
+        Path destinationPath = Paths.get(path);
+        try {
+            Files.createDirectories(destinationPath);
+            Files.write(destinationFile, imageByte);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
