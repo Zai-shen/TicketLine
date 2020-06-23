@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EventApiService, EventCategory, EventDTO, SearchEventDTO } from '../../generated';
+import { EventApiService, EventCategory, EventDTO, EventSoldDTO, SearchEventDTO } from '../../generated';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 
@@ -19,5 +19,9 @@ export class EventService {
 
   getTopTen(category?: EventCategory): Observable<EventDTO[]> {
     return this.eventApiService.getTopTenEvents(category);
+  }
+
+  getSold(eventId: number): Observable<EventSoldDTO> {
+    return this.eventApiService.getEventSold(eventId);
   }
 }

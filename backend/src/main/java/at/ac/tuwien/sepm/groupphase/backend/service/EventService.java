@@ -49,10 +49,16 @@ public interface EventService {
     List<Event> getTopTen(CategoryEnum category);
 
     /**
+     * Get the amount of tickets sold this month
+     * @param event event to retrieve the statistics from
+     * @return the amount of tickets sold for this event
+     */
+    Long getSold(Event event);
+
+    /**
      * cancels all tickets in a booking
      * @param bookingId if of the booking to be canceled
      * @throws BusinessValidationException when the booking does not belong to the user
      */
     void cancelBooking(Long bookingId);
-
 }

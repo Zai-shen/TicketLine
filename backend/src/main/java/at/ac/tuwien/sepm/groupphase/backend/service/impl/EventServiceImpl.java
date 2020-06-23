@@ -69,15 +69,25 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> getTopTen(CategoryEnum category) {
-        if (category == null) {
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime begin = now.withDayOfMonth(1);
+        OffsetDateTime end = begin.plusMonths(1);
+        if(category == null){
             LOGGER.debug("get top ten events");
-            return eventRepository.getOrderedEvents(OffsetDateTime.now(), OffsetDateTime.now().plusMonths(1),
-                PageRequest.of(0, 10)).getContent();
+            return eventRepository.getOrderedEvents(begin,end,PageRequest.of(0,10)).getContent();
         } else {
-            LOGGER.debug("get top ten events in category {}", category);
-            return eventRepository.getOrderedEvents(OffsetDateTime.now(), OffsetDateTime.now().plusMonths(1), category,
-                PageRequest.of(0, 10)).getContent();
+            LOGGER.debug("get top ten events in category {}",category);
+            return eventRepository.getOrderedEvents(begin,end,category,PageRequest.of(0,10)).getContent();
         }
+    }
+
+    @Override
+    public Long getSold(Event event) {
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime begin = now.withDayOfMonth(1);
+        OffsetDateTime end = begin.plusMonths(1);
+        LOGGER.debug("get tickets sold for {}",event);
+        return eventRepository.getTicketsSold(event,begin,end);
     }
 
     @Override

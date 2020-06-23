@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.PerformanceMapper;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.TicketMapper;
 import at.ac.tuwien.sepm.groupphase.backend.dto.*;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Event;
+import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
 import at.ac.tuwien.sepm.groupphase.backend.entity.Performance;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
 import at.ac.tuwien.sepm.groupphase.backend.service.BookingService;
@@ -138,6 +139,12 @@ public class EventController implements EventApi {
     }
 
     @Override
+    public ResponseEntity<EventSoldDTO> getEventSold(Long eventId) {
+        LOGGER.info("Get sold for event {}",eventId);
+        Event e = eventService.getEvent(eventId).orElseThrow(NotFoundException::new);
+        return ResponseEntity.ok(new EventSoldDTO().sold(eventService.getSold(e)));
+    }
+
     @Secured(AuthorizationRole.USER_ROLE)
     public ResponseEntity<Void> cancelTickets(Long bookingId) {
         LOGGER.info("Delete Booking {}", bookingId);
