@@ -6,7 +6,7 @@
     <button mat-button routerLink="/artists">Künstler</button>
     <button mat-button routerLink="/performances">Aufführungen</button>
   </div>
-  <div class="menu-item middle"><img class="logo" src="../../../assets/ticketline.png" alt="Ticketline" /></div>
+  <div class="menu-item middle"><a routerLink="/"><img class="logo" src="../../../assets/ticketline.png" alt="Ticketline" /></a></div>
   <div class="menu-item last">
     <div *ngIf="authService.isLoggedIn()" style="display: inline-block">
       <button mat-button [matMenuTriggerFor]="adminMenu" *ngIf="authService.isAdminLoggedIn()" color="warn">Admin</button>
