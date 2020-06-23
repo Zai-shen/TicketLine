@@ -470,7 +470,7 @@ paths:
         200:
           description: Content of the news article
           content:
-            image/png:
+            text/plain:
               schema:
                 type: string
                 format: base64
@@ -510,12 +510,8 @@ paths:
               format: base64
       responses:
         201:
-          description: Uploaded picture to news entry
-          content:
-            application/json:
-              schema:
-                type: string
-                example: images/3sdf.png
+          description: Uploaded picture and linked news entry
+          content: {}
         403:
           description: Not logged in or insufficient permission
           content:

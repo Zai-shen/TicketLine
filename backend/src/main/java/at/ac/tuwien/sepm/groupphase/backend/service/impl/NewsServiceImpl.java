@@ -10,6 +10,8 @@ import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
 import at.ac.tuwien.sepm.groupphase.backend.service.validator.NewNewsValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -84,7 +86,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public String saveImageForNewsWithId(Long newsId, String imageData){
+    public void saveImageForNewsWithId(Long newsId, String imageData){
         News currentNews = findOne(newsId);
         LOGGER.debug("Save image for news with id {}", newsId);
         currentNews.setPicturePath(UUID.randomUUID() + newsId.toString());
@@ -102,7 +104,6 @@ public class NewsServiceImpl implements NewsService {
         }
 
         newsRepository.saveAndFlush(currentNews);
-        return currentNews.getPicturePath();
     }
 
     @Override
