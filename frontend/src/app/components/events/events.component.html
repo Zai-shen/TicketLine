@@ -40,15 +40,15 @@
             mat-ripple>
     <mat-card-title class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3">{{event.title}}</mat-card-title>
     <mat-card-content class="mdc-layout-grid__cell mdc-layout-grid__cell--span-5">
-      <p>
+      <p class="aligned-icons">
         <mat-icon>av_timer</mat-icon>
         {{event.duration}} minuten
       </p>
-      <p>
+      <p class="aligned-icons">
         <mat-icon>list</mat-icon>
         {{event.category}}
       </p>
-      <p>
+      <p class="aligned-icons">
         <mat-icon>stars</mat-icon>
         {{ event.artist.firstname }} {{ event.artist.lastname }}
       </p>

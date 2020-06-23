@@ -5,7 +5,6 @@
     <button mat-button routerLink="/location">Orte</button>
     <button mat-button routerLink="/artists">Künstler</button>
     <button mat-button routerLink="/performances">Aufführungen</button>
-    <button *ngIf="authService.isLoggedIn()" mat-button routerLink="/news">News</button>
   </div>
   <div class="menu-item middle"><img class="logo" src="../../../assets/ticketline.png" alt="Ticketline" /></div>
   <div class="menu-item last">
@@ -14,6 +13,7 @@
       <mat-menu #adminMenu="matMenu">
         <button mat-menu-item routerLink="/admin/users">Nutzer anzeigen</button>
       </mat-menu>
+      <button *ngIf="authService.isLoggedIn()" mat-button routerLink="/news">News</button>
       <button mat-button [matMenuTriggerFor]="userMenu">User</button>
       <mat-menu #userMenu="matMenu">
         <button mat-menu-item routerLink="/user/tickets">Bestellübersicht</button>
