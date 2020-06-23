@@ -5,6 +5,7 @@ import { ErrorMessageComponent } from '../error-message/error-message.component'
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { SelectRoleDialogComponent } from './select-role-dialog/select-role-dialog.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -91,6 +92,19 @@ export class UserListComponent implements OnInit {
             }
           },
           error => this.errorMessageComponent.defaultServiceErrorHandling(error));
+  }
+
+  openChangeRoleDialog(user: UserInfoDTO): void {
+    const openDialog = this.matDialog.open(SelectRoleDialogComponent, {
+      width: '20%',
+      data: user
+    });
+    openDialog.afterClosed().subscribe(result => {
+      if (result !== true) {
+        this.errorMessageComponent.defaultServiceErrorHandling(result)
+      }
+      this.reload();
+    });
   }
 
 }

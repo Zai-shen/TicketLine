@@ -1,0 +1,13 @@
+<h3 mat-dialog-title>Rolle wählen</h3>
+<mat-dialog-content>
+  <form [formGroup]="roleForm">
+    <mat-radio-group aria-label="Select an option" formControlName="role" name="role" [(ngModel)]="user.role">
+      <mat-radio-button value="USER">USER</mat-radio-button>
+      <mat-radio-button value="ADMIN">ADMIN</mat-radio-button>
+    </mat-radio-group>
+  </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" (click)="changeRole()">OK</button>
+</mat-dialog-actions>
