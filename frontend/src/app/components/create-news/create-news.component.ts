@@ -83,7 +83,6 @@ export class CreateNewsComponent implements OnInit {
     if (this.base64PictureString !== undefined && this.base64PictureString !== null) {
       this.newsService.uploadPictureForNewsWithId(newsId, this.base64PictureString).subscribe(
         answer => {
-          // console.log('answer from server: ' + answer);
         },
         error => {
           this.errorMessageComponent.defaultServiceErrorHandling(error);

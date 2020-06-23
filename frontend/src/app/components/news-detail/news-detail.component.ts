@@ -49,10 +49,10 @@ export class NewsDetailComponent implements AfterViewInit {
   updateImage(): void {
     if (this.news.picturePath !== undefined && this.news.picturePath !== null) {
       if (this.news.id !== undefined && this.news.id !== null) {
-        // this.imageSource = '/static/' + this.news.picturePath + '.png';
         this.newsService.getPictureOfNewsWithId(this.news.id).subscribe(
-          (base64image: string) => {
+          base64image => {
               console.log(base64image);
+              this.imageSource = base64image;
           },
           error => {
             this.errorMessageComponent.defaultServiceErrorHandling(error);
@@ -66,7 +66,6 @@ export class NewsDetailComponent implements AfterViewInit {
   addReadNews(): void {
     this.userService.addReadNewsOfUser(this.news).subscribe(
       (_success: any) => {
-        console.log('Daten Gespeichert für News mit ID' + this.news.id);
       },
       error => {
         this.errorMessageComponent.defaultServiceErrorHandling(error);
