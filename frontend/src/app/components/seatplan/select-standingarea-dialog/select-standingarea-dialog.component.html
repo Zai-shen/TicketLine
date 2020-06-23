@@ -1,16 +1,16 @@
-<h3 mat-dialog-title>Stehplätze - {{standingAreaSelection.standingArea.name}}</h3>
+<h3 mat-dialog-title>Stehplätze - {{standingAreaRenderDTO.name}}</h3>
 <mat-dialog-content>
   <div layout="column" layout-align="center center">
     <div class="available">
       Stehplätze verfügbar: {{availablePlaces}}<br>
-      Preis/Stehplatz: € {{standingAreaSelection.standingArea.price | number:'1.2-2'}}
+      Preis/Stehplatz: € {{standingAreaRenderDTO.price | number:'1.2-2'}}
     </div>
     <div class="selection">
       <mat-label class="select-label">Auswählen:</mat-label>
       <button type="button" mat-icon-button (click)="remove()">
         <mat-icon>remove_circle_outline</mat-icon>
       </button>
-      {{standingAreaSelection.selectedPositions}}
+      {{standingAreaRenderDTO.selected}}
       <button type="button" mat-icon-button (click)="add()">
         <mat-icon>add_circle_outline</mat-icon>
       </button>

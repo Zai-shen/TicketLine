@@ -37,6 +37,7 @@ public interface BookingMapper {
         seatgroupSeatDTO.setSeatgroupId(seat.getId());
         seatgroupSeatDTO.setX(seat.getX().intValue());
         seatgroupSeatDTO.setY(seat.getY().intValue());
+        seatgroupSeatDTO.setId(seat.getId());
         return seatgroupSeatDTO;
     }
 

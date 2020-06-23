@@ -1932,6 +1932,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FreeSeatgroupBookingDTO'
+        reservationId:
+          type: integer
+          format: int64
     SeatgroupSeatDTO:
       type: object
       properties:
@@ -1945,6 +1948,9 @@ components:
           type: integer
           format: int64
           example: 66
+        id:
+          type: integer
+          format: int64
       required:
         - x
         - y
