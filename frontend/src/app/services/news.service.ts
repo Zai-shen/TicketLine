@@ -26,7 +26,7 @@ export class NewsService {
     return this.newsApiService.uploadPictureForNews(newsId, base64);
   }
 
-  getPictureOfNewsWithId(newsId: number): Observable<string> {
+  getPictureOfNewsWithId(newsId: number): Observable<any> {
     return this.newsApiService.getPictureOfNews(newsId);
   }
 }

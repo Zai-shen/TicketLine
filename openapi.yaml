@@ -470,10 +470,14 @@ paths:
         200:
           description: Content of the news article
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                format: base64
+                type: object
+                properties:
+                  picture:          # <-- image embedded into JSON
+                    type: string
+                    format: base64
+                    description: Base64-encoded contents of the image
         403:
           description: Not logged in
           content:

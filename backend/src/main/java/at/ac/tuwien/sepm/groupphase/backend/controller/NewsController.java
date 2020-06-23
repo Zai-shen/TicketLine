@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.NewsApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.NewsMapper;
+import at.ac.tuwien.sepm.groupphase.backend.dto.InlineResponse200;
 import at.ac.tuwien.sepm.groupphase.backend.dto.NewsDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
@@ -9,7 +10,6 @@ import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
@@ -82,9 +80,10 @@ public class NewsController implements NewsApi {
     }
 
     @Override
-    public ResponseEntity<String> getPictureOfNews(Long newsId) {
+    public ResponseEntity<InlineResponse200> getPictureOfNews(Long newsId) {
         LOGGER.info("Get image for news with id {}", newsId);
+
         return ResponseEntity.status(HttpStatus.OK).body(
-            newsService.getImageOfNewsWithId(newsId));
+            new InlineResponse200().picture(newsService.getImageOfNewsWithId(newsId)));
     }
 }

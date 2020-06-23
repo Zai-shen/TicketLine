@@ -51,8 +51,8 @@ export class NewsDetailComponent implements AfterViewInit {
       if (this.news.id !== undefined && this.news.id !== null) {
         this.newsService.getPictureOfNewsWithId(this.news.id).subscribe(
           base64image => {
-              console.log(base64image);
-              this.imageSource = base64image;
+            console.log(base64image);
+            this.imageSource = base64image;
           },
           error => {
             this.errorMessageComponent.defaultServiceErrorHandling(error);
