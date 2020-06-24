@@ -92,7 +92,7 @@ public class NewsServiceImpl implements NewsService {
         currentNews.setPicturePath(UUID.randomUUID() + newsId.toString());
         String base64Image = imageData.split(",")[1];
         byte[] imageByte = Base64.getDecoder().decode(base64Image.getBytes(StandardCharsets.UTF_8));
-        String path = System.getProperty("user.dir") + "\\images\\";
+        String path = Paths.get(System.getProperty("user.dir"), "public","images").toString();
         String filename = currentNews.getPicturePath() + ".png";
         Path destinationFile = Paths.get(path, filename);
         Path destinationPath = Paths.get(path);
@@ -110,7 +110,7 @@ public class NewsServiceImpl implements NewsService {
     public String getImageOfNewsWithId(Long newsId) {
         News currentNews = findOne(newsId);
         LOGGER.debug("Get image for news with id {}", newsId);
-        String location = System.getProperty("user.dir") + "\\images\\" + currentNews.getPicturePath() + ".png";
+        String location = Paths.get(System.getProperty("user.dir") ,"public","images", currentNews.getPicturePath() + ".png").toString();
 
         String base64File = "";
         File file = new File(location);

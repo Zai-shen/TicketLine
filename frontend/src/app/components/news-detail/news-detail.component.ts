@@ -48,18 +48,7 @@ export class NewsDetailComponent implements AfterViewInit {
 
   updateImage(): void {
     if (this.news.picturePath !== undefined && this.news.picturePath !== null) {
-      if (this.news.id !== undefined && this.news.id !== null) {
-        this.newsService.getPictureOfNewsWithId(this.news.id).subscribe(
-          base64image => {
-            console.log(base64image);
-            this.imageSource = base64image;
-          },
-          error => {
-            this.errorMessageComponent.defaultServiceErrorHandling(error);
-            this.changeDetectorRef.detectChanges();
-          }
-        );
-      }
+      this.imageSource = 'http://localhost:8080/v1/images/' + this.news.picturePath + '.png';
     }
   }
 
@@ -78,5 +67,11 @@ export class NewsDetailComponent implements AfterViewInit {
     const theConverted = new Date(theDate);
     return theConverted.toDateString() + ' um ' + theConverted.getHours() + ':' + theConverted.getMinutes()
       + ':' + theConverted.getSeconds();
+  }
+
+  getImg(): any {
+    return {
+      'background': `url('${this.imageSource}') center center`,
+    };
   }
 }
