@@ -9,7 +9,8 @@
 
       <mat-form-field appearance="fill">
         <mat-label for="title">Titel</mat-label>
-        <input matInput name="title" formControlName="title" id="title" placeholder="Titel">
+        <input matInput name="title" formControlName="title" id="title" placeholder="Titel"
+               [errorStateMatcher]="errorMatcher">
         <mat-error *ngIf="submitted && newsForm.get('title').errors" class="error">
           <div *ngIf="newsForm.get('title').errors.required">
             Der Titel ist ein Pflichtfeld!
@@ -19,7 +20,7 @@
       <mat-form-field appearance="fill">
         <mat-label for="summary">Kurzfassung</mat-label>
         <textarea matInput rows="2" cols="50" name="summary" formControlName="summary"
-                  id="summary" placeholder="Kurzfassung"></textarea>
+                  id="summary" placeholder="Kurzfassung" [errorStateMatcher]="errorMatcher"></textarea>
         <mat-error *ngIf="submitted && newsForm.get('summary').errors" class="error">
           <div *ngIf="newsForm.get('summary').errors.required">
             Die Kurzfassung ist ein Pflichtfeld!
@@ -29,7 +30,7 @@
       <mat-form-field appearance="fill">
         <mat-label for="content">Content</mat-label>
         <textarea matInput rows="5" cols="50" name="content" formControlName="content"
-                  id="content" placeholder="Content"></textarea>
+                  id="content" placeholder="Content" [errorStateMatcher]="errorMatcher"></textarea>
         <mat-error *ngIf="submitted && newsForm.get('content').errors" class="error">
           <div *ngIf="newsForm.get('content').errors.required">
             Der Content ist ein Pflichtfeld!

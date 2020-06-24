@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { AuthService } from '../../services/auth.service';
 import { NewsDTO, UserDTO } from '../../../generated';
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Globals } from '../../global/globals';
 import { NewsService } from '../../services/news.service';
+import { NewsErrorStateMatcher } from './news-error-state-matcher';
 
 @Component({
   selector: 'tl-create-news',
@@ -20,11 +21,13 @@ export class CreateNewsComponent implements OnInit {
   submitted: boolean = false;
   newsForm: FormGroup;
   private base64PictureString: string;
+  errorMatcher: NewsErrorStateMatcher = new NewsErrorStateMatcher();
 
   constructor(private formBuilder: FormBuilder, private newsService: NewsService,
-              private authService: AuthService, private userService: UserService,
-              private router: Router, private snackBar: MatSnackBar,
-              private globals: Globals) { }
+    private authService: AuthService, private userService: UserService,
+    private router: Router, private snackBar: MatSnackBar,
+    private globals: Globals) {
+  }
 
   @ViewChild('pictureFile') pictureFile: ElementRef;
   @ViewChild(ErrorMessageComponent)
@@ -60,6 +63,7 @@ export class CreateNewsComponent implements OnInit {
 
   createNews(): void {
     this.submitted = true;
+    this.errorMatcher.setSubmitted(true);
     if (this.newsForm.valid) {
       const newsDTO: NewsDTO = Object.assign({}, this.newsForm.value);
       newsDTO.author = this.userName;
@@ -67,18 +71,12 @@ export class CreateNewsComponent implements OnInit {
       this.newsService.createNews(newsDTO).subscribe(
         newsId => {
           this.submitted = false;
+          this.errorMatcher.setSubmitted(false);
           this.newsForm.reset();
-          // remove the validation errors so that the UI is clean again
-          Object.keys(this.newsForm.controls).forEach(key => {
-            const input: AbstractControl | null = this.newsForm.get(key);
-            if (input !== null) {
-              input.setErrors(null);
-            }
-          });
           this.newsForm.controls['author'].setValue(this.userName);
           this.newsForm.controls['author'].disable();
           this.snackBar.open('Daten erfolgreich gespeichert.', 'OK', {
-            duration: this.globals.defaultSnackbarDuration,
+            duration: this.globals.defaultSnackbarDuration
           });
           this.uploadPicture(newsId);
         },
