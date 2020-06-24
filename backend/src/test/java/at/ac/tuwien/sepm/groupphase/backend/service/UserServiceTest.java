@@ -131,7 +131,9 @@ public class UserServiceTest {
     @Test
     public void testRemoveUserWithActiveBooking() {
         final User user = new User();
-        user.setBookings(Collections.singletonList(new Booking()));
+        final Booking booking = new Booking();
+        booking.setCanceled(false);
+        user.setBookings(Collections.singletonList(booking));
         when(userRepository.findUserByEmail(any())).thenReturn(user);
         mockAuthenticationContext();
 

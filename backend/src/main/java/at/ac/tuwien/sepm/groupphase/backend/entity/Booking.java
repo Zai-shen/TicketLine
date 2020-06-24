@@ -18,13 +18,16 @@ public class Booking {
     @ManyToOne
     private Performance performance;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER, mappedBy = "booking")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "booking")
     private List<Ticket> tickets;
 
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne
+    @Column
+    private Boolean canceled;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     public Long getId() {
@@ -75,9 +78,12 @@ public class Booking {
         this.user = user;
     }
 
-    public Boolean isCanceled() {
-        // TODO: 09.06.2020 implement with ticket/reservation cancelation
-        return false;
+    public Boolean getCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(Boolean canceled) {
+        this.canceled = canceled;
     }
 
     @Override
@@ -88,8 +94,8 @@ public class Booking {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Booking location = (Booking) o;
-        return java.util.Objects.equals(id, location.id);
+        Booking booking = (Booking) o;
+        return java.util.Objects.equals(id, booking.id);
     }
 
     @Override

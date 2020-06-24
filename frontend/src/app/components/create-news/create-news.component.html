@@ -1,4 +1,4 @@
-<div class="news-body">
+<div class="mat-elevation-z4 main-content">
 
   <h1>News hinzuf&uuml;gen</h1>
 
@@ -7,49 +7,49 @@
   <form [formGroup]="newsForm" (ngSubmit)="createNews()">
     <div class="formCreate">
 
-      <div class="form-group">
-        <label for="title">Titel</label>
-        <input type="text" name="title" formControlName="title" class="form-control" id="title"
-               placeholder="Titel">
-        <div *ngIf="submitted && newsForm.get('title').errors" class="error">
-          <small class="form-text text-warning" *ngIf="newsForm.get('title').errors.required">
+      <mat-form-field appearance="fill">
+        <mat-label for="title">Titel</mat-label>
+        <input matInput name="title" formControlName="title" id="title" placeholder="Titel">
+        <mat-error *ngIf="submitted && newsForm.get('title').errors" class="error">
+          <div *ngIf="newsForm.get('title').errors.required">
             Der Titel ist ein Pflichtfeld!
-          </small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="summary">Kurzfassung</label>
-        <textarea rows="2" cols="50" name="summary" formControlName="summary" class="form-control"
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="summary">Kurzfassung</mat-label>
+        <textarea matInput rows="2" cols="50" name="summary" formControlName="summary"
                   id="summary" placeholder="Kurzfassung"></textarea>
-        <div *ngIf="submitted && newsForm.get('summary').errors" class="error">
-          <small class="form-text text-warning" *ngIf="newsForm.get('summary').errors.required">
+        <mat-error *ngIf="submitted && newsForm.get('summary').errors" class="error">
+          <div *ngIf="newsForm.get('summary').errors.required">
             Die Kurzfassung ist ein Pflichtfeld!
-          </small>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="content">Content</label>
-        <textarea rows="5" cols="50" name="content" formControlName="content" class="form-control"
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="content">Content</mat-label>
+        <textarea matInput rows="5" cols="50" name="content" formControlName="content"
                   id="content" placeholder="Content"></textarea>
-        <div *ngIf="submitted && newsForm.get('content').errors" class="error">
-          <small class="form-text text-warning" *ngIf="newsForm.get('content').errors.required">
+        <mat-error *ngIf="submitted && newsForm.get('content').errors" class="error">
+          <div *ngIf="newsForm.get('content').errors.required">
             Der Content ist ein Pflichtfeld!
-          </small>
-        </div>
-      </div>
+          </div>
+        </mat-error>
+      </mat-form-field>
+
       <div class="form-group">
-        <label for="image">Titelbild</label>
         <input type="file" required accept="image/png, image/jpeg"
                class="form-control" name="image" id="image"
                (change)="onUploadChange($event)" #pictureFile>
       </div>
-      <div class="form-group">
-        <label for="author">Author</label>
-        <input type="text" name="author" formControlName="author" class="form-control"
-               id="author" placeholder="Author">
-      </div>
 
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label for="author">Autor</mat-label>
+        <input matInput type="text" name="author" formControlName="author"
+               id="author" placeholder="Author">
+      </mat-form-field>
+
+    </div>
 
     <button routerLink="/news" type="button" mat-raised-button color="warn" class="float-left">Abbrechen</button>
     <div class="float-right buttons">

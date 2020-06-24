@@ -27,7 +27,7 @@ export class SeatmapRenderData {
             name: seatgroup.name || '',
             seatLabels: this.mapSeatLabels(seatgroup),
             seats: this.mapSeats(seatgroup, postfixId),
-            renderId: 'seatgroup-' + (seatgroup.id || -1) + postfixId
+            renderId: 'seatgroup-' + (seatgroup.id || -1) + postfixId,
           };
         });
     }
@@ -43,6 +43,7 @@ export class SeatmapRenderData {
             maxPeople: standingArea.maxPeople || 0,
             price: standingArea.price || 0,
             sold: standingArea.sold || 0,
+            selected: 0,
             reserved: standingArea.reserved || 0,
             soldOut: ((standingArea.maxPeople || 0 )
               - (standingArea.sold || 0)
@@ -81,11 +82,11 @@ export class SeatmapRenderData {
           radius: seat.radius || 0,
           colLabel: seat.colLabel || '',
           rowLabel: seat.rowLabel || '',
-          price: seat.price || 0,
           reserved: seat.reserved || false,
           sold: seat.sold || false,
           selected: false,
-          renderId: 'seat-' + (seatgroup.id || -1) + '-' + (seat.id || -1) + postfixId
+          renderId: 'seat-' + (seatgroup.id || -1) + '-' + (seat.id || -1) + postfixId,
+          area: seatgroup,
         };
       });
   }

@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StandingAreaSelection } from '../entities/standing-area-selection';
+import { StandingAreaRenderDTO } from '../entities/standing-area-render-dto';
 
 @Component({
   selector: 'tl-select-standingarea-dialog',
@@ -9,17 +9,17 @@ import { StandingAreaSelection } from '../entities/standing-area-selection';
 })
 export class SelectStandingareaDialogComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) private standingAreaSelection: StandingAreaSelection,
+  constructor(@Inject(MAT_DIALOG_DATA) private standingAreaRenderDTO: StandingAreaRenderDTO,
     private readonly dialogRef: MatDialogRef<SelectStandingareaDialogComponent>) { }
 
   ngOnInit(): void {
   }
 
   get availablePlaces() {
-    const totalPlaces = this.standingAreaSelection.standingArea.maxPeople;
-    const soldPlaces = this.standingAreaSelection.standingArea.sold;
-    const reservedPlaces = this.standingAreaSelection.standingArea.sold;
-    const selectedPlaces = this.standingAreaSelection.selectedPositions;
+    const totalPlaces = this.standingAreaRenderDTO.maxPeople;
+    const soldPlaces = this.standingAreaRenderDTO.sold;
+    const reservedPlaces = this.standingAreaRenderDTO.reserved;
+    const selectedPlaces = this.standingAreaRenderDTO.selected;
     return  totalPlaces - soldPlaces - reservedPlaces - selectedPlaces;
   }
 
@@ -28,18 +28,18 @@ export class SelectStandingareaDialogComponent implements OnInit {
   }
 
   get placesSelected() {
-    return this.standingAreaSelection.selectedPositions > 0;
+    return this.standingAreaRenderDTO.selected > 0;
   }
 
   add() {
     if (this.placesAvailabe) {
-      this.standingAreaSelection.selectedPositions++;
+      this.standingAreaRenderDTO.selected++;
     }
   }
 
   remove() {
     if (this.placesSelected) {
-      this.standingAreaSelection.selectedPositions--;
+      this.standingAreaRenderDTO.selected--;
     }
   }
 

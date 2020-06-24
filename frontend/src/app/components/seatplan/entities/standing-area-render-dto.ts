@@ -11,4 +11,5 @@ export interface StandingAreaRenderDTO {
   reserved: number;
   renderId: string;
   soldOut: boolean;
+  selected: number;
 }

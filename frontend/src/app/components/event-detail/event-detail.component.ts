@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {
   BookingDTO,
+  BookingRequestDTO,
   EventApiService,
   EventDTO,
-  PerformanceDTO,
-  SeatmapOccupationDTO,
+  PerformanceDTO, SeatmapOccupationDTO,
   TicketApiService
 } from '../../../generated';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { SeatRenderDTO } from '../seatplan/entities/seat-render-dto';
 import { StandingAreaSelection } from '../seatplan/entities/standing-area-selection';
 import { EMPTY, Observable } from 'rxjs';
 import { Globals } from '../../global/globals';
+import { StandingAreaRenderDTO } from '../seatplan/entities/standing-area-render-dto';
 
 @Component({
   selector: 'tl-home',
@@ -26,6 +27,9 @@ export class EventDetailComponent implements OnInit {
 
   performances: PerformanceDTO[];
 
+  selectedSeats: Map<PerformanceDTO, [SeatRenderDTO[], StandingAreaSelection[]]> =
+    new Map<PerformanceDTO, [SeatRenderDTO[], StandingAreaSelection[]]>();
+
   public errorMsg?: string;
 
   constructor(private eventService: EventApiService, private ticketApiService: TicketApiService,
@@ -33,7 +37,12 @@ export class EventDetailComponent implements OnInit {
     private snackBar: MatSnackBar, private globals: Globals) {
   }
 
+  reservedBooking: BookingDTO = { fixedSeats: [], freeSeats: [] };
+
   ngOnInit(): void {
+    if (!!history.state.performance) {
+      this.reservedBooking = history.state;
+    }
     this.route.params.subscribe(params => {
       this.eventService.getEvent(+params['id']).subscribe(
         (event: EventDTO) => {
@@ -67,30 +76,84 @@ export class EventDetailComponent implements OnInit {
     return EMPTY;
   }
 
-  selectedSeatsChanged(seats: SeatRenderDTO[]) {
-    // TODO
-    console.log(seats);
+  selectedSeatsChanged(performance: PerformanceDTO, newSeats: SeatRenderDTO[]) {
+    console.log(newSeats);
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [_, standing] = entry;
+      this.selectedSeats.set(performance, [newSeats, standing]);
+    } else {
+      this.selectedSeats.set(performance, [newSeats, []]);
+    }
   }
 
-  selectedStandingAreasChanged(standingAreas: StandingAreaSelection[]) {
-    // TODO
-    console.log(standingAreas);
+  selectedStandingAreasChanged(performance: PerformanceDTO, standingAreas: StandingAreaRenderDTO[]) {
+    const entry = this.selectedSeats.get(performance);
+    const standingAreaDtos = standingAreas.filter(x => x.selected > 0).map((it) => {
+        const standingAreaSelection = new StandingAreaSelection();
+        standingAreaSelection.standingArea = it;
+        standingAreaSelection.selectedPositions = it.selected;
+        return standingAreaSelection;
+      }
+    );
+    if (entry) {
+      const [seats, _] = entry;
+      this.selectedSeats.set(performance, [seats, standingAreaDtos]);
+    } else {
+      this.selectedSeats.set(performance, [[], standingAreaDtos]);
+    }
   }
 
   isUserLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
+  formatSeats(performance: PerformanceDTO): string[] {
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [seats, _] = entry;
+      return seats.map(x => `Reihe ${ x.rowLabel } Platz ${ x.colLabel } - ${ x.area.price }€`);
+    }
+    return [];
+  }
+
+  formatStanding(performance: PerformanceDTO): string[] {
+    const entry = this.selectedSeats.get(performance);
+    if (entry) {
+      const [_, standing] = entry;
+      return standing.map(
+        x => (x.selectedPositions > 1 ? `${ x.selectedPositions } Stehplätze` : `${ x.selectedPositions } Stehplatz`) +
+          ` - ${ x.selectedPositions * x.standingArea.price }€`);
+    }
+    return [];
+  }
+
   buyTicket(reserve: boolean, performance: PerformanceDTO): void {
-    const bookingDto: BookingDTO = {};
-    // TODO: replace these tickets with the real tickets, once the seatmap gets implemented.
-    bookingDto.freeSeats = [{ seatGroupId: 2, amount: 1 }];
-    bookingDto.fixedSeats = [{ seatgroupId: 1, x: 23, y: 23 }];
+    const bookingDto: BookingRequestDTO = {};
+    const entry = this.selectedSeats.get(performance);
+    let seats: SeatRenderDTO[] = [];
+    let standing: StandingAreaSelection[] = [];
+    if (entry && (entry[0].length + entry[1].length > 0)) {
+      [seats, standing] = entry;
+    } else {
+      this.snackBar.open('Bitte wählen Sie zuerst die gewünschten Plätze aus', 'OK', {
+        duration: this.globals.defaultSnackbarDuration
+      });
+      return;
+    }
+    console.log(standing);
+    console.log(seats.map(x => x.id));
+    bookingDto.seats = seats.map(x => x.id);
+    bookingDto.areas = [{ seatGroupId: 1, amount: 1 }];
+    bookingDto.areas = standing.map(x => {
+      return { seatGroupId: x.standingArea.id, amount: x.selectedPositions };
+    });
+    bookingDto.reservationId = this.reservedBooking.id;
 
     if (!!this.event.id && !!performance.id) {
       this.ticketApiService.createTicket(this.event.id, performance.id, reserve, bookingDto)
           .subscribe(() => {
-            this.snackBar.open('Kauf erfolgreich', undefined, {
+            this.snackBar.open('Kauf erfolgreich', 'OK', {
               duration: this.globals.defaultSnackbarDuration
             });
             this.router.navigate(['/user/tickets']);

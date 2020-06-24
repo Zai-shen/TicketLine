@@ -1,9 +1,3 @@
-.upcoming-events {
-  text-align: right;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
 .card-body {
   display: flex;
   flex-direction: row;

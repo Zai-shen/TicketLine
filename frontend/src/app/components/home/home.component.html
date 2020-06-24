@@ -1,15 +1,12 @@
-<div class="jumbotron mt-5">
-  <h1 class="display-4">Welcome to the SEPM group phase!</h1>
-  <hr class="my-4">
-  <a *ngIf="!authService.isLoggedIn()" class="btn btn-primary btn-lg" routerLink="/login" role="button">Login</a>
-  <div *ngIf="authService.isLoggedIn()">
-    <p>Siehe dir alle Events an</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" routerLink="/events" role="button">Alle Events</a>
-    </p>
-  </div>
+<div class="mat-elevation-z4 main-content">
 
-  <button class="btn btn-secondary" style="margin-left: 15px" (click)="downloadTestPdf()">
-    Download Test Pdf
-  </button>
+  <h1 class="mat-title">Willkommen bei Ticketline!</h1>
+  <p>Kaufe bequem Tickets für deine Lieblingsveranstaltungen in deiner Nähe.</p>
+  <p>Finde passende Veranstaltungen für Konzerte, Oper, Literatur, Wellness oder Abenteuer. Siehe hier die Top 10 pro Kategorie an!</p>
+
+  <button mat-raised-button color="primary" routerLink="/events/top">Top 10 Veranstaltungen</button>
+
+  <div class="img-container">
+    <img class="img" src="../../../assets/concert.png" alt="Ticketline" />
+  </div>
 </div>

@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void unlockUser(Long userId) {
-        LOGGER.debug("Unlock user with id " + userId);
+        LOGGER.debug("Unlock user with id {}", userId);
         User user = userRepository.findUserById(userId);
         user.setWrongAttempts(0);
         user.setLocked(false);
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void lockUser(Long userId) {
-        LOGGER.debug("Lock user with id " + userId);
+        LOGGER.debug("Lock user with id {}", userId);
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findUserById(userId);
         if (!username.equals(user.getEmail())) {
@@ -146,20 +146,28 @@ public class UserServiceImpl implements UserService {
             throw new AccessDeniedException(
                 "Der aktuelle Benutzer hat keine Berechtigung um andere Nutzer zu bearbeiten");
         }
+        User user = userRepository.findUserById(userId);
         LOGGER.debug("Update User");
         if (updateUser.getFirstname() != null && !updateUser.getFirstname().isEmpty()) {
-            currentUser.setFirstname(updateUser.getFirstname());
+            user.setFirstname(updateUser.getFirstname());
         }
         if (updateUser.getLastname() != null && !updateUser.getLastname().isEmpty()) {
-            currentUser.setLastname(updateUser.getLastname());
+            user.setLastname(updateUser.getLastname());
         }
-        long addressId = currentUser.getAddress().getId();
+        long addressId = user.getAddress().getId();
         if (updateUser.getAddress() != null) {
-            currentUser.setAddress(updateUser.getAddress());
-            currentUser.getAddress().setId(addressId);
+            user.setAddress(updateUser.getAddress());
+            user.getAddress().setId(addressId);
         }
-        new UpdateUserValidator().build(currentUser).validate();
-        return userRepository.saveAndFlush(currentUser);
+        if (updateUser.getRole() != null) {
+            if (!userId.equals(currentUser.getId())) {
+                user.setRole(updateUser.getRole());
+            } else {
+                throw new AccessDeniedException("Der aktuelle Benutzer kann seine Rolle nicht selbst ändern");
+            }
+        }
+        new UpdateUserValidator().build(user).validate();
+        return userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -174,7 +182,7 @@ public class UserServiceImpl implements UserService {
     public void removeUser() {
         User user = getCurrentLoggedInUser();
 
-        if (user.getBookings().stream().anyMatch(booking -> !booking.isCanceled())) {
+        if (user.getBookings().stream().anyMatch(booking -> !booking.getCanceled())) {
             throw new BusinessValidationException(
                 "Bevor der User gelöscht werden kann, müssen alle Tickets und Reservierungen storniert werden");
         }

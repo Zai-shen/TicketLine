@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TicketApiService, BookingDTO } from '../../../generated';
-import { format, formatDistanceToNow } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { BookingDTO, FreeSeatgroupBookingDTO, TicketApiService } from '../../../generated';
 import { BookingService } from '../../services/booking.service';
 
 @Component({
@@ -25,25 +23,37 @@ export class TicketListComponent implements OnInit {
     return this.bookings.filter(b => b.reservation === this.reserved);
   }
 
-  public formatTimestamp(timestamp: string): string {
-    return formatDistanceToNow(new Date(timestamp), {locale: de, addSuffix: true});
-  }
-
-  public formatAbsolute(timestamp: string): string {
-    return format(new Date(timestamp), 'd MMM y - HH:mm', {locale: de});
-  }
 
   ngOnInit() {
+    this.updateTickets();
+  }
+
+  downloadInvoice(ticketId: number): void {
+    this.bookingService.renderInvoice(ticketId);
+  }
+
+  sumStanding(free: FreeSeatgroupBookingDTO[]): number {
+    return free.reduce((a, b) => a + b.amount, 0);
+  }
+
+  cancelBooking(booking: BookingDTO) {
+    if (booking.id) {
+      this.ticketService.cancelTickets(booking.id).subscribe(() => {
+        this.updateTickets();
+      });
+    }
+  }
+
+  downloadTicket(booking: BookingDTO) {
+    if (booking.id) {
+      this.bookingService.renderTicket(booking.id);
+    }
+  }
+
+  private updateTickets() {
     this.ticketService.getTicketsOfUser().subscribe(value => {
       this.bookings = value;
     });
   }
 
-  downloadInvoice(ticketId: Number): void {
-    this.bookingService.renderInvoice(ticketId);
-  }
-
-  downloadTicket(booking: BookingDTO) {
-    this.bookingService.renderTicket(booking.id!!);
-  }
 }
