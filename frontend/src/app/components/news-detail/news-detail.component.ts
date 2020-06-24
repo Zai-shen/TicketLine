@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { NewsService } from '../../services/news.service';
 import { UserService } from '../../services/user.service';
+import { Globals } from '../../global/globals';
 
 @Component({
   selector: 'tl-news-detail',
@@ -21,7 +22,7 @@ export class NewsDetailComponent implements AfterViewInit {
 
   constructor(private newsService: NewsService, private authService: AuthService,
     private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
-    private userService: UserService) {
+    private userService: UserService, private globals: Globals) {
   }
 
   ngAfterViewInit(): void {
@@ -48,7 +49,7 @@ export class NewsDetailComponent implements AfterViewInit {
 
   updateImage(): void {
     if (this.news.picturePath !== undefined && this.news.picturePath !== null) {
-      this.imageSource = 'http://localhost:8080/v1/images/' + this.news.picturePath + '.png';
+      this.imageSource = this.globals.backendUri + '/images/' + this.news.picturePath + '.png';
     }
   }
 

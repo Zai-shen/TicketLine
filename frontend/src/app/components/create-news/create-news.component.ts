@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { AuthService } from '../../services/auth.service';
@@ -26,6 +26,7 @@ export class CreateNewsComponent implements OnInit {
               private router: Router, private snackBar: MatSnackBar,
               private globals: Globals) { }
 
+  @ViewChild('pictureFile') pictureFile: ElementRef;
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
 
@@ -68,7 +69,7 @@ export class CreateNewsComponent implements OnInit {
           this.newsForm.reset();
           this.newsForm.controls['author'].setValue(this.userName);
           this.newsForm.controls['author'].disable();
-          this.snackBar.open('Erfolgreich gespeichert.', 'OK', {
+          this.snackBar.open('Daten erfolgreich gespeichert.', 'OK', {
             duration: this.globals.defaultSnackbarDuration,
           });
           this.uploadPicture(newsId);
@@ -82,7 +83,11 @@ export class CreateNewsComponent implements OnInit {
   uploadPicture(newsId: number): void {
     if (this.base64PictureString !== undefined && this.base64PictureString !== null) {
       this.newsService.uploadPictureForNewsWithId(newsId, this.base64PictureString).subscribe(
-        answer => {
+        (_success: any) => {
+          this.pictureFile.nativeElement.value = null;
+          setTimeout(() => {
+            this.snackBar.open('Bild erfolgreich gespeichert', 'OK');
+          }, 1000);
         },
         error => {
           this.errorMessageComponent.defaultServiceErrorHandling(error);
