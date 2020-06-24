@@ -392,7 +392,13 @@ paths:
       responses:
         201:
           description: Created news entry
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 123
+                description: The id of the created news
         400:
           description: Invalid input
           content:
@@ -446,6 +452,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /news/{newsId}/picture:
+    get:
+      tags:
+        - news
+      summary: Get the picture of one news article
+      operationId: getPictureOfNews
+      parameters:
+        - in: path
+          name: newsId
+          schema:
+            type: integer
+            format: int64
+          description: ID of the news entity with given picture
+          required: true
+          example: 14
+      responses:
+        200:
+          description: Content of the news article
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  picture:          # <-- image embedded into JSON
+                    type: string
+                    format: base64
+                    description: Base64-encoded contents of the image
+        403:
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        404:
+          description: Couldn't find news entry with that id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
     post:
       security:
         - ticketline_auth: []
@@ -467,19 +511,11 @@ paths:
           image/png:
             schema:
               type: string
-              format: file
-          image/jpeg:
-            schema:
-              type: string
-              format: file
+              format: base64
       responses:
         201:
-          description: Uploaded picture to news entry
-          content:
-            application/json:
-              schema:
-                type: string
-                example: images/3sdf.png
+          description: Uploaded picture and linked news entry
+          content: {}
         403:
           description: Not logged in or insufficient permission
           content:

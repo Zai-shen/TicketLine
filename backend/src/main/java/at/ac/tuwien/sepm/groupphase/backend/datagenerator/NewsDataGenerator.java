@@ -18,7 +18,7 @@ import java.util.Locale;
 public class NewsDataGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private static final int NUMBER_OF_NEWS_TO_GENERATE = 30;
+    private static final int NUMBER_OF_NEWS_TO_GENERATE = 150;
 
     private final NewsRepository newsRepository;
 

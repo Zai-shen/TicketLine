@@ -2,6 +2,7 @@ package at.ac.tuwien.sepm.groupphase.backend.controller;
 
 import at.ac.tuwien.sepm.groupphase.backend.api.NewsApi;
 import at.ac.tuwien.sepm.groupphase.backend.controller.mapper.NewsMapper;
+import at.ac.tuwien.sepm.groupphase.backend.dto.InlineResponse200;
 import at.ac.tuwien.sepm.groupphase.backend.dto.NewsDTO;
 import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.security.AuthorizationRole;
@@ -64,11 +65,25 @@ public class NewsController implements NewsApi {
 
     @Override
     @Secured(AuthorizationRole.ADMIN_ROLE)
-    public ResponseEntity<Void> createNews(@Valid NewsDTO newsDTO) {
+    public ResponseEntity<Long> createNews(@Valid NewsDTO newsDTO) {
         LOGGER.info("Create news with title {}", newsDTO.getTitle());
-        News news = newsMapper.toEntity(newsDTO);
-        newsService.publishNews(news);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            newsService.publishNews(newsMapper.toEntity(newsDTO)));
+    }
+
+    @Override
+    @Secured(AuthorizationRole.ADMIN_ROLE)
+    public ResponseEntity<Void> uploadPictureForNews(Long newsId, @Valid String base64Image) {
+        LOGGER.info("Save image for news with id {}", newsId);
+        newsService.saveImageForNewsWithId(newsId, base64Image);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Override
+    public ResponseEntity<InlineResponse200> getPictureOfNews(Long newsId) {
+        LOGGER.info("Get image for news with id {}", newsId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new InlineResponse200().picture(newsService.getImageOfNewsWithId(newsId)));
+    }
 }

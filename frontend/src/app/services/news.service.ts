@@ -18,7 +18,15 @@ export class NewsService {
     return this.newsApiService.getNewsList(inclRead, page, 'response');
   }
 
-  createNews(news: NewsDTO): Observable<any> {
+  createNews(news: NewsDTO): Observable<number> {
     return this.newsApiService.createNews(news);
+  }
+
+   uploadPictureForNewsWithId(newsId: number, base64: string): Observable<void> {
+    return this.newsApiService.uploadPictureForNews(newsId, base64);
+  }
+
+  getPictureOfNewsWithId(newsId: number): Observable<any> {
+    return this.newsApiService.getPictureOfNews(newsId);
   }
 }

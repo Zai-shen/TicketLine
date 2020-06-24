@@ -27,6 +27,12 @@ mat-spinner {
 }
 
 img {
-  border-radius: 25% 25% 25% 25%;
+  margin-bottom: 3rem;
+}
+
+.header-img {
+  background-size: contain;
+  width: 100%;
+  height: 200px;
   margin-bottom: 3rem;
 }

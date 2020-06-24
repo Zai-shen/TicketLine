@@ -67,6 +67,7 @@ public class DomainTestObjectFactory {
         news.setContent("Today we discovered, that I am to lazy to write more content.");
         news.setPublishedAt(LocalDateTime.of(2002, 1, 13, 12, 55, 59));
         news.setAuthor("Doris Duftler");
+        news.setPicturePath(null);
         news.setReadByUsers(new HashSet<>());
         return news;
     }

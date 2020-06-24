@@ -1,6 +1,9 @@
 ### PDF-Files ###
 *.pdf
 
+### Images ###
+*.png
+
 ### Local configuration files ###
 application-local.yml
 

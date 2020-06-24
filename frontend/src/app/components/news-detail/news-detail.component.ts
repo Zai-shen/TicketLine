@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { NewsService } from '../../services/news.service';
 import { UserService } from '../../services/user.service';
+import { Globals } from '../../global/globals';
 
 @Component({
   selector: 'tl-news-detail',
@@ -14,13 +15,14 @@ import { UserService } from '../../services/user.service';
 export class NewsDetailComponent implements AfterViewInit {
 
   news: NewsDTO;
+  imageSource: string = 'https://picsum.photos/800/200';
 
   @ViewChild(ErrorMessageComponent)
   private errorMessageComponent: ErrorMessageComponent;
 
   constructor(private newsService: NewsService, private authService: AuthService,
     private route: ActivatedRoute, private changeDetectorRef: ChangeDetectorRef,
-    private userService: UserService) {
+    private userService: UserService, private globals: Globals) {
   }
 
   ngAfterViewInit(): void {
@@ -33,6 +35,7 @@ export class NewsDetailComponent implements AfterViewInit {
         this.newsService.getNews(+params['id']).subscribe(
           (news: NewsDTO) => {
             this.news = news;
+            this.updateImage();
             this.addReadNews();
           },
           error => {
@@ -44,10 +47,15 @@ export class NewsDetailComponent implements AfterViewInit {
     });
   }
 
+  updateImage(): void {
+    if (this.news.picturePath !== undefined && this.news.picturePath !== null) {
+      this.imageSource = this.globals.backendUri + '/images/' + this.news.picturePath + '.png';
+    }
+  }
+
   addReadNews(): void {
     this.userService.addReadNewsOfUser(this.news).subscribe(
       (_success: any) => {
-        console.log('Daten Gespeichert für News mit ID' + this.news.id);
       },
       error => {
         this.errorMessageComponent.defaultServiceErrorHandling(error);
@@ -60,5 +68,11 @@ export class NewsDetailComponent implements AfterViewInit {
     const theConverted = new Date(theDate);
     return theConverted.toDateString() + ' um ' + theConverted.getHours() + ':' + theConverted.getMinutes()
       + ':' + theConverted.getSeconds();
+  }
+
+  getImg(): any {
+    return {
+      'background': `url('${this.imageSource}') center center`,
+    };
   }
 }

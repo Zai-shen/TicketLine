@@ -2,6 +2,10 @@
   margin-left: 1em;
 }
 
+.float-right {
+  text-align: right;
+}
+
 .formCreate {
   display: grid;
 }

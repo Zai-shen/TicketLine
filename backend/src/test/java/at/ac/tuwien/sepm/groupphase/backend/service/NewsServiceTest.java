@@ -39,10 +39,11 @@ public class NewsServiceTest {
     @Test
     public void testPublishNewsWithValidInput() {
         final News news = DomainTestObjectFactory.getNews();
+        when(newsRepository.saveAndFlush(news)).thenReturn(news);
 
         newsService.publishNews(news);
 
-        verify(newsRepository, times(1)).save(news);
+        verify(newsRepository, times(1)).saveAndFlush(news);
     }
 
     @Test

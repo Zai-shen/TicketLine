@@ -2,6 +2,8 @@
 
   <h1>News hinzuf&uuml;gen</h1>
 
+  <tl-error-message></tl-error-message>
+
   <form [formGroup]="newsForm" (ngSubmit)="createNews()">
     <div class="formCreate">
 
@@ -34,13 +36,20 @@
           </div>
         </mat-error>
       </mat-form-field>
+
+      <div class="form-group">
+        <input type="file" required accept="image/png, image/jpeg"
+               class="form-control" name="image" id="image"
+               (change)="onUploadChange($event)" #pictureFile>
+      </div>
+
       <mat-form-field appearance="fill">
         <mat-label for="author">Autor</mat-label>
         <input matInput type="text" name="author" formControlName="author"
                id="author" placeholder="Author">
       </mat-form-field>
 
-      </div>
+    </div>
 
     <button routerLink="/news" type="button" mat-raised-button color="warn" class="float-left">Abbrechen</button>
     <div class="float-right buttons">
