@@ -10,4 +10,11 @@ $warn: mat-palette($mat-red, 500);
   color: white;
   margin-bottom: 15px;
   border-radius: 3px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.errorText {
+  margin-bottom: auto;
+  margin-top: auto;
 }
