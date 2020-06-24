@@ -121,7 +121,7 @@ public class NewsServiceImpl implements NewsService {
             imageInFile.read(fileData);
             base64File = Base64.getEncoder().encodeToString(fileData);
         }catch (IOException e){
-            throw new RuntimeException(e);
+            throw new SaveFileException(e);
         }
 
         return "data:image/png;base64," + base64File;
