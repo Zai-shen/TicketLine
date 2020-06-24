@@ -1,6 +1,8 @@
 <div *ngIf="error != null" id="errorDialog" class="errorMessage" role="alert">
-  <strong>Error! </strong> {{ error.message }}
-  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
+  <div class="errorText">
+    <strong>Error! </strong> {{ error.message }}
+  </div>
+  <button mat-icon-button (click)="vanishError()" aria-label="Close error message">
+    <mat-icon>close</mat-icon>
   </button>
 </div>
