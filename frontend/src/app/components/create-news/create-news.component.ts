@@ -1,5 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ErrorMessageComponent } from '../error-message/error-message.component';
 import { AuthService } from '../../services/auth.service';
 import { NewsDTO, UserDTO } from '../../../generated';
@@ -68,6 +68,13 @@ export class CreateNewsComponent implements OnInit {
         newsId => {
           this.submitted = false;
           this.newsForm.reset();
+          // remove the validation errors so that the UI is clean again
+          Object.keys(this.newsForm.controls).forEach(key => {
+            const input: AbstractControl | null = this.newsForm.get(key);
+            if (input !== null) {
+              input.setErrors(null);
+            }
+          });
           this.newsForm.controls['author'].setValue(this.userName);
           this.newsForm.controls['author'].disable();
           this.snackBar.open('Daten erfolgreich gespeichert.', 'OK', {
