@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.groupphase.backend.entity.News;
 import at.ac.tuwien.sepm.groupphase.backend.entity.User;
 import at.ac.tuwien.sepm.groupphase.backend.exception.GlobalExceptionHandler;
 import at.ac.tuwien.sepm.groupphase.backend.exception.NotFoundException;
+import at.ac.tuwien.sepm.groupphase.backend.exception.SaveFileException;
 import at.ac.tuwien.sepm.groupphase.backend.repository.NewsRepository;
 import at.ac.tuwien.sepm.groupphase.backend.service.NewsService;
 import at.ac.tuwien.sepm.groupphase.backend.service.UserService;
@@ -100,7 +101,7 @@ public class NewsServiceImpl implements NewsService {
             Files.createDirectories(destinationPath);
             Files.write(destinationFile, imageByte);
         }catch (IOException e){
-            throw new RuntimeException(e);
+            throw new SaveFileException(e);
         }
 
         newsRepository.saveAndFlush(currentNews);
@@ -120,7 +121,7 @@ public class NewsServiceImpl implements NewsService {
             imageInFile.read(fileData);
             base64File = Base64.getEncoder().encodeToString(fileData);
         }catch (IOException e){
-            throw new RuntimeException(e);
+            throw new SaveFileException(e);
         }
 
         return "data:image/png;base64," + base64File;

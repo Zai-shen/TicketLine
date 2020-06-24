@@ -66,6 +66,7 @@ export class CreateNewsComponent implements OnInit {
       newsDTO.publishedAt = new Date().toISOString();
       this.newsService.createNews(newsDTO).subscribe(
         newsId => {
+          this.submitted = false;
           this.newsForm.reset();
           this.newsForm.controls['author'].setValue(this.userName);
           this.newsForm.controls['author'].disable();

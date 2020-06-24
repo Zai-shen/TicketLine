@@ -75,6 +75,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return getErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(SaveFileException.class)
+    public ResponseEntity<Object> saveFileErrorHandler(SaveFileException e) {
+        LOGGER.info("Handle save file found exception with message {}", e.getMessage());
+        return getErrorResponse(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> dataIntegrityException(DataIntegrityViolationException e) {
         LOGGER.info("Handle data integrity found exception with message {}", e.getMessage());
