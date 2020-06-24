@@ -30,10 +30,10 @@ export class CreateNewsComponent implements OnInit {
 
   ngOnInit(): void {
     this.newsForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      summary: ['', Validators.required],
-      content: ['', Validators.required],
-      author: ['', Validators.required]
+      title: ['', [Validators.required]],
+      summary: ['', [Validators.required]],
+      content: ['', [Validators.required]],
+      author: ['', [Validators.required]]
     });
     this.getCurrentUsersName();
   }
@@ -72,6 +72,5 @@ export class CreateNewsComponent implements OnInit {
         error => () => this.errorMessageComponent.defaultServiceErrorHandling(error)
       );
     }
-    this.submitted = false;
   }
 }
